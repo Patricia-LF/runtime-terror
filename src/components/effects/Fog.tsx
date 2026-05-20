@@ -18,7 +18,7 @@ export default function Fog({
       <motion.img
         src="/assets/images/cloud2.png"
         alt=""
-        className="absolute bottom-0 left-0 w-[140%] opacity-20 min-h-[15%] lg:max-h-[40%]"
+        className="absolute bottom-0 left-0 w-[140%] opacity-20 min-h-[25%] lg:max-h-[40%]"
         animate={{ x: ["-80%", "30%", "-80%"], y: ["5%", "0%", "5%"] }}
         transition={{ duration: 88, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -26,7 +26,7 @@ export default function Fog({
       <motion.img
         src="/assets/images/cloud6.png"
         alt=""
-        className="absolute bottom-0 right-0 w-full opacity-20 min-h-[17%] lg:max-h-[40%]"
+        className="absolute bottom-0 right-0 w-full opacity-20 min-h-[20%] lg:max-h-[40%]"
         animate={{ x: ["20%", "-70%", "20%"], y: ["0%", "-8%", "0%"] }}
         transition={{ duration: 92, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -34,7 +34,7 @@ export default function Fog({
       <motion.img
         src="/assets/images/cloud1.png"
         alt=""
-        className="absolute bottom-0 left-0 w-3/4 opacity-30 min-h-[15%] lg:max-h-[30%]"
+        className="absolute bottom-0 left-0 w-3/4 opacity-30 min-h-[17%] lg:max-h-[30%]"
         animate={{ x: ["-50%", "15%", "-40%"], y: ["0%", "6%", "0%"] }}
         transition={{ duration: 100, repeat: Infinity, ease: "easeInOut" }}
       />
