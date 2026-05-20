@@ -77,7 +77,7 @@ export const SOUND_MAP = {
   danger: {
     kind: "effect",
     src: ["/assets/audio/effect/dangerEffect.mp3"],
-    loop: true,
+    loop: false,
     volume: 0.5,
     autoplay: true,
   },

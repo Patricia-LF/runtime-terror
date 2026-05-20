@@ -6,6 +6,8 @@ import DescriptionButton from "@/components/shared/DescriptionButton";
 import Image from "next/image";
 import Link from "next/link";
 import MuteButton from "../ui/MuteButton";
+import { use, useEffect } from "react";
+import { useAudioStore } from "@/store/useAudioStore";
 
 type HauntedHouseShellProps = {
   children: React.ReactNode;
@@ -16,6 +18,31 @@ export default function HauntedHouseShell({
 }: HauntedHouseShellProps) {
   useAmbientSound();
   const currentRoom = useGameStore((s) => s.currentRoom);
+
+  // Stop ambient sound when exiting the haunted house (unmounting this component)
+  useEffect(() => {
+    return () => {
+      const { currentAmbient, stop } = useAudioStore.getState();
+      if (currentAmbient) {
+
+        const ambient = useAudioStore.getState().instances[currentAmbient];
+        if (ambient && ambient.id !== undefined) {
+
+          const id = ambient.id;
+
+          ambient.howl.fade(1, 0, 600, id);
+          ambient.howl.once('fade', () => ambient.howl.stop(id));
+
+        } else {
+
+          stop(currentAmbient);
+
+        }
+
+        useAudioStore.setState({ currentAmbient: null });
+      }
+    };
+  }, []);
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden position-relative">

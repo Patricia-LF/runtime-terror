@@ -12,7 +12,7 @@ export default function Fog({
   height = -30 
 }: FogProps) {
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none"
+    <div className="absolute inset-0 overflow-hidden pointer-events-none z-30"
       style={{ bottom: height, opacity: opacity }}>
       {/* Slow diagonal drift from bottom left */}
       <motion.img

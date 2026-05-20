@@ -31,7 +31,7 @@ export default function Graveyard() {
       <ZombieHand 
       triggerOnMount={true}
       onCollect={handleDoorOpen}
-      onEmergeComplete={() => handEmeregedSound()}
+      onEmergeComplete={handEmeregedSound}
       />
     </div>
   );

@@ -42,17 +42,22 @@ export default function ZombieHand({
     triggerOnMount = false, 
     onEmergeComplete, 
     onCollect }: ZombieHandProps) {
-        
+
         const controls = useAnimation();
         const hasTriggered = useRef(false);
         const [collected, setCollected] = useState<boolean>(false);
+        const emergedOnce = useRef(false);
 
         const startAnimation = async () => {
             if (hasTriggered.current) return;
 
             hasTriggered.current = true;
             await controls.start("emerge");
-            onEmergeComplete?.();
+
+            if (!emergedOnce.current) {
+                onEmergeComplete?.();
+                emergedOnce.current = true;
+            }
         };
 
         useEffect(() => {
@@ -71,7 +76,7 @@ export default function ZombieHand({
             
 
         return (
-            <div className="absolute top-[52%] left-[14%] z-30 w-32.5 h-32.5 overflow-hidden pointer-events-none md:left-[25%] md:top-[50%] md:w-40 md:h-40">
+            <div className="absolute top-[52%] left-[14%] z-10 w-32.5 h-32.5 overflow-hidden pointer-events-none md:left-[25%] md:top-[50%] md:w-40 md:h-40">
             <motion.div
                 initial="hidden"
                 animate={controls}
