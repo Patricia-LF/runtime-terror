@@ -1,4 +1,4 @@
-import { PaymentError, ApiError } from "./errors";
+import { ApiError } from "./errors";
 
 export type Transaction = {
   identity_token: string;
@@ -7,9 +7,21 @@ export type Transaction = {
 };
 
 export type PaymentResponse = {
-  success: boolean
-  error?: PaymentError
-}
+  success: boolean;
+  data: {
+    id: number;
+    stamp: {
+      id: number;
+      image_url: string;
+      stamptype: {
+        animal: string;
+        image_url: string;
+        metal: string | null;
+      };
+    };
+  };
+  error?: ApiError;
+};
 
 export interface PaymentResult {
   success: boolean

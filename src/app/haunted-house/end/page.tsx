@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { TIVOLI_MODE } from "@/lib/gameConfig";
 import { useGameStore } from "@/store/useGameStore";
+import Image from "next/image";
 
 
 export default function EndPage() {
@@ -32,6 +33,8 @@ export default function EndPage() {
     }
   };
 
+  const stamp = useGameStore((s) => s.stamp);
+
   const handleTivoliReturn = () => {
     useGameStore.getState().resetGame();
     // TODO: Replace with actual tivoli site URL and 
@@ -51,7 +54,7 @@ export default function EndPage() {
         {isRevoking ? "Revoking access..." : "Revoke dev access (for testing)"}
       </button>
       {revokeError && <p className="text-red-500 mt-2 text-sm">{revokeError}</p>}
-      
+
 
       {TIVOLI_MODE ? (
         <button
@@ -65,6 +68,23 @@ export default function EndPage() {
           Play again
         </Link>
       )}
+
+      {(stamp !== null) ? (
+        <>
+          <h2 className="bg-red-600">
+            You got a{" "}
+            {stamp.stamptype.metal && `${stamp.stamptype.metal} `}
+            {stamp.stamptype.animal}
+          </h2>
+          <Image
+            src={stamp.image_url}
+            alt={`${stamp.stamptype.metal ? `${stamp.stamptype.metal} ` : ""}${stamp.stamptype.animal}`}
+            width={200}
+            height={200}
+          />
+        </>
+      ) :
+        (<p className="bg-red-600">No stamp</p>)}
     </div>
   );
 }

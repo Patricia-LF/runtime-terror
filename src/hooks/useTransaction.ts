@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ApiError } from "@/types/errors";
 import { PaymentResponse, Transaction } from "@/types";
+import { useGameStore } from "@/store/useGameStore";
 
 const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3;
 
@@ -18,6 +19,7 @@ export function useTransaction({
   onError,
 }: UseTransactionOptions = {}) {
   const [isLoading, setIsLoading] = useState(false);
+  const setStamp = useGameStore((s) => s.setStamp);
 
   const submitTransaction = async (identityToken: string): Promise<PaymentResponse | null> => {
     if (!identityToken) {
@@ -33,7 +35,7 @@ export function useTransaction({
       const transaction: Transaction = {
         identity_token: identityToken,
         amount: ENTRY_PRICE,
-        api_key: process.env.API_KEY || "default-seller",
+        api_key: "runtime-terror", // Placeholder, will be set by server
       };
 
       const res = await fetch("/api/transaction", {
@@ -60,6 +62,7 @@ export function useTransaction({
       }
 
       if (data.success) {
+        setStamp(data.data.stamp);
         onSuccess?.();
         return data;
       }

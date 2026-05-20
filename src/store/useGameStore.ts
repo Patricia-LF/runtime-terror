@@ -10,10 +10,22 @@ export type RoomId = "graveyard" | "dolls" | "spiders" | "clown";
 
 export const ROOMS: RoomId[] = ["graveyard", "dolls", "spiders", "clown"];
 
+type Stamp = {
+  id: number;
+  image_url: string;
+  stamptype: {
+    animal: string;
+    image_url: string;
+    metal: string | null;
+  };
+};
+
 interface GameStore {
   //state
   currentRoom: RoomId;
   isComplete: boolean;
+  stamp: Stamp | null;
+  setStamp: (stamp: Stamp) => void;
 
   //actions
   goToNextRoom: () => void;
@@ -27,8 +39,9 @@ export const useGameStore = create<GameStore>()(
     (set, get) => ({
       // Start values
       currentRoom: "graveyard",
-      fearLevel: 0,
       isComplete: false,
+      stamp: null,
+      setStamp: (stamp) => set({ stamp }),
 
       // Functions that uppdates state
       goToNextRoom: () => {
@@ -85,6 +98,7 @@ export const useGameStore = create<GameStore>()(
         set({
           currentRoom: "graveyard",
           isComplete: false,
+          stamp: null,
         });
       },
     }),

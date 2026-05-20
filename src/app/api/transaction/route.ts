@@ -5,6 +5,13 @@ import { setAccessCookie } from "@/lib/cookie";
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
         const transaction = await req.json();
+        // Set the API key from server environment
+        transaction.api_key = process.env.API_KEY || "missing-api-key";
+        console.log('[API] Transaction received:', {
+          identity_token: transaction.identity_token ? transaction.identity_token.substring(0, 8) + '...' : 'MISSING',
+          amount: transaction.amount,
+          api_key: transaction.api_key,
+        });
         const result = await processPayment(transaction);
 
         // Handle successful payment
