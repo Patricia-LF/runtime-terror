@@ -25,6 +25,16 @@ const handVariants: Variants = {
       times: [0, 0.3, 0.45, 0.7, 0.85, 0.9, 1],
     },
   },
+  retract: {
+    y:[12, 40, 60, 90, 140, 160, 300],
+    rotate: [+2, -2, -6, -6, -12, -8, -8],
+    opacity: [1, 1, 1, 1, 1, 1, 0],
+    transition: {
+      duration: 4.2,
+      ease: "easeInOut",
+        times: [0, 0.1, 0.3, 0.45, 0.7, 0.85, 1],
+    },
+  }
 };
 
 export default function ZombieHand({ triggerOnMount = false, onEmergeComplete }: ZombieHandProps) {
@@ -47,9 +57,10 @@ export default function ZombieHand({ triggerOnMount = false, onEmergeComplete }:
     return () => clearTimeout(timeout);
   }, [triggerOnMount, startAnimation]);
 
-  function collectKeyHandler() {
-    // don't mutate props; update local state so React re-renders
+  const collectKeyHandler = async () => {
     setCollected(true);
+    await controls.start("retract");
+    hasTriggered.current = false;
   }
     
 
