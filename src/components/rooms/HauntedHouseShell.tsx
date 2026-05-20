@@ -4,10 +4,10 @@ import { useAmbientSound } from "@/hooks/useAmbientSound";
 import { useGameStore } from "@/store/useGameStore";
 import DescriptionButton from "@/components/shared/DescriptionButton";
 import Image from "next/image";
-import Link from "next/link";
 import MuteButton from "../ui/MuteButton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAudioStore } from "@/store/useAudioStore";
+import { ExitModal } from "../ui/ExitModal";
 
 type HauntedHouseShellProps = {
   children: React.ReactNode;
@@ -16,8 +16,14 @@ type HauntedHouseShellProps = {
 export default function HauntedHouseShell({
   children,
 }: HauntedHouseShellProps) {
+
   useAmbientSound();
   const currentRoom = useGameStore((s) => s.currentRoom);
+  const [showExitModal, setShowExitModal] = useState(false);
+
+  const handleExitClick = () => {
+    setShowExitModal(true);
+  };
 
   // Stop ambient sound when exiting the haunted house (unmounting this component)
   useEffect(() => {
@@ -51,8 +57,8 @@ export default function HauntedHouseShell({
       <DescriptionButton currentRoom={currentRoom} />
       <MuteButton positionClass="right-14" />
 
-      <Link
-        href="/"
+      <button
+        onClick={handleExitClick}
         aria-label="Exit haunted house"
         className="fixed z-50 bottom-4 right-4 md:bottom-8 md:right-8 rounded-4xl focus-visible:outline-2 focus-visible:outline-red-500 focus-visible:outline-offset-4"
       >
@@ -63,7 +69,10 @@ export default function HauntedHouseShell({
           height={100}
           className="block"
         />
-      </Link>
+      </button>
+
+      <ExitModal isOpen={showExitModal} onClose={() => setShowExitModal(false)} />
+        
     </div>
   );
 }

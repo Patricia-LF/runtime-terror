@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ModalBase } from "./ModalBase";
+import { ModalBase } from "../shared/ModalBase";
+import { LinkButton } from "../shared/LinkButton";
 
 type UnauthorizedModalProps = {
   isOpen: boolean;
@@ -22,12 +23,12 @@ export function UnauthorizedModal({ isOpen, onClose }: UnauthorizedModalProps) {
           Your identity token is expired or invalid. Please return to the main tivoli site and try again.
         </p>
       </div>
-      <Link
+      <LinkButton 
         href="https://frontend-main-1ac7.up.railway.app/"
-        className="mt-6 font-fell bg-red-dark text-white px-4 py-2 inline-block cursor-pointer rounded border border-white focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4"
-      >
-        Return to tivoli
-      </Link>
+        linkText="Return to tivoli"
+        ariaLabel="Return to main tivoli site"
+      />
+
     </ModalBase>
   );
 }
