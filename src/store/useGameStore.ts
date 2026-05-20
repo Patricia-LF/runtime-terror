@@ -6,7 +6,7 @@ import { useAudioStore } from "@/store/useAudioStore";
 import { ROOM_AMBIENT, SOUND_MAP } from "@/lib/audio";
 import { SoundId } from "@/lib/audio";
 
-export type RoomId = "graveyard" | "dolls" | "spiders" | "clown" | "end";
+export type RoomId = "graveyard" | "dolls" | "spiders" | "clown";
 
 export const ROOMS: RoomId[] = ["graveyard", "dolls", "spiders", "clown"];
 
@@ -90,11 +90,7 @@ export const useGameStore = create<GameStore>()(
 
       hasExited: false,
       setHasExited: (exited) => set({ hasExited: exited }),
-      completeGame: () =>
-        set({
-          currentRoom: "end",
-          isComplete: true,
-        }),
+      completeGame: () => set({ isComplete: true }),
 
       resetGame: () => {
         // unload all audio resources when resetting

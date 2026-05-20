@@ -24,22 +24,20 @@ export default function HauntedHouseShell({
       <DescriptionButton currentRoom={currentRoom} />
       <MuteButton positionClass="right-14" />
 
-      {currentRoom !== "end" && (
-        <Link
-          href="/haunted-house/end"
-          aria-label="Exit haunted house"
-          onClick={() => useGameStore.getState().setHasExited(true)}
-          className="fixed z-50 bottom-4 right-4 md:bottom-8 md:right-8 rounded-4xl focus-visible:outline-2 focus-visible:outline-red-500 focus-visible:outline-offset-4"
-        >
-          <Image
-            src="/assets/icons/exitSVG.svg"
-            alt="Exit"
-            width={100}
-            height={100}
-            className="block"
-          />
-        </Link>
-      )}
+      <Link
+        href="/haunted-house/end"
+        aria-label="Exit haunted house"
+        onClick={() => useGameStore.getState().setHasExited(true)}
+        className="fixed z-50 bottom-4 right-4 md:bottom-8 md:right-8 rounded-4xl focus-visible:outline-2 focus-visible:outline-red-500 focus-visible:outline-offset-4"
+      >
+        <Image
+          src="/assets/icons/exitSVG.svg"
+          alt="Exit"
+          width={100}
+          height={100}
+          className="block"
+        />
+      </Link>
     </div>
   );
 }

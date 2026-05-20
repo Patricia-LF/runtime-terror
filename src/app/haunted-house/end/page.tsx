@@ -169,19 +169,6 @@ export default function EndPage() {
             {revokeError && (
               <p className="text-red-500 mt-2 text-sm">{revokeError}</p>
             )}
-
-            {/*  {TIVOLI_MODE ? (
-          <button
-            onClick={handleTivoliReturn}
-            className="text-red-800 underline mt-4 px-4 py-2 hover:opacity-80"
-          >
-            Back to Tivoli
-          </button>
-        ) : (
-          <Link href="/" className="text-red-800 underline mt-4">
-            Play again
-          </Link>
-        )} */}
           </>
         )}
       </div>

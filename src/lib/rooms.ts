@@ -44,10 +44,4 @@ export const ROOM_HELP: Record<RoomId, RoomHelp> = {
     ],
     goal: "Survive long enough to find the way out.",
   },
-  end: {
-    title: "The End",
-    description: "You've made it out of the Haunted House.",
-    interactions: [],
-    goal: "",
-  },
 };
