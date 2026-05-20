@@ -58,11 +58,11 @@ export default function HauntedHouseShell({
     <div className="relative w-full h-screen bg-black overflow-hidden position-relative">
       {children}
 
-      <DescriptionButton currentRoom={currentRoom} />
       <MuteButton positionClass="right-14" />
 
     {!isEndPage && (
       <>
+        <DescriptionButton currentRoom={currentRoom} />
         <button
           onClick={handleExitClick}
           aria-label="Exit haunted house"
