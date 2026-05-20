@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import Bats from "@/components/effects/Bats";
 import HelpOverlay from "@/components/shared/HelpOverlay";
 import { useUrlParams } from "@/hooks/useUrlParams";
-import { UnauthorizedModal } from "@/components/shared/UnauthorizedModal";
+import { UnauthorizedModal } from "@/components/ui/UnauthorizedModal";
 import { useTransaction } from "@/hooks/useTransaction";
 import MuteButton from "../ui/MuteButton";
 

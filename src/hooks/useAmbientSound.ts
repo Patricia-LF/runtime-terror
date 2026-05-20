@@ -10,8 +10,9 @@ export function useAmbientSound() {
   const { currentAmbient, crossfade } = useAudioStore();
 
   useEffect(() => {
-    const nextAmbient = ROOM_AMBIENT[currentRoom];
-    if (nextAmbient === currentAmbient) return;
-    crossfade(currentAmbient, nextAmbient, 2000);
-  }, [currentRoom, currentAmbient, crossfade]);
+    const nextAmbient = ROOM_AMBIENT[currentRoom]
+    if (nextAmbient === currentAmbient) return
+    crossfade(currentAmbient, nextAmbient, 1000)
+  }, [currentRoom, currentAmbient, crossfade])
+
 }

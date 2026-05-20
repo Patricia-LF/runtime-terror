@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useAnimation, Variants } from "framer-motion";
 import Image from "next/image";
 
 type ZombieHandProps = {
   triggerOnMount: boolean;
   onEmergeComplete?: () => void;
+  onCollect?: () => void;
 };
 
 const handVariants: Variants = {
@@ -25,44 +26,79 @@ const handVariants: Variants = {
       times: [0, 0.3, 0.45, 0.7, 0.85, 0.9, 1],
     },
   },
+  retract: {
+    y:[12, 40, 60, 90, 140, 160, 300],
+    rotate: [+2, -2, -6, -6, -12, -8, -8],
+    opacity: [1, 1, 1, 1, 1, 1, 0],
+    transition: {
+      duration: 4.2,
+      ease: "easeInOut",
+        times: [0, 0.1, 0.3, 0.45, 0.7, 0.85, 1],
+    },
+  }
 };
 
-export default function ZombieHand({ triggerOnMount = false, onEmergeComplete }: ZombieHandProps) {
-  const controls = useAnimation();
-  const hasTriggered = useRef(false);
+export default function ZombieHand({ 
+    triggerOnMount = false, 
+    onEmergeComplete, 
+    onCollect }: ZombieHandProps) {
 
-  const startAnimation = async () => {
-    if (hasTriggered.current) return;
+        const controls = useAnimation();
+        const hasTriggered = useRef(false);
+        const [collected, setCollected] = useState<boolean>(false);
+        const emergedOnce = useRef(false);
 
-    hasTriggered.current = true;
-    await controls.start("emerge");
-    onEmergeComplete?.();
-  };
+        const startAnimation = async () => {
+            if (hasTriggered.current) return;
 
-  useEffect(() => {
-    if (!triggerOnMount) return;
+            hasTriggered.current = true;
+            await controls.start("emerge");
 
-    const timeout = setTimeout(startAnimation, 1200);
-    return () => clearTimeout(timeout);
-  }, [triggerOnMount, startAnimation]);
+            if (!emergedOnce.current) {
+                onEmergeComplete?.();
+                emergedOnce.current = true;
+            }
+        };
 
-  return (
-    <div className="absolute top-[52%] left-[14%] z-30 w-32.5 h-32.5 overflow-hidden pointer-events-none md:left-[25%] md:top-[50%] md:w-40 md:h-40">
-      <motion.div
-        initial="hidden"
-        animate={controls}
-        variants={handVariants}
-        aria-hidden="true"
-      >
-        <Image
-          src="/assets/images/zombie-hand.png"
-          alt="Zombie Hand"
-          width={130}
-          height={130}
-          draggable={false}
-          className="h-full w-full object-contain skew-1 md:w-40 md:h-40"
-        />
-      </motion.div>
-    </div>
-  );
+        useEffect(() => {
+            if (!triggerOnMount) return;
+
+            const timeout = setTimeout(startAnimation, 5000);
+            return () => clearTimeout(timeout);
+        }, [triggerOnMount, startAnimation]);
+
+        const collectKeyHandler = async () => {
+            setCollected(true);
+            onCollect?.();
+            await controls.start("retract");
+            hasTriggered.current = false;
+        }
+            
+
+        return (
+            <div className="absolute top-[52%] left-[14%] z-10 w-32.5 h-32.5 overflow-hidden pointer-events-none md:left-[25%] md:top-[50%] md:w-40 md:h-40">
+            <motion.div
+                initial="hidden"
+                animate={controls}
+                variants={handVariants}
+                aria-hidden="true"
+            >
+                <button
+                onClick={collectKeyHandler}
+                role="button"
+                className=" w-full h-full cursor-pointer pointer-events-auto"
+                aria-label={collected ? "Zombie Hand" : "Key on Zombie Hand"}
+                >
+                    <Image
+                    src={collected ? "/assets/images/zombie-hand.png" : "/assets/images/zombie-hand-key.png"}
+                    alt={collected ? "Zombie Hand" : "Key on Zombie Hand"}
+                    width={130}
+                    height={130}
+                    draggable={false}
+                    className="h-full w-full object-contain skew-1 md:w-40 md:h-40"
+                    />
+                </button>
+            </motion.div>
+            </div>
+        );
 }

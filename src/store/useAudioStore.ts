@@ -198,7 +198,7 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     });
   },
 
-  crossfade: (from, to, duration = 1500) => {
+  crossfade: (from, to, duration = 1000) => {
     const { fadeOut, fadeIn } = get();
     if (from) fadeOut(from, duration);
     fadeIn(to, duration);
