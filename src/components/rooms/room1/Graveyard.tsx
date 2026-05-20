@@ -3,11 +3,16 @@ import Fog from "@/components/effects/Fog";
 import DoorTransition from "@/components/shared/DoorTransition";
 import ZombieHand from "@/components/rooms/room1/ZombieHand";
 import { useState } from "react";
+import { useEffectSounds } from "@/hooks/useEffectSounds";
 
 export default function Graveyard() {
   const [doorOpen, setDoorOpen] = useState(false);
 
+  const keyCollectedSound = useEffectSounds({ effect: "key-appearing" });
+  const handEmeregedSound = useEffectSounds({ effect: "danger" });
+
   function handleDoorOpen() {
+    keyCollectedSound();
     setDoorOpen(true);
   }
 
@@ -25,7 +30,9 @@ export default function Graveyard() {
       />
       <ZombieHand 
       triggerOnMount={true}
-      onEmergeComplete={handleDoorOpen} />
+      onCollect={handleDoorOpen}
+      onEmergeComplete={() => handEmeregedSound()}
+      />
     </div>
   );
 }
