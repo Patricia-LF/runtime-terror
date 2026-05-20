@@ -6,7 +6,7 @@ import DescriptionButton from "@/components/shared/DescriptionButton";
 import Image from "next/image";
 import Link from "next/link";
 import MuteButton from "../ui/MuteButton";
-import { use, useEffect } from "react";
+import { useEffect } from "react";
 import { useAudioStore } from "@/store/useAudioStore";
 
 type HauntedHouseShellProps = {

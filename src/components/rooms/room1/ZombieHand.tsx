@@ -63,15 +63,15 @@ export default function ZombieHand({
         useEffect(() => {
             if (!triggerOnMount) return;
 
-            const timeout = setTimeout(startAnimation, 1200);
+            const timeout = setTimeout(startAnimation, 5000);
             return () => clearTimeout(timeout);
         }, [triggerOnMount, startAnimation]);
 
         const collectKeyHandler = async () => {
             setCollected(true);
+            onCollect?.();
             await controls.start("retract");
             hasTriggered.current = false;
-            onCollect?.();
         }
             
 
