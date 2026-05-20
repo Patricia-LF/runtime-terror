@@ -16,6 +16,7 @@ export type PaymentResponse = {
       stamptype: {
         animal: string;
         image_url: string;
+        metal: string | null;
       };
     };
   };

@@ -70,12 +70,19 @@ export default function EndPage() {
       )}
 
       {(stamp !== null) ? (
-        <Image
-          src={stamp.image_url}
-          alt={stamp.stamptype.animal}
-          width={200}
-          height={200}
-        />
+        <>
+          <h2 className="bg-red-600">
+            You got a{" "}
+            {stamp.stamptype.metal && `${stamp.stamptype.metal} `}
+            {stamp.stamptype.animal}
+          </h2>
+          <Image
+            src={stamp.image_url}
+            alt={`${stamp.stamptype.metal ? `${stamp.stamptype.metal} ` : ""}${stamp.stamptype.animal}`}
+            width={200}
+            height={200}
+          />
+        </>
       ) :
         (<p className="bg-red-600">No stamp</p>)}
     </div>
