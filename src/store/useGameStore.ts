@@ -26,6 +26,8 @@ interface GameStore {
   isComplete: boolean;
   stamp: Stamp | null;
   setStamp: (stamp: Stamp) => void;
+  isPlayingGuest: boolean;
+  setIsPlayingGuest: (isPlayingGuest: boolean) => void;
 
   //actions
   goToNextRoom: () => void;
@@ -44,6 +46,11 @@ export const useGameStore = create<GameStore>()(
       setStamp: (stamp) => set({ stamp }),
 
       // Functions that uppdates state
+      isPlayingGuest: false,
+      setIsPlayingGuest: (value: boolean) => {
+        set({ isPlayingGuest: value });
+      },
+
       goToNextRoom: () => {
         const { currentRoom } = get();
         const nextIndex = ROOMS.indexOf(currentRoom) + 1;
