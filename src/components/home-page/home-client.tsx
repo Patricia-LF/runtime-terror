@@ -65,7 +65,7 @@ export default function HomeClient() {
       <MuteButton positionClass="right-4" />
 
       {/* Content — top layer */}
-      <div className="relative z-20 flex flex-col w-full items-center">
+      <div className="relative z-20 flex flex-col w-full h-full items-center">
         <h1 className="font-eater text-red-800 flex w-full text-4xl m-8 justify-center md:text-5xl leading-normal">
           Runtime terror
         </h1>
@@ -138,23 +138,30 @@ export default function HomeClient() {
         ) : (
 
           // Hide entry text and show pointing arrow when user is allowed to enter house
-          <div>
-            <button
-              onClick={() => router.push("/haunted-house")}
-              aria-label="Go to next room"
-              className="flex flex-col items-center justify-center gap-4 cursor-pointer group"
+          <button
+            onClick={() => router.push("/haunted-house")}
+            aria-label="Go to next room"
+            className="
+              absolute
+              bottom-12
+              p-28
+              ml-4
+              flex flex-col
+              items-center
+              justify-center
+              gap-4
+              cursor-pointer group
+            "
+          >
+            <div
+              className="text-6xl text-gray-300"
+              style={{
+                animation: "bounce 1s infinite",
+              }}
             >
-              <div
-                className="text-6xl text-gray-400"
-                style={{
-                  animation: "bounce-diagonal 1s infinite",
-                }}
-              >
-                ↗
-              </div>
-            </button>
-
-          </div>
+              ↑
+            </div>
+          </button>
         )
         }
       </div>
