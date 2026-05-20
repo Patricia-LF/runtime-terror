@@ -1,9 +1,11 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import DoorTransition from "@/components/shared/DoorTransition";
 import { useEffectSounds } from "@/hooks/useEffectSounds";
+import { useGameStore } from "@/store/useGameStore";
 
 type Balloon = {
   id: string;
@@ -54,6 +56,8 @@ export default function Clown() {
   const triggerDanger = useEffectSounds({ effect: "danger" });
   const triggerClownLaugh = useEffectSounds({ effect: "clown-laugh" });
   const pendingTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const router = useRouter();
+  const completeGame = useGameStore((s) => s.completeGame);
 
   useEffect(() => {
     setMissed(0);
@@ -105,7 +109,12 @@ export default function Clown() {
   };
 
   const handleClownDone = (): void => {
+    completeGame();
     setPhase("done");
+
+    setTimeout(() => {
+      router.push("/haunted-house/end");
+    }, 3000);
   };
 
   // Clown scale based on missed balloons

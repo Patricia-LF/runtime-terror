@@ -8,7 +8,9 @@ import Clown from "@/components/rooms/room4/Clown";
 import { ComponentType, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const ROOMS: Record<RoomId, ComponentType> = {
+type PlayableRoomId = Exclude<RoomId, "end">;
+
+const ROOMS: Record<PlayableRoomId, ComponentType> = {
   graveyard: Graveyard,
   dolls: Dolls,
   spiders: Spiders,
@@ -21,12 +23,18 @@ export default function HauntedHousePage() {
   const isComplete = useGameStore((s) => s.isComplete);
   const [mounted, setMounted] = useState(false);
 
-  // Reset if coming back from end page
   useEffect(() => {
+    if (currentRoom === "end") {
+      router.push("/haunted-house/end");
+    }
+  }, [currentRoom, router]);
+
+  // Reset if coming back from end page
+  /*  useEffect(() => {
     if (isComplete) {
       useGameStore.getState().resetGame();
     }
-  }, []);
+  }, []); */
 
   // Redirect to end when game is complete
   useEffect(() => {
@@ -40,6 +48,8 @@ export default function HauntedHousePage() {
   }, []);
 
   if (!mounted) return null;
+
+  if (currentRoom === "end") return null;
 
   const CurrentRoom = ROOMS[currentRoom];
 

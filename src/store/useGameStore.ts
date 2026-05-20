@@ -6,7 +6,7 @@ import { useAudioStore } from "@/store/useAudioStore";
 import { ROOM_AMBIENT, SOUND_MAP } from "@/lib/audio";
 import { SoundId } from "@/lib/audio";
 
-export type RoomId = "graveyard" | "dolls" | "spiders" | "clown";
+export type RoomId = "graveyard" | "dolls" | "spiders" | "clown" | "end";
 
 export const ROOMS: RoomId[] = ["graveyard", "dolls", "spiders", "clown"];
 
@@ -25,12 +25,14 @@ interface GameStore {
   currentRoom: RoomId;
   isComplete: boolean;
   stamp: Stamp | null;
-  setStamp: (stamp: Stamp) => void;
+  hasExited: boolean;
 
   //actions
   goToNextRoom: () => void;
   completeGame: () => void;
   resetGame: () => void;
+  setStamp: (stamp: Stamp) => void;
+  setHasExited: (exited: boolean) => void;
 }
 
 export const useGameStore = create<GameStore>()(
@@ -86,7 +88,13 @@ export const useGameStore = create<GameStore>()(
         }
       },
 
-      completeGame: () => set({ isComplete: true }),
+      hasExited: false,
+      setHasExited: (exited) => set({ hasExited: exited }),
+      completeGame: () =>
+        set({
+          currentRoom: "end",
+          isComplete: true,
+        }),
 
       resetGame: () => {
         // unload all audio resources when resetting
@@ -98,6 +106,7 @@ export const useGameStore = create<GameStore>()(
         set({
           currentRoom: "graveyard",
           isComplete: false,
+          hasExited: false,
           stamp: null,
         });
       },
