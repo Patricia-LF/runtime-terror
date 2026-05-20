@@ -8,6 +8,7 @@ import MuteButton from "../ui/MuteButton";
 import { useEffect, useState } from "react";
 import { useAudioStore } from "@/store/useAudioStore";
 import { ExitModal } from "../ui/ExitModal";
+import { usePathname } from "next/navigation";
 
 type HauntedHouseShellProps = {
   children: React.ReactNode;
@@ -24,6 +25,9 @@ export default function HauntedHouseShell({
   const handleExitClick = () => {
     setShowExitModal(true);
   };
+
+  const pathname = usePathname();
+  const isEndPage = pathname === "/haunted-house/end";
 
   // Stop ambient sound when exiting the haunted house (unmounting this component)
   useEffect(() => {
@@ -57,22 +61,25 @@ export default function HauntedHouseShell({
       <DescriptionButton currentRoom={currentRoom} />
       <MuteButton positionClass="right-14" />
 
-      <button
-        onClick={handleExitClick}
-        aria-label="Exit haunted house"
-        className="fixed z-50 bottom-4 right-4 md:bottom-8 md:right-8 rounded-4xl focus-visible:outline-2 focus-visible:outline-red-500 focus-visible:outline-offset-4"
-      >
-        <Image
-          src="/assets/icons/exitSVG.svg"
-          alt="Exit"
-          width={100}
-          height={100}
-          className="block"
-        />
-      </button>
+    {!isEndPage && (
+      <>
+        <button
+          onClick={handleExitClick}
+          aria-label="Exit haunted house"
+          className="fixed z-50 bottom-4 right-4 md:bottom-8 md:right-8 rounded-4xl focus-visible:outline-2 focus-visible:outline-red-500 focus-visible:outline-offset-4"
+        >
+          <Image
+            src="/assets/icons/exitSVG.svg"
+            alt="Exit"
+            width={100}
+            height={100}
+            className="block"
+          />
+        </button>
 
-      <ExitModal isOpen={showExitModal} onClose={() => setShowExitModal(false)} />
-        
+        <ExitModal isOpen={showExitModal} onClose={() => setShowExitModal(false)} />
+      </>
+    )}
     </div>
   );
 }

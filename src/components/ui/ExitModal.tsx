@@ -14,7 +14,7 @@ export function ExitModal({ isOpen, onClose }: ExitModalProps) {
         onClose={onClose}
         >
                 <h2 className="font-eater text-red-800 text-2xl mb-4">Exit Runtime Terror</h2>
-                <p className="text-white mb-4">Are you sure you want to exit the haunted house? You will not be able to re-enter once you exit.</p>
+                <p className="text-white font-fell mb-4">Are you sure you want to exit the haunted house? You will not be able to re-enter once you exit.</p>
                 <div className="flex justify-evenly">
                     <LinkButton
                         href="/haunted-house"
