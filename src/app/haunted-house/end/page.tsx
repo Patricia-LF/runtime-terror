@@ -8,6 +8,7 @@ import { useGameStore } from "@/store/useGameStore";
 import Image from "next/image";
 import Fog from "@/components/effects/Fog";
 import { LinkButton } from "@/components/shared/LinkButton";
+import { BackToTivoliButton } from "@/components/shared/BackToTivoliButton";
 
 export default function EndPage() {
   const router = useRouter();
@@ -49,12 +50,6 @@ export default function EndPage() {
     } finally {
       setIsRevoking(false);
     }
-  };
-
-  const handleTivoliReturn = () => {
-    useGameStore.getState().resetGame();
-    window.location.href = process.env.NEXT_PUBLIC_TIVOLI_URL!;
-    /* router.push("/"); */
   };
 
   return (
@@ -132,13 +127,9 @@ export default function EndPage() {
 
         {/* Return to Tivoli / Play again */}
         {TIVOLI_MODE ? (
-          <button
-            onClick={handleTivoliReturn}
-            className="mt-6 font-fell bg-red-dark text-white px-4 py-2 inline-block cursor-pointer rounded border border-white focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4 hover:opacity-80"
-          >
-            <span className="text-8xl">🎪</span>
-            Back to Tivoli
-          </button>
+          <div className="w-full flex justify-center">
+            <BackToTivoliButton />
+          </div>
         ) : (
           <LinkButton href="/" linkText="Play again" />
         )}
