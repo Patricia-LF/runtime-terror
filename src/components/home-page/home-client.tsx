@@ -3,7 +3,7 @@
 import EnterForm from "@/components/home-page/enter-form";
 import Fog from "@/components/effects/Fog";
 import { ApiError } from "@/types/errors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Bats from "@/components/effects/Bats";
 import HelpOverlay from "@/components/shared/HelpOverlay";
@@ -12,18 +12,33 @@ import { UnauthorizedModal } from "@/components/shared/UnauthorizedModal";
 import { useTransaction } from "@/hooks/useTransaction";
 import MuteButton from "../ui/MuteButton";
 import { useGameStore } from "@/store/useGameStore";
+import { FadeOverlay } from "@/components/shared/FadeOverlay";
+import { useFadeStore } from "@/store/useFadeStore";
 
 export default function HomeClient() {
   const router = useRouter();
   const [error, setError] = useState<ApiError | null>(null);
   const [showUnauthorizedModal, setShowUnauthorizedModal] = useState(false);
   const [devAccessLoading, setDevAccessLoading] = useState(false);
+
+  const { isFading, setFading } = useFadeStore();
+  useEffect(() => {
+    setFading(false);
+  }, []);
+
   const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3;
   const isTivoliMode = process.env.NEXT_PUBLIC_TIVOLI_MODE === "true";
   const isPlayingGuest = useGameStore((s) => s.isPlayingGuest);
   const setIsPlayingGuest = useGameStore(
     (s) => s.setIsPlayingGuest
   );
+
+  const navigateWithFade = (path: string) => {
+    setFading(true);
+    setTimeout(() => {
+      router.push(path);
+    }, 800);
+  };
 
   const { identityToken } = useUrlParams();
   if (identityToken) {
@@ -47,7 +62,7 @@ export default function HomeClient() {
         throw new Error("Could not create access cookie");
       }
 
-      router.push("/haunted-house");
+      navigateWithFade("/haunted-house");
     } catch {
       setError({ message: "Dev access failed. Could not set cookie." });
     } finally {
@@ -57,6 +72,8 @@ export default function HomeClient() {
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
+      <FadeOverlay isActive={isFading} />
+
       {/* Background — lowest layer */}
       <div className="absolute inset-0 bg-[url('/assets/images/Home-bg.png')] bg-cover bg-bottom" />
       <Bats />
@@ -139,7 +156,7 @@ export default function HomeClient() {
 
           // Hide entry text and show pointing arrow when user is allowed to enter house
           <button
-            onClick={() => router.push("/haunted-house")}
+            onClick={() => navigateWithFade("/haunted-house")}
             aria-label="Go to next room"
             className="
               absolute

@@ -7,6 +7,8 @@ import Spiders from "@/components/rooms/room3/Spiders";
 import Clown from "@/components/rooms/room4/Clown";
 import { ComponentType, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useFadeStore } from "@/store/useFadeStore";
+import { FadeOverlay } from "@/components/shared/FadeOverlay";
 
 const ROOMS: Record<RoomId, ComponentType> = {
   graveyard: Graveyard,
@@ -20,6 +22,14 @@ export default function HauntedHousePage() {
   const currentRoom = useGameStore((s) => s.currentRoom);
   const isComplete = useGameStore((s) => s.isComplete);
   const [mounted, setMounted] = useState(false);
+  const { isFading, setFading } = useFadeStore();
+
+  // Reset fade when page is mounted and ready
+  useEffect(() => {
+    if (mounted) {
+      setFading(false);
+    }
+  }, [mounted, setFading]);
 
   // Reset if coming back from end page
   useEffect(() => {
@@ -45,8 +55,11 @@ export default function HauntedHousePage() {
 
   // key={currentRoom} forces React to unmount and remount on room change
   return (
-    <div>
-      <CurrentRoom key={currentRoom} />
-    </div>
+    <>
+      <FadeOverlay isActive={isFading} />
+      <div>
+        <CurrentRoom key={currentRoom} />
+      </div>
+    </>
   );
 }

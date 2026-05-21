@@ -6,6 +6,8 @@ import DescriptionButton from "@/components/shared/DescriptionButton";
 import Image from "next/image";
 import Link from "next/link";
 import MuteButton from "../ui/MuteButton";
+import { useFadeStore } from "@/store/useFadeStore";
+import { useEffect } from "react";
 
 type HauntedHouseShellProps = {
   children: React.ReactNode;
@@ -16,6 +18,18 @@ export default function HauntedHouseShell({
 }: HauntedHouseShellProps) {
   useAmbientSound();
   const currentRoom = useGameStore((s) => s.currentRoom);
+
+  const { setFading } = useFadeStore();
+
+  useEffect(() => {
+    setFading(true);
+
+    const t = setTimeout(() => {
+      setFading(false);
+    }, 50);
+
+    return () => clearTimeout(t);
+  }, [currentRoom]);
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden position-relative">

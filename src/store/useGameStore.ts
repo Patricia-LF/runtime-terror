@@ -77,6 +77,8 @@ export const useGameStore = create<GameStore>()(
           set({ currentRoom: nextRoom });
         } else {
           set({ isComplete: true });
+          set({ isPlayingGuest: false });
+
           // Fade out and unload all audio when the game completes to free resources
           const currentAmbient = useAudioStore.getState().currentAmbient;
           if (currentAmbient) {
