@@ -45,10 +45,11 @@ function IntroText({ onComplete }: { onComplete: () => void }) {
     </motion.p>
   );
 }
-
+const GAME_DURATION = 30; // seconds
 const MAX_MISSED = 5; // Clown fills screen after 5 missed balloons
 
 export default function Clown() {
+  const [timeLeft, setTimeLeft] = useState(GAME_DURATION);
   const [balloons, setBalloons] = useState<Balloon[]>([]);
   const [missed, setMissed] = useState(0);
   const [phase, setPhase] = useState<Phase>("intro");
@@ -62,11 +63,23 @@ export default function Clown() {
   useEffect(() => {
     setMissed(0);
     setBalloons([]);
+    setTimeLeft(GAME_DURATION);
   }, []);
 
   // Spawn balloons only during playing phase
+  // Countdown timer during playing phase
   useEffect(() => {
     if (phase !== "playing") return;
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          setPhase("clown"); // Time's up — clown takes over
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
     const timeouts: ReturnType<typeof setTimeout>[] = [];
 
@@ -78,25 +91,29 @@ export default function Clown() {
       };
       setBalloons((prev) => [...prev, newBalloon]);
 
-      // Auto-remove balloon after 1.5 seconds if not clicked
+      // Auto-remove balloon after 1 second if not clicked
       const timeout = setTimeout(() => {
         setBalloons((prev) => prev.filter((b) => b.id !== newBalloon.id));
 
-        if (poppedIdsRef.current.has(newBalloon.id)) {
+        const wasPopped = poppedIdsRef.current.has(newBalloon.id);
+
+        if (wasPopped) {
           poppedIdsRef.current.delete(newBalloon.id);
-        } else {
-          setMissed((prev) => {
-            const next = prev + 1;
-            if (next >= MAX_MISSED) setPhase("clown");
-            return next;
-          });
+          return;
         }
+
+        setMissed((prev) => {
+          const next = prev + 1;
+          if (next >= MAX_MISSED) setPhase("clown");
+          return next;
+        });
       }, 1500);
 
       timeouts.push(timeout);
-    }, 1200);
+    }, 800);
 
     return () => {
+      clearInterval(timer);
       clearInterval(interval);
       timeouts.forEach(clearTimeout);
     };
@@ -134,6 +151,17 @@ export default function Clown() {
           <IntroText onComplete={() => setPhase("playing")} />
         )}
       </AnimatePresence>
+
+      {phase === "playing" && (
+        <motion.p
+          className="absolute top-4 left-1/2 -translate-x-1/2 font-fell text-grey text-lg tracking-widest"
+          animate={{ opacity: timeLeft <= 10 ? [0.5, 1, 0.5] : 1 }}
+          transition={{ duration: 0.5, repeat: timeLeft <= 10 ? Infinity : 0 }}
+        >
+          {timeLeft}s
+        </motion.p>
+      )}
+
       {/* Clown */}
       {phase !== "intro" && (
         <>

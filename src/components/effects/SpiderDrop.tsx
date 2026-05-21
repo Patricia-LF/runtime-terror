@@ -3,14 +3,24 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useMemo } from "react";
+import { useState, useEffect } from "react";
 
 interface SpiderDropProps {
   allWebsRemoved: boolean;
 }
 
 export default function SpiderDrop({ allWebsRemoved }: SpiderDropProps) {
-  // Must be inside the component
   const dropDelay = useMemo(() => Math.random() * 3 + 1, []);
+
+  const [landingY, setLandingY] = useState("-5vh"); // Mobile default
+  useEffect(() => {
+    const update = () => {
+      setLandingY(window.innerWidth >= 768 ? "-40vh" : "-5vh");
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   return (
     <AnimatePresence>
@@ -20,19 +30,19 @@ export default function SpiderDrop({ allWebsRemoved }: SpiderDropProps) {
           style={{ transformOrigin: "top center" }}
           initial={{ y: "-1000%", rotate: 0 }}
           animate={{
-            y: ["-1000%", "-40vh"],
+            y: ["-1000%", landingY],
             rotate: [0.5, -1.5, 1.5, -1, 1, -0.5, 0.5, 0],
           }}
           transition={{
             y: {
-              duration: 1.5,
+              duration: 0.4,
               ease: "easeIn",
               delay: dropDelay,
             },
             rotate: {
               duration: 12,
               ease: "easeInOut",
-              delay: dropDelay + 1.5,
+              delay: dropDelay + 0.4,
               times: [0, 0.15, 0.35, 0.5, 0.65, 0.8, 0.9, 1],
             },
           }}
