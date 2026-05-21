@@ -25,10 +25,8 @@ export default function DescriptionButton({
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
-
     if (isOpen) {
       dialog.show();
-      // Auto focus close button so keyboard users land somewhere sensible
       closeBtnRef.current?.focus();
     } else {
       dialog.close();
@@ -43,6 +41,10 @@ export default function DescriptionButton({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen]);
 
+  // Early return after all hooks
+  const help = ROOM_HELP[currentRoom];
+  if (!help) return null;
+
   return (
     <div className="fixed top-4 right-4 z-50">
       <button
@@ -53,8 +55,6 @@ export default function DescriptionButton({
       >
         ?
       </button>
-
-      {/* Wrapper positions the dialog relative to the button */}
       <div className="relative">
         <dialog
           ref={dialogRef}
@@ -65,19 +65,17 @@ export default function DescriptionButton({
         >
           <div className="absolute top-2 right-2 w-60 bg-red-dark/80 border border-white text-white font-fell text-sm p-4 rounded flex flex-col gap-3">
             <h2 id="dialog-title" className="font-glitch text-base">
-              {ROOM_HELP[currentRoom].title}
+              {help.title}
             </h2>
             <p id="dialog-description" className="font-fell text-sm">
-              {ROOM_HELP[currentRoom].description}
+              {help.description}
             </p>
             <ul className="font-fell text-sm list-disc list-inside flex flex-col gap-1">
-              {ROOM_HELP[currentRoom].interactions.map((interaction, i) => (
+              {help.interactions.map((interaction, i) => (
                 <li key={i}>{interaction}</li>
               ))}
             </ul>
-            <p className="font-fell text-sm italic">
-              Goal: {ROOM_HELP[currentRoom].goal}
-            </p>
+            <p className="font-fell text-sm italic">Goal: {help.goal}</p>
           </div>
         </dialog>
       </div>
