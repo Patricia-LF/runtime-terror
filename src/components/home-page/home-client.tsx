@@ -173,7 +173,7 @@ export default function HomeClient() {
             <div
               className="text-6xl text-gray-300"
               style={{
-                animation: "bounce 1s infinite",
+                animation: "arrow-bounce 1s infinite",
               }}
             >
               ↑
