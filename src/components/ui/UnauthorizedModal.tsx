@@ -11,7 +11,11 @@ type UnauthorizedModalProps = {
 
 export function UnauthorizedModal({ isOpen, onClose }: UnauthorizedModalProps) {
   return (
-    <ModalBase isOpen={isOpen} onClose={onClose} ariaLabelledBy="unauthorized-title">
+    <ModalBase
+      isOpen={isOpen}
+      onClose={onClose}
+      ariaLabelledBy="unauthorized-title"
+    >
       <h2
         id="unauthorized-title"
         className="font-glitch text-grey text-xl mb-4"
@@ -20,17 +24,15 @@ export function UnauthorizedModal({ isOpen, onClose }: UnauthorizedModalProps) {
       </h2>
       <div className="flex flex-col gap-3">
         <p className="font-fell text-grey">
-          Your identity token is expired or invalid. Please return to the main tivoli site and try again.
+          Your identity token is expired or invalid. Please return to the main
+          tivoli site and try again.
         </p>
       </div>
-      <LinkButton 
-        href="https://frontend-main-1ac7.up.railway.app/"
+      <LinkButton
+        href="https://loopland.se/"
         linkText="Return to tivoli"
         ariaLabel="Return to main tivoli site"
       />
-
     </ModalBase>
   );
 }
-
-
