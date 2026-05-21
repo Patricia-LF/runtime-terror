@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useGameStore } from "@/store/useGameStore";
-import { createPortal } from "react-dom";
+import { FadeOverlay } from "@/components/shared/FadeOverlay";
+import { useFadeStore } from "@/store/useFadeStore";
 
 interface DoorTransitionProps {
   buttonText: string;
@@ -21,65 +22,28 @@ export default function DoorTransition({
   sizeClass = "w-48 h-80", // Default size
 }: DoorTransitionProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [fadeState, setFadeState] = useState<"idle" | "fadingOut" | "fadingIn">(
-    "idle",
-  );
-  const [mounted, setMounted] = useState(false);
+  const { isFading, setFading } = useFadeStore();
   const { goToNextRoom } = useGameStore();
 
   const DOOR_ANIMATION_DURATION = animated ? 1200 : 0;
   const FADE_OUT_DURATION = 800;
-  const FADE_IN_DURATION = 800;
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+  // Start door animation, then trigger fade-out and room transition
   const handleClick = (): void => {
     setIsOpen(true);
 
-    // Wait for door animation before starting room transition
     setTimeout(() => {
-      // Fade OUT current room
-      setFadeState("fadingOut");
+      setFading(true);
 
-      // After fade out completes
       setTimeout(() => {
         goToNextRoom();
-
-        // Fade IN new room
-        setFadeState("fadingIn");
-
-        // Remove overlay after fade in
-        setTimeout(() => {
-          setFadeState("idle");
-        }, FADE_IN_DURATION);
       }, FADE_OUT_DURATION);
     }, DOOR_ANIMATION_DURATION);
   };
 
   return (
     <>
-      {/* Fade overlay rendered to body as portal */}
-      {mounted &&
-        fadeState !== "idle" &&
-        createPortal(
-          <motion.div
-            initial={{
-              opacity: fadeState === "fadingOut" ? 0 : 1,
-            }}
-            animate={{
-              opacity: fadeState === "fadingOut" ? 1 : 0,
-            }}
-            transition={{
-              duration: 0.8,
-              ease: "easeInOut",
-            }}
-            className="fixed inset-0 bg-black pointer-events-none"
-            style={{ zIndex: 9999 }}
-          />,
-          document.body,
-        )}
+      <FadeOverlay isActive={isFading} duration={0.8} />
 
       <div
         style={{ perspective: "1200px" }}
@@ -146,11 +110,10 @@ export default function DoorTransition({
         )}
 
         <p
-          className={`font-fell text-grey text-sm tracking-widest animate-pulse transition-opacity ${
-            !animated || !isOpen
-              ? "opacity-100"
-              : "opacity-0 pointer-events-none"
-          }`}
+          className={`font-fell text-grey text-sm tracking-widest animate-pulse transition-opacity ${!animated || !isOpen
+            ? "opacity-100"
+            : "opacity-0 pointer-events-none"
+            }`}
         >
           {buttonText}
         </p>

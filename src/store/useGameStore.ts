@@ -25,6 +25,8 @@ interface GameStore {
   currentRoom: RoomId;
   isComplete: boolean;
   stamp: Stamp | null;
+  isPlayingGuest: boolean;
+  setIsPlayingGuest: (isPlayingGuest: boolean) => void;
   hasExited: boolean;
 
   //actions
@@ -46,6 +48,11 @@ export const useGameStore = create<GameStore>()(
       setStamp: (stamp) => set({ stamp }),
 
       // Functions that uppdates state
+      isPlayingGuest: false,
+      setIsPlayingGuest: (value: boolean) => {
+        set({ isPlayingGuest: value });
+      },
+
       goToNextRoom: () => {
         const { currentRoom } = get();
         const nextIndex = ROOMS.indexOf(currentRoom) + 1;
@@ -72,6 +79,8 @@ export const useGameStore = create<GameStore>()(
           set({ currentRoom: nextRoom });
         } else {
           set({ isComplete: true });
+          set({ isPlayingGuest: false });
+
           // Fade out and unload all audio when the game completes to free resources
           const currentAmbient = useAudioStore.getState().currentAmbient;
           if (currentAmbient) {
