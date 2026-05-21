@@ -14,6 +14,8 @@ import MuteButton from "../ui/MuteButton";
 import { useGameStore } from "@/store/useGameStore";
 import { FadeOverlay } from "@/components/shared/FadeOverlay";
 import { useFadeStore } from "@/store/useFadeStore";
+import { TIVOLI_MODE } from "@/lib/gameConfig";
+import { BackToTivoliButton } from "../shared/BackToTivoliButton";
 
 export default function HomeClient() {
   const router = useRouter();
@@ -26,12 +28,9 @@ export default function HomeClient() {
     setFading(false);
   }, []);
 
-  const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3;
-  const isTivoliMode = process.env.NEXT_PUBLIC_TIVOLI_MODE === "true";
+  /* const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3; */
   const isPlayingGuest = useGameStore((s) => s.isPlayingGuest);
-  const setIsPlayingGuest = useGameStore(
-    (s) => s.setIsPlayingGuest
-  );
+  const setIsPlayingGuest = useGameStore((s) => s.setIsPlayingGuest);
 
   const navigateWithFade = (path: string) => {
     setFading(true);
@@ -80,6 +79,9 @@ export default function HomeClient() {
       <Fog />
 
       <MuteButton positionClass="right-4" />
+      <div className="absolute w-full flex justify-left m-6">
+        {TIVOLI_MODE && <BackToTivoliButton />}
+      </div>
 
       {/* Content — top layer */}
       <div className="relative z-20 flex flex-col w-full h-full items-center">
@@ -87,7 +89,6 @@ export default function HomeClient() {
           Runtime terror
         </h1>
         {!isPlayingGuest ? (
-
           // Show Entry information and entry form/button before user is allowed in
           <div className="flex flex-col h-full items-center md:self-end">
             {/* Combined info and payment box */}
@@ -98,7 +99,8 @@ export default function HomeClient() {
                     Welcome!
                   </h2>
                   <h3 className="font-fell text-grey text-xl">
-                    Are you a scaredy cat — or do you laugh in the face of horror?
+                    Are you a scaredy cat — or do you laugh in the face of
+                    horror?
                   </h3>
                   <h3 className="font-fell text-grey text-xl">
                     Enter Runtime Terror and find out if you can handle what's
@@ -113,7 +115,7 @@ export default function HomeClient() {
               </div>
 
               {/* Payment or free entry depending on tivoli mode */}
-              {isTivoliMode ? (
+              {TIVOLI_MODE ? (
                 <div className="flex flex-col gap-4">
                   {/* <h3 className="text-white text-xl">
                   Enter the house for {ENTRY_PRICE}€
@@ -153,7 +155,6 @@ export default function HomeClient() {
             </div>
           </div>
         ) : (
-
           // Hide entry text and show pointing arrow when user is allowed to enter house
           <button
             onClick={() => navigateWithFade("/haunted-house")}
@@ -179,8 +180,7 @@ export default function HomeClient() {
               ↑
             </div>
           </button>
-        )
-        }
+        )}
       </div>
 
       <UnauthorizedModal
