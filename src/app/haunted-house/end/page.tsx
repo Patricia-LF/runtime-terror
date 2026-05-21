@@ -145,12 +145,15 @@ export default function EndPage() {
             Back to Tivoli
           </button>
         ) : (
-          <Link
-            href="/"
+          <button
+            onClick={() => {
+              useGameStore.getState().resetGame();
+              router.push("/");
+            }}
             className="border border-white text-white bg-red-dark rounded px-4 py-2 cursor-pointer md:bg-transparent hover:bg-red-dark hover:border-red-dark transition font-fell"
           >
             Play again
-          </Link>
+          </button>
         )}
 
         {/* Dev only */}
