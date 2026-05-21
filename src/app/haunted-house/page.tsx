@@ -44,15 +44,17 @@ export default function HauntedHousePage() {
     if (isComplete && mounted) {
       router.push("/haunted-house/end");
     }
-  }, [isComplete, mounted, router]);
+  }, [isComplete, mounted, router]);*/
 
   useEffect(() => {
     setMounted(true);
-  }, []); */
+  }, []);
 
   if (!mounted) return null;
 
   const CurrentRoom = ROOMS[currentRoom];
+  console.log("currentRoom:", currentRoom);
+  console.log("CurrentRoom:", CurrentRoom);
 
   // key={currentRoom} forces React to unmount and remount on room change
   return (
