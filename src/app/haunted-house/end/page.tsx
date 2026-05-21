@@ -7,6 +7,7 @@ import { TIVOLI_MODE } from "@/lib/gameConfig";
 import { useGameStore } from "@/store/useGameStore";
 import Image from "next/image";
 import Fog from "@/components/effects/Fog";
+import { LinkButton } from "@/components/shared/LinkButton";
 
 export default function EndPage() {
   const router = useRouter();
@@ -19,7 +20,10 @@ export default function EndPage() {
 
   // Show stamp automatically after 6 seconds
   useEffect(() => {
+    if (!TIVOLI_MODE) return;
+
     const timer = setTimeout(() => setShowStamp(true), 6000);
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -91,15 +95,6 @@ export default function EndPage() {
                     </p>
                   </>
                 )}
-                {/* Stamp button */}
-                <button
-                  onClick={() => setShowStamp(true)}
-                  className="border border-white text-white bg-red-dark rounded px-4 py-2 cursor-pointer md:bg-transparent hover:bg-red-dark hover:border-red-dark transition font-fell"
-                >
-                  {hasExited
-                    ? "Claim your consolation prize"
-                    : "Get your stamp"}
-                </button>
               </motion.div>
             ) : (
               <motion.div
@@ -139,18 +134,13 @@ export default function EndPage() {
         {TIVOLI_MODE ? (
           <button
             onClick={handleTivoliReturn}
-            className=" text-white font-fell flex flex-col w-full h-auto m-8 items-center cursor-pointer hover:opacity-80"
+            className="mt-6 font-fell bg-red-dark text-white px-4 py-2 inline-block cursor-pointer rounded border border-white focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4 hover:opacity-80"
           >
             <span className="text-8xl">🎪</span>
             Back to Tivoli
           </button>
         ) : (
-          <Link
-            href="/"
-            className="border border-white text-white bg-red-dark rounded px-4 py-2 cursor-pointer md:bg-transparent hover:bg-red-dark hover:border-red-dark transition font-fell"
-          >
-            Play again
-          </Link>
+          <LinkButton href="/" linkText="Play again" />
         )}
 
         {/* Dev only */}
