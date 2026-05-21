@@ -22,7 +22,13 @@ const phrases: { text: string; audio: SoundId }[] = [
   },
 ];
 
-export default function RockingChair() {
+interface RockingChairProps {
+  onJumpscareComplete?: () => void;
+}
+
+export default function RockingChair({
+  onJumpscareComplete,
+}: RockingChairProps) {
   const [isTalking, setIsTalking] = useState(false);
   const [hasTalked, setHasTalked] = useState(false);
   const [isJumpscare, setIsJumpscare] = useState(false);
@@ -53,10 +59,11 @@ export default function RockingChair() {
 
     if (willJumpscare) {
       play("loud-jumpscare");
-
       setIsJumpscare(true);
-
-      const timeoutId = setTimeout(() => setIsJumpscare(false), 1000);
+      const timeoutId = setTimeout(() => {
+        setIsJumpscare(false);
+        onJumpscareComplete?.(); // Notify parent when jumpscare is done
+      }, 1000);
       pendingTimeoutsRef.current.push(timeoutId);
     } else {
       const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];

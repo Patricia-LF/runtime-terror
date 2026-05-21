@@ -1,12 +1,15 @@
 import RockingChair from "@/components/effects/RockingChair";
 import DoorTransition from "@/components/shared/DoorTransition";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAudioStore } from "@/store/useAudioStore";
 import { useGameStore } from "@/store/useGameStore";
+import KeyAppearing from "@/components/shared/KeyAppearing";
 
 export default function Dolls() {
   const { play, stop } = useAudioStore();
   const currentRoom = useGameStore((s) => s.currentRoom);
+  const [keyVisible, setKeyVisible] = useState(false);
+  const [keyCollected, setKeyCollected] = useState(false);
 
   useEffect(() => {
     if (currentRoom !== "dolls") {
@@ -38,12 +41,21 @@ export default function Dolls() {
     >
       <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
-      <RockingChair />
+      <RockingChair onJumpscareComplete={() => setKeyVisible(true)} />
+
+      <KeyAppearing
+        isVisible={keyVisible}
+        onDone={() => {
+          setKeyVisible(false);
+          setKeyCollected(true);
+        }}
+      />
 
       {/* Spiders — cellar door */}
       <DoorTransition
         buttonText="Go further"
         doorImage="/assets/images/cellar-door.png"
+        /* isLocked={!keyCollected} */
       />
     </div>
   );
