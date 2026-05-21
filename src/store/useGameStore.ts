@@ -25,12 +25,14 @@ interface GameStore {
   currentRoom: RoomId;
   isComplete: boolean;
   stamp: Stamp | null;
-  setStamp: (stamp: Stamp) => void;
+  hasExited: boolean;
 
   //actions
   goToNextRoom: () => void;
   completeGame: () => void;
   resetGame: () => void;
+  setStamp: (stamp: Stamp) => void;
+  setHasExited: (exited: boolean) => void;
 }
 
 export const useGameStore = create<GameStore>()(
@@ -86,6 +88,8 @@ export const useGameStore = create<GameStore>()(
         }
       },
 
+      hasExited: false,
+      setHasExited: (exited) => set({ hasExited: exited }),
       completeGame: () => set({ isComplete: true }),
 
       resetGame: () => {
@@ -98,6 +102,7 @@ export const useGameStore = create<GameStore>()(
         set({
           currentRoom: "graveyard",
           isComplete: false,
+          hasExited: false,
           stamp: null,
         });
       },

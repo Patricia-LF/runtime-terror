@@ -29,7 +29,8 @@ export default function HauntedHousePage() {
   }, []);
 
   // Redirect to end when game is complete
-  useEffect(() => {
+  //This should probably only be handled when clicking on the play again button on end-page
+  /*   useEffect(() => {
     if (isComplete && mounted) {
       router.push("/haunted-house/end");
     }
@@ -37,7 +38,7 @@ export default function HauntedHousePage() {
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+  }, []); */
 
   if (!mounted) return null;
 
