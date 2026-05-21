@@ -17,15 +17,6 @@
   src: url("/fonts/Charu_Chandan_BloodDrip_Unicode-Regular.ttf") format("truetype");
 }
 
-/* :root {
-  --green-dark: #3c4830;
-  --green-light: #708454;
-  --red-dark: #7e0b16;
-  --red-light: #a66e6e;
-  --brown-dark: #1e1818;
-  --grey: rgba(218, 217, 217, 0.893);
-} */
-
 body {
   background: var(--background);
   color: var(--foreground);
