@@ -51,7 +51,7 @@ export default function DescriptionButton({
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label={isOpen ? "Close help" : "Room help"}
         aria-expanded={isOpen}
-        className="w-8 h-8 rounded-full border border-white text-white font-fell flex items-center justify-center bg-red-dark/60"
+        className="w-10 h-10 mx-2 rounded-full border border-white text-white font-fell flex items-center justify-center bg-red-dark/60 hover:opacity-70 cursor-pointer"
       >
         ?
       </button>
