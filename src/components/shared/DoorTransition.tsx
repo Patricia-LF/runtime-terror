@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useGameStore } from "@/store/useGameStore";
 import { FadeOverlay } from "@/components/shared/FadeOverlay";
 import { useFadeStore } from "@/store/useFadeStore";
+import { useEffectSounds } from "@/hooks/useEffectSounds";
 
 interface DoorTransitionProps {
   buttonText: string;
@@ -29,10 +30,12 @@ export default function DoorTransition({
 
   const DOOR_ANIMATION_DURATION = animated ? 1200 : 0;
   const FADE_OUT_DURATION = 800;
+  const triggerDoorSound = useEffectSounds({ effect: "creaking-door" });
 
   // Start door animation, then trigger fade-out and room transition
   const handleClick = (): void => {
     if (isLocked) return;
+    triggerDoorSound(); // Play sound when door opens
     setIsOpen(true);
     setTimeout(() => {
       setFading(true);
@@ -112,10 +115,11 @@ export default function DoorTransition({
         )}
 
         <p
-          className={`font-fell text-grey text-sm tracking-widest animate-pulse transition-opacity ${!animated || !isOpen
-            ? "opacity-100"
-            : "opacity-0 pointer-events-none"
-            }`}
+          className={`font-fell text-grey text-sm tracking-widest animate-pulse transition-opacity ${
+            !animated || !isOpen
+              ? "opacity-100"
+              : "opacity-0 pointer-events-none"
+          }`}
         >
           {buttonText}
           {isLocked && (
