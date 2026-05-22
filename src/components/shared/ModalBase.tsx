@@ -16,7 +16,7 @@ export function ModalBase({ children, isOpen, onClose, ariaLabelledBy }: ModalBa
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-8"
+                className="fixed inset-0 z-70 bg-black/80 flex items-center justify-center p-8"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby={ariaLabelledBy}
@@ -25,7 +25,7 @@ export function ModalBase({ children, isOpen, onClose, ariaLabelledBy }: ModalBa
                     <button
                     onClick={onClose}
                     aria-label="Close modal"
-                    className="absolute top-4 right-4 text-grey hover:text-white transition"
+                    className="absolute top-0 right-0 p-4 text-grey text-xl font-fell hover:text-white transition"
                     >
                     ✕
                     </button>
