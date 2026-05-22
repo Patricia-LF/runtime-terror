@@ -1,26 +1,28 @@
 "use client";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+import { TIVOLI_MODE } from "@/lib/gameConfig";
 
 import EnterForm from "@/components/home-page/enter-form";
 import Fog from "@/components/effects/Fog";
-import { ApiError } from "@/types/errors";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import Bats from "@/components/effects/Bats";
 import HelpOverlay from "@/components/shared/HelpOverlay";
-import { useUrlParams } from "@/hooks/useUrlParams";
-import { UnauthorizedModal } from "@/components/ui/UnauthorizedModal";
-import { useTransaction } from "@/hooks/useTransaction";
 import MuteButton from "../ui/MuteButton";
-import { useGameStore } from "@/store/useGameStore";
 import { FadeOverlay } from "@/components/shared/FadeOverlay";
+
+import { ApiError } from "@/types/errors";
+import { useUrlParams } from "@/hooks/useUrlParams";
+import { useTransaction } from "@/hooks/useTransaction";
+import { useGameStore } from "@/store/useGameStore";
 import { useFadeStore } from "@/store/useFadeStore";
-import { TIVOLI_MODE } from "@/lib/gameConfig";
+
 import { BackToTivoliButton } from "../shared/BackToTivoliButton";
+import { UnauthorizedModal } from "@/components/ui/UnauthorizedModal";
+import { ErrorModal } from "../ui/ErrorModal";
 
 export default function HomeClient() {
   const router = useRouter();
-  const [error, setError] = useState<ApiError | null>(null);
-  const [showUnauthorizedModal, setShowUnauthorizedModal] = useState(false);
   const [devAccessLoading, setDevAccessLoading] = useState(false);
 
   const { isFading, setFading } = useFadeStore();
@@ -44,10 +46,19 @@ export default function HomeClient() {
     console.log("Identity Token from URL:", identityToken);
   }
 
+  type ModalType = "unauthorized" | "error" | null;
+  const [modal, setModal] = useState<ModalType>(null);
+  const [error, setError] = useState<ApiError | null>(null);
+
+
   const { submitTransaction, isLoading } = useTransaction({
-    onSuccess: () => setIsPlayingGuest(true),
-    onUnauthorized: () => setShowUnauthorizedModal(true),
-    onError: setError,
+    onSuccess: () => {
+      setIsPlayingGuest(true);
+      setError(null);
+      setModal(null);
+    },
+    onUnauthorized: () => { setError(null); setModal("unauthorized"); },
+    onError: (err) => { setError(err); setModal("error"); },
   });
 
   const handleDevAccess = async () => {
@@ -125,7 +136,7 @@ export default function HomeClient() {
                     identityToken={identityToken}
                     isLoading={isLoading}
                   />
-                  {error && (
+                  {error && modal !== "error" && (
                     <p className="text-red-400 mt-2">Error: {error.message}</p>
                   )}
                 </div>
@@ -184,9 +195,15 @@ export default function HomeClient() {
       </div>
 
       <UnauthorizedModal
-        isOpen={showUnauthorizedModal}
-        onClose={() => setShowUnauthorizedModal(false)}
+        isOpen={modal === "unauthorized"}
+        onClose={() => setModal(null)}
+      />
+      <ErrorModal 
+      message={error?.message ?? "An unknown error occurred."} 
+      isOpen={modal === "error"} 
+      onClose={() => { setError(null); setModal(null); }} 
       />
     </div>
   );
 }
+

@@ -1,13 +1,14 @@
 // lib/payment.ts
-import { ApiResult } from '@/lib/fetcher'
-import { Transaction, PaymentResult } from '@/types/index'
+import { Transaction, TransactionResponse, ApiResult } from '@/types/index'
 import { parseError } from '@/lib/parseError'
+
+const API_URL = process.env.API_URL || 'https://api.loopland.se';
 
 export async function processPayment(
   payload: Transaction
-): Promise<ApiResult<PaymentResult>> {
+): Promise<ApiResult<TransactionResponse>> {
   try {
-    const res = await fetch('https://api-main-7fe2.up.railway.app/transactions', {
+    const res = await fetch(`${API_URL}/transactions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -15,16 +16,26 @@ export async function processPayment(
       body: JSON.stringify(payload),
     })
 
-    const data = await res.json()
+    const data = await res.json();
 
     if (!res.ok) {
       return {
         success: false,
-        error: { message: data.message ?? 'Payment failed', status: res.status },
+        error: {
+          message: data?.message ?? `Payment failed (${res.status})`,
+          status: res.status,
+        },
       }
     }
 
-    return { success: true, data }
+    if (!data || typeof data !== 'object') {
+      return {
+        success: false,
+        error: { message: 'Payment API returned an invalid response', status: 502 },
+      }
+    }
+
+    return { success: true, data: data as TransactionResponse }
 
   } catch (error: unknown) {
     return { success: false, error: parseError(error) }

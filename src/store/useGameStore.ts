@@ -5,26 +5,18 @@ import { persist } from "zustand/middleware";
 import { useAudioStore } from "@/store/useAudioStore";
 import { ROOM_AMBIENT, SOUND_MAP } from "@/lib/audio";
 import { SoundId } from "@/lib/audio";
+import { Stamp } from "@/types";
 
 export type RoomId = "graveyard" | "dolls" | "spiders" | "clown";
 
 export const ROOMS: RoomId[] = ["graveyard", "dolls", "spiders", "clown"];
 
-type Stamp = {
-  id: number;
-  image_url: string;
-  stamptype: {
-    animal: string;
-    image_url: string;
-    metal: string | null;
-  };
-};
 
 interface GameStore {
   //state
   currentRoom: RoomId;
   isComplete: boolean;
-  stamp: Stamp | null;
+  stamp: Stamp;
   isPlayingGuest: boolean;
   setIsPlayingGuest: (isPlayingGuest: boolean) => void;
   hasExited: boolean;
