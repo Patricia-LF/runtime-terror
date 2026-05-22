@@ -50,15 +50,20 @@ export default function HomeClient() {
   const [modal, setModal] = useState<ModalType>(null);
   const [error, setError] = useState<ApiError | null>(null);
 
-
   const { submitTransaction, isLoading } = useTransaction({
     onSuccess: () => {
       setIsPlayingGuest(true);
       setError(null);
       setModal(null);
     },
-    onUnauthorized: () => { setError(null); setModal("unauthorized"); },
-    onError: (err) => { setError(err); setModal("error"); },
+    onUnauthorized: () => {
+      setError(null);
+      setModal("unauthorized");
+    },
+    onError: (err) => {
+      setError(err);
+      setModal("error");
+    },
   });
 
   const handleDevAccess = async () => {
@@ -96,7 +101,7 @@ export default function HomeClient() {
 
       {/* Content — top layer */}
       <div className="relative z-20 flex flex-col w-full h-full items-center">
-        <h1 className="font-eater text-red-800 flex w-full text-4xl my-18 justify-center md:text-5xl leading-normal">
+        <h1 className="font-eater text-red-800 flex w-full text-4xl m-8 justify-center md:text-5xl leading-normal">
           Runtime terror
         </h1>
         {!isPlayingGuest ? (
@@ -198,12 +203,14 @@ export default function HomeClient() {
         isOpen={modal === "unauthorized"}
         onClose={() => setModal(null)}
       />
-      <ErrorModal 
-      message={error?.message ?? "An unknown error occurred."} 
-      isOpen={modal === "error"} 
-      onClose={() => { setError(null); setModal(null); }} 
+      <ErrorModal
+        message={error?.message ?? "An unknown error occurred."}
+        isOpen={modal === "error"}
+        onClose={() => {
+          setError(null);
+          setModal(null);
+        }}
       />
     </div>
   );
 }
-
