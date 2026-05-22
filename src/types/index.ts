@@ -1,4 +1,4 @@
-import { PaymentError, ApiError } from "./errors";
+import { ApiError } from "./errors";
 
 export type Transaction = {
   identity_token: string;
@@ -6,10 +6,26 @@ export type Transaction = {
   api_key: string;
 };
 
-export type PaymentResponse = {
-  success: boolean
-  error?: PaymentError
-}
+export type Animal = "lion" | "dolphin" | "toucan" | "beetlebug" | "snake";
+
+export type Metal = "silver" | "gold" | "platinum" | null;
+
+export type Stamp = {
+  image_url: string;
+  animal: Animal;
+  metal: Metal;
+} | null;
+
+
+export type TransactionResponse = {
+  transaction_id: number;
+  amount: number;
+  stamp: Stamp;
+};
+
+export type ApiResult<T> =
+  | { success: true; data: T }
+  | { success: false; error: ApiError };
 
 export interface PaymentResult {
   success: boolean
@@ -17,7 +33,3 @@ export interface PaymentResult {
   declineCode?: string
 }
 
-export interface ApiResponse<T> {
-  data: T | null;
-  error: ApiError | null;
-}

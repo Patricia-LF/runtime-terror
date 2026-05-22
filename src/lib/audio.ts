@@ -77,7 +77,7 @@ export const SOUND_MAP = {
   danger: {
     kind: "effect",
     src: ["/assets/audio/effect/dangerEffect.mp3"],
-    loop: true,
+    loop: false,
     volume: 0.5,
     autoplay: true,
   },
@@ -155,7 +155,7 @@ export const SOUND_MAP = {
     kind: "effect",
     src: ["/assets/audio/effect/key-glitter.flac"],
     loop: false,
-    volume: 0.3,
+    volume: 0.1,
     autoplay: false,
   },
   "clown-laugh": {

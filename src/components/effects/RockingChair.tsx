@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useAudioStore } from "@/store/useAudioStore";
@@ -22,13 +22,27 @@ const phrases: { text: string; audio: SoundId }[] = [
   },
 ];
 
-export default function RockingChair() {
+interface RockingChairProps {
+  onJumpscareComplete?: () => void;
+}
+
+export default function RockingChair({
+  onJumpscareComplete,
+}: RockingChairProps) {
   const [isTalking, setIsTalking] = useState(false);
   const [hasTalked, setHasTalked] = useState(false);
   const [isJumpscare, setIsJumpscare] = useState(false);
   const [currentPhrase, setCurrentPhrase] = useState("");
-  const { play, fadeIn, fadeOut, stop } = useAudioStore();
+  const { play, fadeIn, fadeOut } = useAudioStore();
   const currentRoom = useGameStore((s) => s.currentRoom);
+  const pendingTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+
+  useEffect(() => {
+    return () => {
+      pendingTimeoutsRef.current.forEach(clearTimeout);
+      pendingTimeoutsRef.current = [];
+    };
+  }, []);
 
   useEffect(() => {
     if (currentRoom === "dolls") {
@@ -45,17 +59,20 @@ export default function RockingChair() {
 
     if (willJumpscare) {
       play("loud-jumpscare");
-
       setIsJumpscare(true);
-
-      setTimeout(() => setIsJumpscare(false), 1000);
+      const timeoutId = setTimeout(() => {
+        setIsJumpscare(false);
+        onJumpscareComplete?.(); // Notify parent when jumpscare is done
+      }, 1000);
+      pendingTimeoutsRef.current.push(timeoutId);
     } else {
       const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
       setCurrentPhrase(randomPhrase.text);
       play(randomPhrase.audio);
       setIsTalking(true);
       setHasTalked(true); // Mark that doll has talked at least once
-      setTimeout(() => setIsTalking(false), 3000);
+      const timeoutId = setTimeout(() => setIsTalking(false), 3000);
+      pendingTimeoutsRef.current.push(timeoutId);
     }
   };
 
@@ -80,7 +97,7 @@ export default function RockingChair() {
         )}
       </AnimatePresence>
 
-      <motion.div
+      <motion.button
         className="absolute bottom-15 left-1/3 -translate-x-1/2 cursor-pointer z-20"
         animate={{ rotate: [-3, 3, -3] }}
         transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
@@ -94,7 +111,7 @@ export default function RockingChair() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="absolute -top-16 left-1/2 -translate-x-1/2 bg-white text-black text-sm px-4 py-2 rounded-lg whitespace-nowrap font-fell"
+              className="absolute -top-16 left-1/2 -translate-x-1/2 bg-white text-black text-sm px-4 py-2 min-h-11 min-w-11 rounded-lg whitespace-nowrap font-fell"
             >
               {currentPhrase}
             </motion.div>
@@ -117,7 +134,7 @@ export default function RockingChair() {
         >
           Click me...
         </motion.p>
-      </motion.div>
+      </motion.button>
     </>
   );
 }

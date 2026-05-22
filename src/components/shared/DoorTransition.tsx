@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useGameStore } from "@/store/useGameStore";
-import { createPortal } from "react-dom";
+import { FadeOverlay } from "@/components/shared/FadeOverlay";
+import { useFadeStore } from "@/store/useFadeStore";
 
 interface DoorTransitionProps {
   buttonText: string;
@@ -11,6 +12,7 @@ interface DoorTransitionProps {
   animated?: boolean;
   positionClass?: string;
   sizeClass?: string;
+  isLocked?: boolean;
 }
 
 export default function DoorTransition({
@@ -19,67 +21,30 @@ export default function DoorTransition({
   animated = true,
   positionClass = "bottom-45 left-1/2 -translate-x-1/2 md:bottom-35",
   sizeClass = "w-48 h-80", // Default size
+  isLocked = false,
 }: DoorTransitionProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [fadeState, setFadeState] = useState<"idle" | "fadingOut" | "fadingIn">(
-    "idle",
-  );
-  const [mounted, setMounted] = useState(false);
+  const { isFading, setFading } = useFadeStore();
   const { goToNextRoom } = useGameStore();
 
   const DOOR_ANIMATION_DURATION = animated ? 1200 : 0;
   const FADE_OUT_DURATION = 800;
-  const FADE_IN_DURATION = 800;
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+  // Start door animation, then trigger fade-out and room transition
   const handleClick = (): void => {
+    if (isLocked) return;
     setIsOpen(true);
-
-    // Wait for door animation before starting room transition
     setTimeout(() => {
-      // Fade OUT current room
-      setFadeState("fadingOut");
-
-      // After fade out completes
+      setFading(true);
       setTimeout(() => {
         goToNextRoom();
-
-        // Fade IN new room
-        setFadeState("fadingIn");
-
-        // Remove overlay after fade in
-        setTimeout(() => {
-          setFadeState("idle");
-        }, FADE_IN_DURATION);
       }, FADE_OUT_DURATION);
     }, DOOR_ANIMATION_DURATION);
   };
 
   return (
     <>
-      {/* Fade overlay rendered to body as portal */}
-      {mounted &&
-        fadeState !== "idle" &&
-        createPortal(
-          <motion.div
-            initial={{
-              opacity: fadeState === "fadingOut" ? 0 : 1,
-            }}
-            animate={{
-              opacity: fadeState === "fadingOut" ? 1 : 0,
-            }}
-            transition={{
-              duration: 0.8,
-              ease: "easeInOut",
-            }}
-            className="fixed inset-0 bg-black pointer-events-none"
-            style={{ zIndex: 9999 }}
-          />,
-          document.body,
-        )}
+      <FadeOverlay isActive={isFading} duration={0.8} />
 
       <div
         style={{ perspective: "1200px" }}
@@ -93,7 +58,9 @@ export default function DoorTransition({
               <div className="absolute inset-2 bg-black" />
 
               <motion.button
-                onClick={!isOpen ? handleClick : undefined}
+                onClick={!isOpen && !isLocked ? handleClick : undefined}
+                disabled={isLocked}
+                className={`absolute inset-0 ${isLocked ? "cursor-not-allowed" : "cursor-pointer"}`}
                 aria-label="Go to next room"
                 animate={{ rotateY: isOpen ? -110 : 0 }}
                 transition={{ duration: 1.2, ease: "easeInOut" }}
@@ -101,7 +68,6 @@ export default function DoorTransition({
                   transformOrigin: "left center",
                   transformStyle: "preserve-3d",
                 }}
-                className="absolute inset-0 cursor-pointer"
               >
                 {doorImage ? (
                   <img
@@ -146,13 +112,17 @@ export default function DoorTransition({
         )}
 
         <p
-          className={`font-fell text-grey text-sm tracking-widest animate-pulse transition-opacity ${
-            !animated || !isOpen
-              ? "opacity-100"
-              : "opacity-0 pointer-events-none"
-          }`}
+          className={`font-fell text-grey text-sm tracking-widest animate-pulse transition-opacity ${!animated || !isOpen
+            ? "opacity-100"
+            : "opacity-0 pointer-events-none"
+            }`}
         >
           {buttonText}
+          {isLocked && (
+            <span className="absolute inset-0 flex items-center justify-center pointer-events-none text-2xl text-yellow-300 drop-shadow-lg">
+              🔒
+            </span>
+          )}
         </p>
       </div>
     </>

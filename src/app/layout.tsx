@@ -32,9 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`${eater.variable} ${rubikGlitch.variable} ${imFellEnglish.variable}`}
-      >
+      <body className={`${eater.variable} ${rubikGlitch.variable} ${imFellEnglish.variable}`} >
         {children}
       </body>
     </html>

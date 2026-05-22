@@ -1,5 +1,6 @@
 import { useAudioStore } from "@/store/useAudioStore";
 import { EffectSoundId } from "@/lib/audio";
+import { useCallback } from "react";
 
 type Props = {
   effect: EffectSoundId
@@ -8,9 +9,5 @@ type Props = {
 export function useEffectSounds({ effect }: Props) {
     const play = useAudioStore((state) => state.play)
 
-    const trigger = () => {
-        play(effect)
-    }
-
-    return trigger
+    return useCallback(() => {play(effect)}, [effect, play])
 }

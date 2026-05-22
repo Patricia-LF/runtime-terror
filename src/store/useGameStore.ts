@@ -5,20 +5,28 @@ import { persist } from "zustand/middleware";
 import { useAudioStore } from "@/store/useAudioStore";
 import { ROOM_AMBIENT, SOUND_MAP } from "@/lib/audio";
 import { SoundId } from "@/lib/audio";
+import { Stamp } from "@/types";
 
 export type RoomId = "graveyard" | "dolls" | "spiders" | "clown";
 
 export const ROOMS: RoomId[] = ["graveyard", "dolls", "spiders", "clown"];
 
+
 interface GameStore {
   //state
   currentRoom: RoomId;
   isComplete: boolean;
+  stamp: Stamp;
+  isPlayingGuest: boolean;
+  setIsPlayingGuest: (isPlayingGuest: boolean) => void;
+  hasExited: boolean;
 
   //actions
   goToNextRoom: () => void;
   completeGame: () => void;
   resetGame: () => void;
+  setStamp: (stamp: Stamp) => void;
+  setHasExited: (exited: boolean) => void;
 }
 
 export const useGameStore = create<GameStore>()(
@@ -27,10 +35,16 @@ export const useGameStore = create<GameStore>()(
     (set, get) => ({
       // Start values
       currentRoom: "graveyard",
-      fearLevel: 0,
       isComplete: false,
+      stamp: null,
+      setStamp: (stamp) => set({ stamp }),
 
       // Functions that uppdates state
+      isPlayingGuest: false,
+      setIsPlayingGuest: (value: boolean) => {
+        set({ isPlayingGuest: value });
+      },
+
       goToNextRoom: () => {
         const { currentRoom } = get();
         const nextIndex = ROOMS.indexOf(currentRoom) + 1;
@@ -57,23 +71,41 @@ export const useGameStore = create<GameStore>()(
           set({ currentRoom: nextRoom });
         } else {
           set({ isComplete: true });
+          set({ isPlayingGuest: false });
+
+          // Fade out and unload all audio when the game completes to free resources
           const currentAmbient = useAudioStore.getState().currentAmbient;
           if (currentAmbient) {
             useAudioStore.getState().fadeOut(currentAmbient, 2000);
           }
+          // ensure all Howl instances are unloaded after a short delay
+          setTimeout(() => {
+            try {
+              useAudioStore.getState().unloadAll();
+            } catch (err) {
+              // ignore
+            }
+          }, 2200);
         }
       },
 
+      hasExited: false,
+      setHasExited: (exited) => set({ hasExited: exited }),
       completeGame: () => set({ isComplete: true }),
 
       resetGame: () => {
-        const currentAmbient = useAudioStore.getState().currentAmbient;
-        if (currentAmbient) {
-          useAudioStore.getState().stop(currentAmbient);
+        // unload all audio resources when resetting
+        try {
+          useAudioStore.getState().unloadAll();
+        } catch (err) {
+          // ignore
         }
         set({
           currentRoom: "graveyard",
           isComplete: false,
+          hasExited: false,
+          stamp: null,
+          isPlayingGuest: false,
         });
       },
     }),

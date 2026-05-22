@@ -14,18 +14,8 @@
 
 @font-face {
   font-family: "Charu Chandan BloodDrip";
-  src: url("/fonts/Charu_Chandan_BloodDrip_Unicode-Regular.ttf")
-    format("truetype");
+  src: url("/fonts/Charu_Chandan_BloodDrip_Unicode-Regular.ttf") format("truetype");
 }
-
-/* :root {
-  --green-dark: #3c4830;
-  --green-light: #708454;
-  --red-dark: #7e0b16;
-  --red-light: #a66e6e;
-  --brown-dark: #1e1818;
-  --grey: rgba(218, 217, 217, 0.893);
-} */
 
 body {
   background: var(--background);
@@ -37,11 +27,24 @@ body {
   animation-play-state: paused !important;
 }
 
+@keyframes arrow-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
 @keyframes bounce-diagonal {
+
   0%,
   100% {
     transform: translateY(0) translateX(0);
   }
+
   50% {
     transform: translateY(-10px) translateX(10px);
   }

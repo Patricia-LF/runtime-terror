@@ -19,6 +19,8 @@ type AudioStore = {
   stop: (soundId: SoundId) => void;
   fadeIn: (soundId: SoundId, duration?: number) => void;
   fadeOut: (soundId: SoundId, duration?: number) => void;
+  unload: (soundId: SoundId) => void;
+  unloadAll: () => void;
   fadeOutAllEffects: (duration?: number) => void;
   crossfade: (from: SoundId | null, to: SoundId, duration?: number) => void;
   setMuted: (muted: boolean) => void;
@@ -46,6 +48,10 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     set((state) => ({
       instances: { ...state.instances, [soundId]: { howl } },
     }));
+    if (process.env.NODE_ENV === "development") {
+      const count = Object.keys(get().instances).length;
+      console.debug(`[audio] load ${soundId} -> instances=${count}`);
+    }
   },
 
   play: (soundId) => {
@@ -95,9 +101,87 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     const targetVolume = SOUND_MAP[soundId].volume ?? 1;
     instance.howl.fade(targetVolume, 0, duration, soundIdInstance);
 
-    setTimeout(() => {
-      instance.howl.stop(soundIdInstance);
-    }, duration);
+    // When fade finishes, stop and unload the Howl instance and remove it from the store.
+    try {
+      instance.howl.once("fade", () => {
+        try {
+          instance.howl.stop(soundIdInstance);
+          instance.howl.unload();
+        } catch (err) {
+          // ignore unload errors
+        }
+        set((state) => {
+          const copy = { ...state.instances };
+          delete copy[soundId];
+          return { instances: copy };
+        });
+
+        if (process.env.NODE_ENV === "development") {
+          const count = Object.keys(get().instances).length;
+          console.debug(`[audio] fadeOut ${soundId} -> instances=${count}`);
+        }
+      });
+    } catch (err) {
+      // Fallback: if once/fade isn't available, schedule cleanup.
+      setTimeout(() => {
+        try {
+          instance.howl.stop(soundIdInstance);
+          instance.howl.unload();
+        } catch (err) {
+          // ignore unload errors
+        }
+        set((state) => {
+          const copy = { ...state.instances };
+          delete copy[soundId];
+          return { instances: copy };
+        });
+
+        if (process.env.NODE_ENV === "development") {
+          const count = Object.keys(get().instances).length;
+          console.debug(`[audio] fadeOut(fallback) ${soundId} -> instances=${count}`);
+        }
+      }, duration);
+    }
+  },
+
+  unload: (soundId) => {
+    const { instances } = get();
+    const instance = instances[soundId];
+    if (!instance) return;
+    try {
+      instance.howl.stop();
+      instance.howl.unload();
+    } catch (err) {
+      // ignore
+    }
+    set((state) => {
+      const copy = { ...state.instances };
+      delete copy[soundId];
+      return { instances: copy };
+    });
+    if (process.env.NODE_ENV === "development") {
+      const count = Object.keys(get().instances).length;
+      console.debug(`[audio] unload ${soundId} -> instances=${count}`);
+    }
+  },
+
+  unloadAll: () => {
+    const { instances } = get();
+    Object.keys(instances).forEach((sid) => {
+      const inst = instances[sid as SoundId];
+      if (inst) {
+        try {
+          inst.howl.stop();
+          inst.howl.unload();
+        } catch (err) {
+          // ignore
+        }
+      }
+    });
+    set({ instances: {} });
+    if (process.env.NODE_ENV === "development") {
+      console.debug(`[audio] unloadAll -> instances=0`);
+    }
   },
 
   fadeOutAllEffects: (duration = 1000) => {
@@ -114,7 +198,7 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     });
   },
 
-  crossfade: (from, to, duration = 1500) => {
+  crossfade: (from, to, duration = 1000) => {
     const { fadeOut, fadeIn } = get();
     if (from) fadeOut(from, duration);
     fadeIn(to, duration);
