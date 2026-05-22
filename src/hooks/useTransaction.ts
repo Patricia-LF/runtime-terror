@@ -13,6 +13,21 @@ type UseTransactionOptions = {
   onError?: (error: ApiError) => void;
 };
 
+function getPaymentErrorMessage(status: number, fallback?: string): string {
+  switch (status) {
+    case 401:
+      return fallback ?? "Payment not authorized";
+    case 402:
+      return fallback ?? "Insufficient funds";
+    case 404:
+      return fallback ?? "Amusement not found";
+    case 409:
+      return fallback ?? "This amusement no longer accepts transactions";
+    default:
+      return fallback ?? "Payment failed";
+  }
+}
+
 export function useTransaction({
   onSuccess,
   onUnauthorized,
@@ -54,8 +69,13 @@ export function useTransaction({
       const payload = (await res.json()) as TransactionResponse | { message?: string };
 
       if (!res.ok) {
+        const fallbackMessage =
+          payload && typeof payload === "object" && "message" in payload
+            ? payload.message
+            : undefined;
+
         onError?.({
-          message: payload && typeof payload === "object" && "message" in payload ? payload.message ?? "Payment failed" : "Payment failed",
+          message: getPaymentErrorMessage(res.status, fallbackMessage),
           status: res.status,
         });
         return null;
