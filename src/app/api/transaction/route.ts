@@ -14,23 +14,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         });
         const result = await processPayment(transaction);
 
-        // Handle successful payment
+        // Handle successful payment: unwrap and return the transaction payload
         if (result.success) {
             await setAccessCookie();
-            return NextResponse.json(result, { status: 200 });
+            return NextResponse.json(result.data, { status: 200 });
         }
 
-        // Handle payment errors with appropriate status codes
-        if (result.error?.status === 401) {
-            return NextResponse.json(result, { status: 401 });
-        }
-
-        if (result.error?.status === 402) {
-            return NextResponse.json(result, { status: 402 });
-        }
-
-        // Generic payment failure
-        return NextResponse.json(result, { status: 400 });
+        // Handle payment errors with appropriate status codes and a simple message body
+        const status = result.error?.status ?? 400;
+        const message = result.error?.message ?? "Payment failed";
+        return NextResponse.json({ message }, { status });
     } catch (error) {
         console.error("Error processing transaction:", error);
         return NextResponse.json(

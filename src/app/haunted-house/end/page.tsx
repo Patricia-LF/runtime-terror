@@ -107,14 +107,14 @@ export default function EndPage() {
                   <>
                     <Image
                       src={stamp.image_url ?? ""}
-                      alt={`${stamp.stamptype.metal ? `${stamp.stamptype.metal} ` : ""}${stamp.stamptype.animal}`}
+                      alt={`${stamp.metal ? `${stamp.metal} ` : ""}${stamp.animal}`}
                       width={200}
                       height={200}
                     />
                     <p className="font-fell text-grey text-center">
                       You got a{" "}
-                      {stamp.stamptype.metal && `${stamp.stamptype.metal} `}
-                      {stamp.stamptype.animal}!
+                      {stamp.metal && `${stamp.metal} `}
+                      {stamp.animal}!
                     </p>
                   </>
                 ) : (

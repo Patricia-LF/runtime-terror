@@ -7,7 +7,9 @@ export type Transaction = {
 };
 
 export type Animal = "lion" | "dolphin" | "toucan" | "beetlebug" | "snake";
+
 export type Metal = "silver" | "gold" | "platinum" | null;
+
 export type Stamp = {
   image_url: string;
   animal: Animal;
@@ -15,14 +17,15 @@ export type Stamp = {
 } | null;
 
 
-export type PaymentResponse = {
-  success: boolean;
-  data: {
-    transaction_id: number;
-    stamp: Stamp;
-  };
-  error?: ApiError;
+export type TransactionResponse = {
+  transaction_id: number;
+  amount: number;
+  stamp: Stamp;
 };
+
+export type ApiResult<T> =
+  | { success: true; data: T }
+  | { success: false; error: ApiError };
 
 export interface PaymentResult {
   success: boolean
@@ -30,7 +33,3 @@ export interface PaymentResult {
   declineCode?: string
 }
 
-export interface ApiResponse<T> {
-  data: T | null;
-  error: ApiError | null;
-}
