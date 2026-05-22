@@ -53,9 +53,9 @@ export default function Dolls() {
 
       {/* Spiders — cellar door */}
       <DoorTransition
-        buttonText="Go further"
+        buttonText={keyCollected ? "Go further" : "Door is locked"}
         doorImage="/assets/images/cellar-door.png"
-        /* isLocked={!keyCollected} */
+        isLocked={!keyCollected}
       />
     </div>
   );
