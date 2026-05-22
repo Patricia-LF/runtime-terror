@@ -199,8 +199,14 @@ export default function Graveyard() {
               exit={{ y: "100%", opacity: 0 }}
               transition={{ duration: 0.6, ease: "easeIn" }}
               onClick={() => handleGravestoneClick(stone)}
-              aria-label="Examine gravestone"
-              className="cursor-pointer"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  handleGravestoneClick(stone);
+                }
+              }}
+              aria-label={`Examine gravestone ${stone.id}`}
+              className="cursor-pointer focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4 focus-visible:rounded"
             >
               <Image
                 src={stone.src}
