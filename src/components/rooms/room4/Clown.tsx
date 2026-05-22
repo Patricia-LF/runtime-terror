@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import DoorTransition from "@/components/shared/DoorTransition";
 import { useEffectSounds } from "@/hooks/useEffectSounds";
@@ -57,8 +56,6 @@ export default function Clown() {
   const triggerDanger = useEffectSounds({ effect: "danger" });
   const triggerClownLaugh = useEffectSounds({ effect: "clown-laugh" });
   const pendingTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const router = useRouter();
-  const completeGame = useGameStore((s) => s.completeGame);
 
   useEffect(() => {
     setMissed(0);
@@ -125,15 +122,6 @@ export default function Clown() {
     setBalloons((prev) => prev.filter((b) => b.id !== id));
   };
 
-  const handleClownDone = (): void => {
-    completeGame();
-    setPhase("done");
-
-    setTimeout(() => {
-      router.push("/haunted-house/end");
-    }, 3000);
-  };
-
   // Clown scale based on missed balloons
   const clownScale = 0.1 + (missed / MAX_MISSED) * 0.5;
 
@@ -168,7 +156,7 @@ export default function Clown() {
           <motion.img
             src="/assets/images/clown1.png"
             alt=""
-            className="absolute bottom-50 left-1/2 max-w-full max-h-full object-contain md:bottom-0"
+            className="absolute bottom-50 left-1/2 max-w-full max-h-full object-contain md:bottom-0 z-10"
             initial={{ opacity: 0, scale: 0.1, x: "-50%" }}
             animate={{
               scale: phase === "clown" ? 2 : clownScale,
@@ -184,7 +172,9 @@ export default function Clown() {
               if (phase === "clown") {
                 triggerClownLaugh();
                 // Show door after clown fills screen
-                const t = setTimeout(handleClownDone, 3000);
+                const t = setTimeout(() => {
+                  setPhase("done");
+                }, 3000);
                 pendingTimeoutsRef.current.push(t);
               }
             }}
@@ -202,7 +192,7 @@ export default function Clown() {
                   exit={{ opacity: 0, scale: 0 }}
                   transition={{ duration: 0.5 }}
                   style={{ left: `${balloon.x}%`, top: `${balloon.y}%` }}
-                  className="absolute cursor-pointer"
+                  className="absolute cursor-pointer z-20"
                   aria-label="Pop balloon"
                 >
                   <img
