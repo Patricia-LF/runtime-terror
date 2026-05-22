@@ -6,19 +6,20 @@ export type Transaction = {
   api_key: string;
 };
 
+export type Animal = "lion" | "dolphin" | "toucan" | "beetlebug" | "snake";
+export type Metal = "silver" | "gold" | "platinum" | null;
+export type Stamp = {
+  image_url: string;
+  animal: Animal;
+  metal: Metal;
+} | null;
+
+
 export type PaymentResponse = {
   success: boolean;
   data: {
-    id: number;
-    stamp: {
-      id: number;
-      image_url: string;
-      stamptype: {
-        animal: string;
-        image_url: string;
-        metal: string | null;
-      };
-    };
+    transaction_id: number;
+    stamp: Stamp;
   };
   error?: ApiError;
 };
