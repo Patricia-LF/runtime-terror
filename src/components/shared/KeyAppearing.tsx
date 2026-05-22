@@ -15,9 +15,11 @@ export default function KeyAppearing({ isVisible, onDone }: KeyAppearingProps) {
 
   useEffect(() => {
     if (!isVisible) return;
-    triggerKeySound();
+    // Sound plays after animation starts — visual cue comes first
+    // to avoid surprising users relying on assistive tech
     // Auto-dismiss after 3 seconds
     const timer = setTimeout(onDone, 3000);
+    triggerKeySound();
     return () => clearTimeout(timer);
   }, [isVisible]);
 
@@ -25,7 +27,11 @@ export default function KeyAppearing({ isVisible, onDone }: KeyAppearingProps) {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="absolute inset-0 flex items-center justify-center z-40 cursor-pointer"
+          className="absolute inset-0 flex items-center justify-center z-40"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+          aria-label="A golden key has appeared. The door is now unlocked."
           initial={{ opacity: 0, scale: 0, rotate: -180 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
           exit={{ opacity: 0, scale: 0 }}
