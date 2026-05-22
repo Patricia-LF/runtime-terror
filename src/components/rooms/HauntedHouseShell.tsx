@@ -73,7 +73,7 @@ export default function HauntedHouseShell({
           <button
             onClick={handleExitClick}
             aria-label="Exit haunted house"
-            className="fixed z-50 bottom-4 right-4 md:bottom-8 md:right-8 rounded-4xl focus-visible:outline-2 focus-visible:outline-red-500 focus-visible:outline-offset-4 cursor-pointer"
+            className="fixed z-50 bottom-4 right-4 md:bottom-8 md:right-8 rounded-4xl focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4 cursor-pointer"
           >
             <Image
               src="/assets/icons/exitSVG.svg"

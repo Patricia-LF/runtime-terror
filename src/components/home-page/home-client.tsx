@@ -78,14 +78,14 @@ export default function HomeClient() {
       <Bats />
       <Fog />
 
-      <MuteButton positionClass="right-4" />
+      <MuteButton positionClass="right-0" />
       <div className="absolute w-full flex justify-left m-6">
         {TIVOLI_MODE && <BackToTivoliButton />}
       </div>
 
       {/* Content — top layer */}
       <div className="relative z-20 flex flex-col w-full h-full items-center">
-        <h1 className="font-eater text-red-800 flex w-full text-4xl m-8 justify-center md:text-5xl leading-normal">
+        <h1 className="font-eater text-red-800 flex w-full text-4xl my-18 justify-center md:text-5xl leading-normal">
           Runtime terror
         </h1>
         {!isPlayingGuest ? (
@@ -93,9 +93,9 @@ export default function HomeClient() {
           <div className="flex flex-col h-full items-center md:self-end">
             {/* Combined info and payment box */}
             <div className="bg-black/40 p-4 mx-10 rounded flex flex-col gap-6 md:w-100">
-              <div className="flex items-start gap-2">
+              <div className="relative flex items-start gap-2">
                 <div className="flex flex-col gap-4">
-                  <h2 className="font-glitch text-2xl flex justify-center text-grey">
+                  <h2 className="font-glitch text-3xl my-1 flex justify-center text-grey">
                     Welcome!
                   </h2>
                   <h3 className="font-fell text-grey text-xl">
@@ -133,7 +133,7 @@ export default function HomeClient() {
                 <button
                   type="button"
                   onClick={() => setIsPlayingGuest(true)}
-                  className="border border-red-dark text-white bg-red-dark rounded px-4 py-2 cursor-pointer md:bg-transparent border-white hover:bg-red-dark hover:text-white hover:border-red-dark transition font-fell tracking-widest"
+                  className="border text-white bg-red-dark rounded px-4 py-2 min-h-11 min-w-11 cursor-pointer md:bg-transparent border-white hover:bg-red-dark hover:text-white transition font-fell tracking-widest"
                 >
                   Enter if you dare
                 </button>
