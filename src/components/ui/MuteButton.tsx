@@ -3,25 +3,25 @@
 import { useAudioStore } from "@/store/useAudioStore";
 
 interface MuteButtonProps {
-    positionClass?: string;
+  positionClass?: string;
 }
 
 export default function MuteButton({
-    positionClass = "right-4",
+  positionClass = "right-4",
 }: MuteButtonProps) {
-    const { isMuted, setMuted } = useAudioStore();
+  const { isMuted, setMuted } = useAudioStore();
 
-    const toggleMute = () => {
-        setMuted(!isMuted);
-    };
+  const toggleMute = () => {
+    setMuted(!isMuted);
+  };
 
-    return (
-        <button
-            onClick={toggleMute}
-            aria-label={isMuted ? "Unmute sound" : "Mute sound"}
-            className={`text-white text-xl hover:opacity-70 transition-opacity z-1000 fixed top-4 ${positionClass}`}
-        >
-            {isMuted ? "🔇" : "🔊"}
-        </button>
-    );
+  return (
+    <button
+      onClick={toggleMute}
+      aria-label={isMuted ? "Unmute sound" : "Mute sound"}
+      className={`w-10 h-10 mr-8 rounded-full border border-white text-white text-xl flex items-center justify-center bg-red-dark/60 transition-opacity z-1000 fixed top-4 ${positionClass}  hover:opacity-70 cursor-pointer`}
+    >
+      {isMuted ? "🔇" : "🔊"}
+    </button>
+  );
 }

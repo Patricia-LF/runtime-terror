@@ -18,7 +18,6 @@ type HauntedHouseShellProps = {
 export default function HauntedHouseShell({
   children,
 }: HauntedHouseShellProps) {
-
   useAmbientSound();
   const currentRoom = useGameStore((s) => s.currentRoom);
   const [showExitModal, setShowExitModal] = useState(false);
@@ -35,19 +34,14 @@ export default function HauntedHouseShell({
     return () => {
       const { currentAmbient, stop } = useAudioStore.getState();
       if (currentAmbient) {
-
         const ambient = useAudioStore.getState().instances[currentAmbient];
         if (ambient && ambient.id !== undefined) {
-
           const id = ambient.id;
 
           ambient.howl.fade(1, 0, 600, id);
-          ambient.howl.once('fade', () => ambient.howl.stop(id));
-
+          ambient.howl.once("fade", () => ambient.howl.stop(id));
         } else {
-
           stop(currentAmbient);
-
         }
 
         useAudioStore.setState({ currentAmbient: null });
@@ -73,26 +67,29 @@ export default function HauntedHouseShell({
 
       <MuteButton positionClass="right-14" />
 
-    {!isEndPage && (
-      <>
-        <DescriptionButton currentRoom={currentRoom} />
-        <button
-          onClick={handleExitClick}
-          aria-label="Exit haunted house"
-          className="fixed z-50 bottom-4 right-4 md:bottom-8 md:right-8 rounded-4xl focus-visible:outline-2 focus-visible:outline-red-500 focus-visible:outline-offset-4"
-        >
-          <Image
-            src="/assets/icons/exitSVG.svg"
-            alt="Exit"
-            width={100}
-            height={100}
-            className="block"
-          />
-        </button>
+      {!isEndPage && (
+        <>
+          <DescriptionButton currentRoom={currentRoom} />
+          <button
+            onClick={handleExitClick}
+            aria-label="Exit haunted house"
+            className="fixed z-50 bottom-4 right-4 md:bottom-8 md:right-8 rounded-4xl focus-visible:outline-2 focus-visible:outline-red-500 focus-visible:outline-offset-4 cursor-pointer"
+          >
+            <Image
+              src="/assets/icons/exitSVG.svg"
+              alt="Exit"
+              width={100}
+              height={100}
+              className="block"
+            />
+          </button>
 
-        <ExitModal isOpen={showExitModal} onClose={() => setShowExitModal(false)} />
-      </>
-    )}
+          <ExitModal
+            isOpen={showExitModal}
+            onClose={() => setShowExitModal(false)}
+          />
+        </>
+      )}
     </div>
   );
 }
