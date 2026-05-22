@@ -18,7 +18,9 @@ export type SoundId =
   | "dolltalk-waiting"
   | "dolltalk-alone"
   | "key-appearing"
-  | "clown-laugh";
+  | "clown-laugh"
+  | "spider-drop"
+  | "thunder";
 
 export type SoundKind = "ambient" | "effect";
 
@@ -161,6 +163,20 @@ export const SOUND_MAP = {
   "clown-laugh": {
     kind: "effect",
     src: ["/assets/audio/effect/clown-laugh.wav"],
+    loop: false,
+    volume: 0.5,
+    autoplay: false,
+  },
+  "spider-drop": {
+    kind: "effect",
+    src: ["/assets/audio/effect/spider-drop.ogg"],
+    loop: false,
+    volume: 0.3,
+    autoplay: false,
+  },
+  thunder: {
+    kind: "effect",
+    src: ["/assets/audio/effect/thunder.m4a"],
     loop: false,
     volume: 0.5,
     autoplay: false,
