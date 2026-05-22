@@ -3,7 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Fog from "@/components/effects/Fog";
-import Bats from "@/components/effects/Bats";
+import { Bat } from "@/components/effects/Bats";
 import DoorTransition from "@/components/shared/DoorTransition";
 import ZombieHand from "@/components/rooms/room1/ZombieHand";
 import { useEffectSounds } from "@/hooks/useEffectSounds";
@@ -79,10 +79,10 @@ export default function Graveyard() {
   const [zombieTriggered, setZombieTriggered] = useState(false);
   const [keyVisible, setKeyVisible] = useState(false);
   const [keyCollected, setKeyCollected] = useState(false);
-  const [doorOpen, setDoorOpen] = useState(false);
 
   const handEmeregedSound = useEffectSounds({ effect: "danger" });
   const creakSound = useEffectSounds({ effect: "creaking-gate" });
+  const thunderSound = useEffectSounds({ effect: "thunder" });
 
   const handleGravestoneClick = (stone: Gravestone): void => {
     if (sunkenStones.has(stone.id)) return;
@@ -108,7 +108,7 @@ export default function Graveyard() {
         setTimeout(() => setHandVisible(false), 2000);
         break;
       case "sink":
-        creakSound();
+        thunderSound();
         break;
     }
   };
@@ -120,6 +120,38 @@ export default function Graveyard() {
       transition={{ duration: 0.6, ease: "easeInOut" }}
     >
       <Fog opacity={0.6} />
+
+      {batsTriggered && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <Bat
+            startX="0%"
+            startY="0%"
+            animateX={["-200px", "110vw"]}
+            animateY={["60vh", "10vh"]}
+            duration={3}
+            depth={0.9}
+            flapDelay={0}
+          />
+          <Bat
+            startX="0%"
+            startY="0%"
+            animateX={["-200px", "110vw"]}
+            animateY={["70vh", "5vh"]}
+            duration={2.5}
+            depth={0.7}
+            flapDelay={0.2}
+          />
+          <Bat
+            startX="0%"
+            startY="0%"
+            animateX={["-200px", "110vw"]}
+            animateY={["65vh", "15vh"]}
+            duration={3.5}
+            depth={0.8}
+            flapDelay={0.1}
+          />
+        </div>
+      )}
 
       {/* Static crow images */}
       <Image
@@ -209,7 +241,6 @@ export default function Graveyard() {
         isLocked={!keyCollected}
       />
       <ZombieHand
-        /* triggerOnMount={false} */
         triggerAnimation={zombieTriggered}
         onCollect={() => setKeyVisible(true)}
         onEmergeComplete={handEmeregedSound}
