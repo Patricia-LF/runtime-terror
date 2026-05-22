@@ -46,15 +46,15 @@ export default function KeyAppearing({ isVisible, onDone }: KeyAppearingProps) {
             <Image
               src="/assets/images/golden-key.png"
               alt="A key appeared"
-              width={200}
-              height={200}
+              width={400}
+              height={400}
             />
           </motion.div>
 
           <motion.p
-            className="absolute bottom-1/3 font-fell text-yellow-400 text-sm tracking-widest"
+            className="absolute bottom-1/4 font-fell text-yellow-400 text-sm tracking-widest"
             animate={{ opacity: [0.4, 1, 0.4] }}
-            transition={{ duration: 2, repeat: Infinity }}
+            transition={{ duration: 3, repeat: Infinity }}
           >
             The door is unlocked!
           </motion.p>
