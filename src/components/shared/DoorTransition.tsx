@@ -12,6 +12,7 @@ interface DoorTransitionProps {
   animated?: boolean;
   positionClass?: string;
   sizeClass?: string;
+  isLocked?: boolean;
 }
 
 export default function DoorTransition({
@@ -20,6 +21,7 @@ export default function DoorTransition({
   animated = true,
   positionClass = "bottom-45 left-1/2 -translate-x-1/2 md:bottom-35",
   sizeClass = "w-48 h-80", // Default size
+  isLocked = false,
 }: DoorTransitionProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { isFading, setFading } = useFadeStore();
@@ -30,11 +32,10 @@ export default function DoorTransition({
 
   // Start door animation, then trigger fade-out and room transition
   const handleClick = (): void => {
+    if (isLocked) return;
     setIsOpen(true);
-
     setTimeout(() => {
       setFading(true);
-
       setTimeout(() => {
         goToNextRoom();
       }, FADE_OUT_DURATION);
@@ -57,7 +58,9 @@ export default function DoorTransition({
               <div className="absolute inset-2 bg-black" />
 
               <motion.button
-                onClick={!isOpen ? handleClick : undefined}
+                onClick={!isOpen && !isLocked ? handleClick : undefined}
+                disabled={isLocked}
+                className={`absolute inset-0 ${isLocked ? "cursor-not-allowed" : "cursor-pointer"}`}
                 aria-label="Go to next room"
                 animate={{ rotateY: isOpen ? -110 : 0 }}
                 transition={{ duration: 1.2, ease: "easeInOut" }}
@@ -65,7 +68,6 @@ export default function DoorTransition({
                   transformOrigin: "left center",
                   transformStyle: "preserve-3d",
                 }}
-                className="absolute inset-0 cursor-pointer"
               >
                 {doorImage ? (
                   <img
@@ -116,6 +118,11 @@ export default function DoorTransition({
             }`}
         >
           {buttonText}
+          {isLocked && (
+            <span className="absolute inset-0 flex items-center justify-center pointer-events-none text-2xl text-yellow-300 drop-shadow-lg">
+              🔒
+            </span>
+          )}
         </p>
       </div>
     </>
