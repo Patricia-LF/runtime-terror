@@ -113,6 +113,7 @@ export const useGameStore = create<GameStore>()(
           isComplete: false,
           hasExited: false,
           stamp: null,
+          isPlayingGuest: false,
         });
       },
     }),

@@ -131,7 +131,9 @@ export default function EndPage() {
             <BackToTivoliButton />
           </div>
         ) : (
-          <LinkButton href="/" linkText="Play again" />
+          <LinkButton href="/" linkText="Play again" onClick={() => {
+    useGameStore.getState().resetGame();
+  }} />
         )}
 
         {/* Dev only */}

@@ -10,6 +10,7 @@ type ExitModalProps = {
 
 export function ExitModal({ isOpen, onClose }: ExitModalProps) {
   const setHasExited = useGameStore((s) => s.setHasExited);
+  const setIsPlayingGuest = useGameStore((s) => s.setIsPlayingGuest);
   return (
     <ModalBase isOpen={isOpen} onClose={onClose}>
       <h2 className="font-eater text-red-800 text-2xl mb-4">
@@ -32,6 +33,7 @@ export function ExitModal({ isOpen, onClose }: ExitModalProps) {
           ariaLabel="Exit the haunted house"
           onClick={() => {
             setHasExited(true);
+            setIsPlayingGuest(false);
             onClose();
           }}
         />
