@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useMemo } from "react";
 import { useState, useEffect } from "react";
+import { useEffectSounds } from "@/hooks/useEffectSounds";
 
 interface SpiderDropProps {
   allWebsRemoved: boolean;
@@ -11,6 +12,16 @@ interface SpiderDropProps {
 
 export default function SpiderDrop({ allWebsRemoved }: SpiderDropProps) {
   const dropDelay = useMemo(() => Math.random() * 3 + 1, []);
+  const spiderDrop = useEffectSounds({ effect: "spider-drop" });
+
+  useEffect(() => {
+    if (!allWebsRemoved) return;
+    // Wait for dropDelay before playing sound
+    const timer = setTimeout(() => {
+      spiderDrop();
+    }, dropDelay * 1000);
+    return () => clearTimeout(timer);
+  }, [allWebsRemoved]);
 
   const [landingY, setLandingY] = useState("-5vh"); // Mobile default
   useEffect(() => {
