@@ -5,7 +5,8 @@ import Image from "next/image";
 
 const handleTivoliReturn = () => {
   useGameStore.getState().resetGame();
-  window.location.href = process.env.NEXT_PUBLIC_TIVOLI_URL!;
+  window.parent.postMessage({ type: "AMUSEMENT_CLOSE" }, "")
+  //window.location.href = process.env.NEXT_PUBLIC_TIVOLI_URL!;
 };
 
 export function BackToTivoliButton() {
