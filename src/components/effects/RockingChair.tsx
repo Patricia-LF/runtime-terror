@@ -97,7 +97,7 @@ export default function RockingChair({
         )}
       </AnimatePresence>
 
-      <motion.div
+      <motion.button
         className="absolute bottom-15 left-1/3 -translate-x-1/2 cursor-pointer z-20"
         animate={{ rotate: [-3, 3, -3] }}
         transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
@@ -111,7 +111,7 @@ export default function RockingChair({
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="absolute -top-16 left-1/2 -translate-x-1/2 bg-white text-black text-sm px-4 py-2 rounded-lg whitespace-nowrap font-fell"
+              className="absolute -top-16 left-1/2 -translate-x-1/2 bg-white text-black text-sm px-4 py-2 min-h-11 min-w-11 rounded-lg whitespace-nowrap font-fell"
             >
               {currentPhrase}
             </motion.div>
@@ -134,7 +134,7 @@ export default function RockingChair({
         >
           Click me...
         </motion.p>
-      </motion.div>
+      </motion.button>
     </>
   );
 }
