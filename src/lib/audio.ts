@@ -174,7 +174,7 @@ export const SOUND_MAP = {
     kind: "ambient",
     src: ["/assets/audio/ambient/startPageAmbient.mp3"],
     loop: true,
-    volume: 0.5,
+    volume: 0.6,
     autoplay: true,
   },
   "end-screen-ambience": {

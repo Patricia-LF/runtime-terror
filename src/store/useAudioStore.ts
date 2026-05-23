@@ -178,7 +178,7 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
         }
       }
     });
-    set({ instances: {} });
+    set({ instances: {}, currentAmbient: null });
     if (process.env.NODE_ENV === "development") {
       console.debug(`[audio] unloadAll -> instances=0`);
     }

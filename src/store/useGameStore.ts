@@ -78,19 +78,12 @@ export const useGameStore = create<GameStore>()(
           set({ isComplete: true });
           set({ isPlayingGuest: false });
 
-          // Fade out and unload all audio when the game completes to free resources
-          const currentAmbient = useAudioStore.getState().currentAmbient;
-          if (currentAmbient) {
-            useAudioStore.getState().fadeOut(currentAmbient, 2000);
+          
+          try {
+            useAudioStore.getState().fadeOutAllEffects(800);
+          } catch (err) {
+            // ignore
           }
-          // ensure all Howl instances are unloaded after a short delay
-          setTimeout(() => {
-            try {
-              useAudioStore.getState().unloadAll();
-            } catch (err) {
-              // ignore
-            }
-          }, 2200);
         }
       },
 

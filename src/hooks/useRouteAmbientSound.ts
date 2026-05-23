@@ -10,21 +10,34 @@ const AMBIENT_SOUNDS: Record<string, SoundId> = {
     "/haunted-house/end": "end-screen-ambience",
 };
 
-function playAmbient(soundId: SoundId) {
-    const audioStore = useAudioStore.getState();
-    if (audioStore.currentAmbient === soundId) return;
-    audioStore.crossfade(audioStore.currentAmbient, soundId, 1000);
-}
-
-
 
 export function useRouteAmbientSound() {
     const currentRoute = usePathname();
 
-
     useEffect(() => {
-        if (AMBIENT_SOUNDS[currentRoute]) {
-            playAmbient(AMBIENT_SOUNDS[currentRoute]);
+        const desiredAmbient = AMBIENT_SOUNDS[currentRoute] || null;
+        const { currentAmbient, fadeIn, fadeOut, crossfade } = useAudioStore.getState();
+
+        if (currentRoute?.startsWith("/haunted-house") && currentRoute !== "/haunted-house/end") return;
+
+        if (desiredAmbient === currentAmbient) return;
+
+        if (desiredAmbient === null) {
+            if (currentAmbient) {
+                fadeOut(currentAmbient, 1000);
+                useAudioStore.setState({ currentAmbient: null });
+            }
+            return;
+        }
+
+        if (!currentAmbient) {
+            fadeIn(desiredAmbient, 1000);
+            useAudioStore.setState({ currentAmbient: desiredAmbient });
+        } else {
+            crossfade(currentAmbient, desiredAmbient, 1000);
         }
     }, [currentRoute]);
+
 }
+            
+

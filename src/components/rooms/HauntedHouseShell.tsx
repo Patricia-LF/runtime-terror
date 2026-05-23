@@ -18,7 +18,11 @@ type HauntedHouseShellProps = {
 export default function HauntedHouseShell({
   children,
 }: HauntedHouseShellProps) {
-  useAmbientSound();
+  const pathname = usePathname();
+  const isEndPage = pathname === "/haunted-house/end";
+
+  useAmbientSound(!isEndPage);
+  
   const currentRoom = useGameStore((s) => s.currentRoom);
   const [showExitModal, setShowExitModal] = useState(false);
 
@@ -26,10 +30,6 @@ export default function HauntedHouseShell({
     setShowExitModal(true);
   };
 
-  const pathname = usePathname();
-  const isEndPage = pathname === "/haunted-house/end";
-
-  // Stop ambient sound when exiting the haunted house (unmounting this component)
   useEffect(() => {
     return () => {
       const { currentAmbient, stop } = useAudioStore.getState();
