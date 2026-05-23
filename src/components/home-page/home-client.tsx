@@ -101,7 +101,7 @@ export default function HomeClient() {
 
       {/* Content — top layer */}
       <div className="relative z-20 flex flex-col w-full h-full items-center">
-        <h1 className="font-eater text-red-800 flex w-full text-4xl m-8 justify-center md:text-5xl leading-normal">
+        <h1 className="font-eater text-red-800 flex w-full text-4xl mt-18 mb-2 justify-center md:mt-6 mb-4 text-5xl leading-normal">
           Runtime terror
         </h1>
         {!isPlayingGuest ? (
