@@ -18,7 +18,12 @@ export type SoundId =
   | "dolltalk-waiting"
   | "dolltalk-alone"
   | "key-appearing"
-  | "clown-laugh";
+  | "clown-laugh"
+  | "start-screen-ambience"
+  | "end-screen-ambience"
+  | "thunder"
+  | "loud-thunder"
+  ;
 
 export type SoundKind = "ambient" | "effect";
 
@@ -161,6 +166,34 @@ export const SOUND_MAP = {
   "clown-laugh": {
     kind: "effect",
     src: ["/assets/audio/effect/clown-laugh.wav"],
+    loop: false,
+    volume: 0.5,
+    autoplay: false,
+  },
+  "start-screen-ambience": {
+    kind: "ambient",
+    src: ["/assets/audio/ambient/startPageAmbient.mp3"],
+    loop: true,
+    volume: 0.5,
+    autoplay: true,
+  },
+  "end-screen-ambience": {
+    kind: "ambient",
+    src: ["/assets/audio/ambient/endPageAmbient.mp3"],
+    loop: true,
+    volume: 0.5,
+    autoplay: true,
+  },
+  "thunder": {
+    kind: "effect",
+    src: ["/assets/audio/effect/thunder.mp3"],
+    loop: false,
+    volume: 0.5,
+    autoplay: false,
+  },
+  "loud-thunder": {
+    kind: "effect",
+    src: ["/assets/audio/effect/loudThunder.mp3"],
     loop: false,
     volume: 0.5,
     autoplay: false,

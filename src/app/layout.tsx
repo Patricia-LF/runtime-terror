@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Eater, Rubik_Glitch, IM_Fell_English } from "next/font/google";
 import "./globals.css";
+import RouteAmbientPlayer from "@/components/shared/RouteAmbientPlayer";
 
 const eater = Eater({
   weight: "400",
@@ -33,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${eater.variable} ${rubikGlitch.variable} ${imFellEnglish.variable}`} >
+        <RouteAmbientPlayer />
         {children}
       </body>
     </html>
