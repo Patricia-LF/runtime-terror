@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 import HomeClient from "@/components/home-page/home-client";
+import LoadingScreen from "@/components/ui/LoadingScreen";
 
 export default function Home() {
   return (
-    <Suspense fallback={<div className="w-full h-screen bg-black" />}>
+    <Suspense fallback={<LoadingScreen />}>
       <HomeClient />
     </Suspense>
   );
