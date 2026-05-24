@@ -39,7 +39,6 @@ export default function HauntedHousePage() {
     }
   }, [isComplete, hasExited, router]);
 
-
   // Reset fade when page is mounted and ready
   useEffect(() => {
     setFading(false);
