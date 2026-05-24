@@ -8,6 +8,7 @@ import DoorTransition from "@/components/shared/DoorTransition";
 import ZombieHand from "@/components/rooms/room1/ZombieHand";
 import { useEffectSounds } from "@/hooks/useEffectSounds";
 import KeyAppearing from "@/components/shared/KeyAppearing";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 type GravestoneEffect = "correct" | "bats" | "shake" | "hand" | "thunder";
 
@@ -126,14 +127,7 @@ export default function Graveyard() {
     }
   };
 
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
+  const isMobile = useIsMobile();
 
   return (
     <motion.div
