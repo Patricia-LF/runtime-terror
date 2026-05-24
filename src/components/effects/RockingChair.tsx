@@ -32,8 +32,7 @@ export default function RockingChair({
   const [isTalking, setIsTalking] = useState(false);
   const [isJumpscare, setIsJumpscare] = useState(false);
   const [currentPhrase, setCurrentPhrase] = useState("");
-  const { play, fadeIn, fadeOut } = useAudioStore();
-  const currentRoom = useGameStore((s) => s.currentRoom);
+  const { play } = useAudioStore();
   const pendingTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
   const [phraseCounts, setPhraseCounts] = useState<number[]>(
     Array(phrases.length).fill(0),
@@ -49,13 +48,6 @@ export default function RockingChair({
     };
   }, []);
 
-  useEffect(() => {
-    if (currentRoom === "dolls") {
-      fadeIn("music-box", 2000);
-    } else {
-      fadeOut("music-box", 1000);
-    }
-  }, [currentRoom, fadeIn, fadeOut]);
 
   const handleClick = (): void => {
     if (isTalking || isJumpscare) return;
