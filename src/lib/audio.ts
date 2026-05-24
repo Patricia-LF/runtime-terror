@@ -21,9 +21,8 @@ export type SoundId =
   | "clown-laugh"
   | "start-screen-ambience"
   | "end-screen-ambience"
-  | "thunder"
-  | "loud-thunder"
-  ;
+  | "spider-drop"
+  | "thunder";
 
 export type SoundKind = "ambient" | "effect";
 
@@ -184,16 +183,16 @@ export const SOUND_MAP = {
     volume: 0.5,
     autoplay: true,
   },
-  "thunder": {
+  "spider-drop": {
     kind: "effect",
-    src: ["/assets/audio/effect/thunder.mp3"],
+    src: ["/assets/audio/effect/spider-drop.ogg"],
     loop: false,
-    volume: 0.5,
+    volume: 0.3,
     autoplay: false,
   },
-  "loud-thunder": {
+  thunder: {
     kind: "effect",
-    src: ["/assets/audio/effect/loudThunder.mp3"],
+    src: ["/assets/audio/effect/thunder.m4a"],
     loop: false,
     volume: 0.5,
     autoplay: false,

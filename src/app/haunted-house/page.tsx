@@ -22,46 +22,34 @@ export default function HauntedHousePage() {
   const currentRoom = useGameStore((s) => s.currentRoom);
   const isComplete = useGameStore((s) => s.isComplete);
   const hasExited = useGameStore((s) => s.hasExited);
-  const isPlayingGuest = useGameStore((s) => s.isPlayingGuest);
-  const hasHydrated = useGameStore((s) => s.hasHydrated);
-  const [mounted, setMounted] = useState(false);
   const { isFading, setFading } = useFadeStore();
 
   // Redirect to home if not allowed to play and to end page when game is complete or when exited
   useEffect(() => {
-    if (!mounted || !hasHydrated) return;
+    // if (!mounted) return;
 
-    if (!isPlayingGuest && !isComplete && !hasExited) {
-      router.push("/");
-      return;
-    }
+    // if (!isPlayingGuest && !isComplete && !hasExited) {
+    //   router.push("/");
+    //   return;
+    // }
 
     if (isComplete || hasExited) {
       router.push("/haunted-house/end");
       return;
     }
-  }, [mounted, hasHydrated, isPlayingGuest, isComplete, hasExited, router]);
-
+  }, [isComplete, hasExited, router]);
 
   // Reset fade when page is mounted and ready
   useEffect(() => {
-    if (mounted) {
-      setFading(false);
-    }
-  }, [mounted, setFading]);
+    setFading(false);
+  }, [setFading]);
 
   // Reset if coming back from end page
   useEffect(() => {
     if (isComplete) {
       useGameStore.getState().resetGame();
     }
-  }, []);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
+  }, [isComplete]);
 
   const CurrentRoom = ROOMS[currentRoom];
   console.log("currentRoom:", currentRoom);

@@ -51,11 +51,13 @@ export default function Dolls() {
         }}
       />
 
-      {/* Spiders — cellar door */}
+      {/* Cellar door to spider room */}
       <DoorTransition
         buttonText={keyCollected ? "Go further" : "Door is locked"}
         doorImage="/assets/images/cellar-door.png"
         isLocked={!keyCollected}
+        positionClass="bottom-42 right-[10%] md:bottom-32 md:right-[45%]"
+        sizeClass="h-60 w-34 md:h-66 md:w-40"
       />
     </div>
   );
