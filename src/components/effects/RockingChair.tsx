@@ -30,12 +30,17 @@ export default function RockingChair({
   onJumpscareComplete,
 }: RockingChairProps) {
   const [isTalking, setIsTalking] = useState(false);
-  const [hasTalked, setHasTalked] = useState(false);
   const [isJumpscare, setIsJumpscare] = useState(false);
   const [currentPhrase, setCurrentPhrase] = useState("");
   const { play, fadeIn, fadeOut } = useAudioStore();
   const currentRoom = useGameStore((s) => s.currentRoom);
   const pendingTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const [phraseCounts, setPhraseCounts] = useState<number[]>(
+    Array(phrases.length).fill(0),
+  );
+
+  const [lastPhraseIndex, setLastPhraseIndex] = useState<number | null>(null);
+  const [totalTalks, setTotalTalks] = useState(0);
 
   useEffect(() => {
     return () => {
@@ -55,25 +60,75 @@ export default function RockingChair({
   const handleClick = (): void => {
     if (isTalking || isJumpscare) return;
 
-    const willJumpscare = hasTalked && Math.random() < 0.3;
+    // Force jumpscare after 6 phrases
+    const forceJumpscare = totalTalks >= 6;
+
+    // Increase the chance by every click
+    const jumpscareChance =
+      totalTalks >= 5
+        ? 0.7
+        : totalTalks >= 4
+          ? 0.45
+          : totalTalks >= 2
+            ? 0.25
+            : 0.1;
+
+    const willJumpscare = forceJumpscare || Math.random() < jumpscareChance;
 
     if (willJumpscare) {
       play("loud-jumpscare");
       setIsJumpscare(true);
+
       const timeoutId = setTimeout(() => {
         setIsJumpscare(false);
-        onJumpscareComplete?.(); // Notify parent when jumpscare is done
+        onJumpscareComplete?.();
       }, 1000);
+
       pendingTimeoutsRef.current.push(timeoutId);
-    } else {
-      const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
-      setCurrentPhrase(randomPhrase.text);
-      play(randomPhrase.audio);
-      setIsTalking(true);
-      setHasTalked(true); // Mark that doll has talked at least once
-      const timeoutId = setTimeout(() => setIsTalking(false), 3000);
-      pendingTimeoutsRef.current.push(timeoutId);
+      return;
     }
+
+    // Get phrases that have been used less than 2 times
+    const availableIndexes = phrases
+      .map((_, index) => index)
+      .filter((index) => phraseCounts[index] < 2 && index !== lastPhraseIndex);
+
+    // Fallback if the only remaining phrase is the previous one
+    const validIndexes =
+      availableIndexes.length > 0
+        ? availableIndexes
+        : phrases
+            .map((_, index) => index)
+            .filter((index) => phraseCounts[index] < 2);
+
+    if (validIndexes.length === 0) {
+      return;
+    }
+    const randomIndex =
+      validIndexes[Math.floor(Math.random() * validIndexes.length)];
+
+    const selectedPhrase = phrases[randomIndex];
+
+    setCurrentPhrase(selectedPhrase.text);
+    play(selectedPhrase.audio);
+
+    setLastPhraseIndex(randomIndex);
+
+    setPhraseCounts((prev) => {
+      const updated = [...prev];
+      updated[randomIndex]++;
+      return updated;
+    });
+
+    setTotalTalks((prev) => prev + 1);
+
+    setIsTalking(true);
+
+    const timeoutId = setTimeout(() => {
+      setIsTalking(false);
+    }, 3000);
+
+    pendingTimeoutsRef.current.push(timeoutId);
   };
 
   return (
