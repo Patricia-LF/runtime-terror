@@ -3,13 +3,16 @@
 import { useGameStore } from "@/store/useGameStore";
 import Image from "next/image";
 
-const handleTivoliReturn = () => {
-  useGameStore.getState().resetGame();
-  window.parent.postMessage({ type: "AMUSEMENT_CLOSE" }, "");
-  //window.location.href = process.env.NEXT_PUBLIC_TIVOLI_URL!;
-};
-
 export function BackToTivoliButton() {
+  const handleTivoliReturn = () => {
+    useGameStore.getState().resetGame();
+    window.parent.postMessage(
+      { type: "AMUSEMENT_CLOSE" },
+      "https://loopland.se",
+    );
+    //window.location.href = process.env.NEXT_PUBLIC_TIVOLI_URL!;
+  };
+
   return (
     <button
       onClick={handleTivoliReturn}
