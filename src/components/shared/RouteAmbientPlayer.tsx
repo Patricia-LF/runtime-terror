@@ -1,7 +1,9 @@
 "use client";
-import { useRouteAmbientSound } from "@/hooks/useRouteAmbientSound";
+import { useAmbientController } from "@/hooks/useAmbientController";
+import { useAudioUnlock } from "@/hooks/useAudioUnlock";
 
 export default function RouteAmbientPlayer() {
-  useRouteAmbientSound();
+  useAudioUnlock();
+  useAmbientController();
   return null;
 }

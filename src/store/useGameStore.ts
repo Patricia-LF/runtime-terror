@@ -3,8 +3,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { useAudioStore } from "@/store/useAudioStore";
-import { ROOM_AMBIENT, SOUND_MAP } from "@/lib/audio";
-import { SoundId } from "@/lib/audio";
 import { Stamp } from "@/types";
 
 export type RoomId = "graveyard" | "dolls" | "spiders" | "clown";
@@ -52,22 +50,8 @@ export const useGameStore = create<GameStore>()(
 
         if (nextIndex < ROOMS.length) {
           const nextRoom = ROOMS[nextIndex];
-          const nextAmbient = ROOM_AMBIENT[nextRoom];
 
-          // Fade out all sounds except the next room's ambient
-          const { instances } = useAudioStore.getState();
-          const currentAmbient = useAudioStore.getState().currentAmbient;
-
-          Object.entries(instances).forEach(([soundId, instance]) => {
-            // Skip current and next ambient — handled by crossfade
-            if (soundId === currentAmbient || soundId === nextAmbient) return;
-            if (instance?.id !== undefined) {
-              const config = SOUND_MAP[soundId as SoundId];
-              const targetVolume = config.volume ?? 1;
-              instance.howl.fade(targetVolume, 0, 1000, instance.id);
-              instance.howl.once("fade", () => instance.howl.stop());
-            }
-          });
+          useAudioStore.getState().fadeOutAllEffects(1000);
 
           set({ currentRoom: nextRoom });
         } else {
