@@ -19,6 +19,8 @@ export type SoundId =
   | "dolltalk-alone"
   | "key-appearing"
   | "clown-laugh"
+  | "start-screen-ambience"
+  | "end-screen-ambience"
   | "spider-drop"
   | "thunder";
 
@@ -35,8 +37,8 @@ export type SoundConfig = {
 // Here we define which ambient sound should play in each room, using the SoundIds from our SOUND_MAP
 export const ROOM_AMBIENT: Record<RoomId, SoundId> = {
   graveyard: "howling-wind",
-  dolls: "creaks",
-  spiders: "howling-wind",
+  dolls: "music-box",
+  spiders: "creaks",
   clown: "synth-ambience",
 };
 
@@ -48,7 +50,7 @@ export const SOUND_MAP = {
     volume: 0.5,
     autoplay: true,
   },
-  creaks: {
+  "creaks": {
     kind: "ambient",
     src: ["/assets/audio/ambient/creaks.mp3"],
     loop: true,
@@ -76,7 +78,7 @@ export const SOUND_MAP = {
     volume: 0.5,
     autoplay: false,
   },
-  danger: {
+  "danger": {
     kind: "effect",
     src: ["/assets/audio/effect/dangerEffect.mp3"],
     loop: false,
@@ -97,7 +99,7 @@ export const SOUND_MAP = {
     volume: 0.5,
     autoplay: false,
   },
-  jumpscare: {
+  "jumpscare": {
     kind: "effect",
     src: ["/assets/audio/effect/jumpscare.mp3"],
     loop: false,
@@ -167,6 +169,20 @@ export const SOUND_MAP = {
     volume: 0.5,
     autoplay: false,
   },
+  "start-screen-ambience": {
+    kind: "ambient",
+    src: ["/assets/audio/ambient/startPageAmbient.mp3"],
+    loop: true,
+    volume: 0.6,
+    autoplay: true,
+  },
+  "end-screen-ambience": {
+    kind: "ambient",
+    src: ["/assets/audio/ambient/endPageAmbient.mp3"],
+    loop: true,
+    volume: 0.5,
+    autoplay: true,
+  },
   "spider-drop": {
     kind: "effect",
     src: ["/assets/audio/effect/spider-drop.ogg"],
@@ -174,7 +190,7 @@ export const SOUND_MAP = {
     volume: 0.3,
     autoplay: false,
   },
-  thunder: {
+  "thunder": {
     kind: "effect",
     src: ["/assets/audio/effect/thunder.m4a"],
     loop: false,

@@ -22,6 +22,8 @@ type AudioStore = {
   unload: (soundId: SoundId) => void;
   unloadAll: () => void;
   fadeOutAllEffects: (duration?: number) => void;
+  stopAmbient: (duration?: number) => void;
+  syncAmbient: (nextAmbient: SoundId | null, duration?: number) => void;
   crossfade: (from: SoundId | null, to: SoundId, duration?: number) => void;
   setMuted: (muted: boolean) => void;
   setMasterVolume: (volume: number) => void;
@@ -178,7 +180,7 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
         }
       }
     });
-    set({ instances: {} });
+    set({ instances: {}, currentAmbient: null });
     if (process.env.NODE_ENV === "development") {
       console.debug(`[audio] unloadAll -> instances=0`);
     }
@@ -196,6 +198,54 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
         instance.howl.once("fade", () => instance.howl.stop());
       }
     });
+  },
+
+  stopAmbient: (duration = 1000) => {
+    const { currentAmbient, instances, fadeOut, stop } = get();
+
+    if (!currentAmbient) return;
+
+    const activeAmbient = instances[currentAmbient];
+    if (activeAmbient?.id !== undefined) {
+      fadeOut(currentAmbient, duration);
+    } else {
+      stop(currentAmbient);
+    }
+
+    set({ currentAmbient: null });
+  },
+
+  syncAmbient: (nextAmbient, duration = 1000) => {
+    const { currentAmbient, instances, fadeIn, fadeOut, stop } = get();
+
+    if (nextAmbient === currentAmbient) {
+      if (!nextAmbient) return;
+
+      const activeAmbient = instances[nextAmbient];
+      if (activeAmbient?.id === undefined) {
+        fadeIn(nextAmbient, duration);
+        set({ currentAmbient: nextAmbient });
+      }
+
+      return;
+    }
+
+    if (currentAmbient) {
+      const activeAmbient = instances[currentAmbient];
+      if (activeAmbient?.id !== undefined) {
+        fadeOut(currentAmbient, duration);
+      } else {
+        stop(currentAmbient);
+      }
+    }
+
+    if (nextAmbient) {
+      fadeIn(nextAmbient, duration);
+      set({ currentAmbient: nextAmbient });
+      return;
+    }
+
+    set({ currentAmbient: null });
   },
 
   crossfade: (from, to, duration = 1000) => {

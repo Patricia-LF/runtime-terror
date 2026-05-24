@@ -1,13 +1,11 @@
 "use client";
 
-import { useAmbientSound } from "@/hooks/useAmbientSound";
 import { useGameStore } from "@/store/useGameStore";
 import DescriptionButton from "@/components/shared/DescriptionButton";
 import Image from "next/image";
 import MuteButton from "../ui/MuteButton";
 import { useFadeStore } from "@/store/useFadeStore";
 import { useEffect, useState } from "react";
-import { useAudioStore } from "@/store/useAudioStore";
 import { ExitModal } from "../ui/ExitModal";
 import { usePathname } from "next/navigation";
 
@@ -18,36 +16,15 @@ type HauntedHouseShellProps = {
 export default function HauntedHouseShell({
   children,
 }: HauntedHouseShellProps) {
-  useAmbientSound();
+  const pathname = usePathname();
+  const isEndPage = pathname === "/haunted-house/end";
+  
   const currentRoom = useGameStore((s) => s.currentRoom);
   const [showExitModal, setShowExitModal] = useState(false);
 
   const handleExitClick = () => {
     setShowExitModal(true);
   };
-
-  const pathname = usePathname();
-  const isEndPage = pathname === "/haunted-house/end";
-
-  // Stop ambient sound when exiting the haunted house (unmounting this component)
-  useEffect(() => {
-    return () => {
-      const { currentAmbient, stop } = useAudioStore.getState();
-      if (currentAmbient) {
-        const ambient = useAudioStore.getState().instances[currentAmbient];
-        if (ambient && ambient.id !== undefined) {
-          const id = ambient.id;
-
-          ambient.howl.fade(1, 0, 600, id);
-          ambient.howl.once("fade", () => ambient.howl.stop(id));
-        } else {
-          stop(currentAmbient);
-        }
-
-        useAudioStore.setState({ currentAmbient: null });
-      }
-    };
-  }, []);
 
   const { setFading } = useFadeStore();
 

@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -55,7 +55,7 @@ export default function EndPage() {
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
       {/* Background — lowest layer */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#323138] to-[#121218] bg-left" />
+      <div className="absolute inset-0 bg-linear-to-b from-[#323138] to-[#121218] bg-left" />
 
       <Fog />
 
