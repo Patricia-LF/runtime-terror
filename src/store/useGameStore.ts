@@ -20,8 +20,6 @@ interface GameStore {
   isPlayingGuest: boolean;
   setIsPlayingGuest: (isPlayingGuest: boolean) => void;
   hasExited: boolean;
-  hasHydrated: boolean;
-  setHasHydrated: (value: boolean) => void;
 
   //actions
   goToNextRoom: () => void;
@@ -43,8 +41,6 @@ export const useGameStore = create<GameStore>()(
 
       // Functions that uppdates state
       hasExited: false,
-      hasHydrated: false,
-      setHasHydrated: (value: boolean) => set({ hasHydrated: value }),
       isPlayingGuest: false,
       setIsPlayingGuest: (value: boolean) => {
         set({ isPlayingGuest: value });
@@ -115,10 +111,6 @@ export const useGameStore = create<GameStore>()(
     }),
     {
       name: "haunted-house-room",
-
-      onRehydrateStorage: () => (state) => {
-        state?.setHasHydrated?.(true);
-      },
     },
   ),
 );

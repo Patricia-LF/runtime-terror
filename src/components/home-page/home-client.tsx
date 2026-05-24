@@ -24,7 +24,6 @@ import { ErrorModal } from "../ui/ErrorModal";
 export default function HomeClient() {
   const router = useRouter();
   const [devAccessLoading, setDevAccessLoading] = useState(false);
-  const hasHydrated = useGameStore((s) => s.hasHydrated);
 
   const { isFading, setFading } = useFadeStore();
   useEffect(() => {
@@ -85,8 +84,6 @@ export default function HomeClient() {
       setDevAccessLoading(false);
     }
   };
-
-  if (!hasHydrated) return null;
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
