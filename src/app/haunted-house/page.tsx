@@ -70,7 +70,9 @@ export default function HauntedHousePage() {
   return (
     <>
       <FadeOverlay isActive={isFading} />
-      <div className="text-white text-5xl fixed z-[9999]">GRAVEYARD LOADED</div>
+      <div>
+        <CurrentRoom key={currentRoom} />
+      </div>
     </>
   );
 }
