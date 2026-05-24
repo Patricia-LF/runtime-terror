@@ -5,6 +5,6 @@ export const ACCESS_COOKIE_MAX_AGE_SECONDS = 60 * 60;
 
 export const ACCESS_COOKIE_OPTIONS = {
   httpOnly: true,
-  sameSite: "lax" as const,
+  sameSite: "none" as const,
   secure: process.env.NODE_ENV === "production",
 };
