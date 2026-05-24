@@ -2,11 +2,7 @@
 
 import { motion } from "framer-motion";
 
-interface LoadingScreenProps {
-  progress?: number; // 0-100, optional
-}
-
-export default function LoadingScreen({ progress }: LoadingScreenProps) {
+export default function LoadingScreen() {
   return (
     <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-[9999] gap-8">
       {/* Title */}
@@ -22,22 +18,12 @@ export default function LoadingScreen({ progress }: LoadingScreenProps) {
 
         {/* Bar container */}
         <div className="w-full h-6 rounded-full border border-red-900 bg-black/60 overflow-hidden">
-          {progress !== undefined ? (
-            // Determinate — shows actual progress
-            <motion.div
-              className="h-full bg-red-900 rounded-full"
-              initial={{ width: "0%" }}
-              animate={{ width: `${progress}%` }}
-              transition={{ ease: "easeOut" }}
-            />
-          ) : (
-            // Indeterminate — loops back and forth
-            <motion.div
-              className="h-full w-1/3 bg-red-900 rounded-full"
-              animate={{ x: ["0%", "200%", "0%"] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            />
-          )}
+          {/* Indeterminate — loops back and forth */}
+          <motion.div
+            className="h-full w-1/3 bg-red-900 rounded-full"
+            animate={{ x: ["0%", "200%", "0%"] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
         </div>
       </div>
 

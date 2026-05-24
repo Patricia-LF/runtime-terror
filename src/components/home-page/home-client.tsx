@@ -98,13 +98,13 @@ export default function HomeClient() {
       <Fog />
 
       <MuteButton positionClass="right-0" />
-      <div className="absolute w-full flex justify-left m-6">
+      <div className="absolute w-full flex justify-left m-4 md:m-6">
         {TIVOLI_MODE && <BackToTivoliButton />}
       </div>
 
       {/* Content — top layer */}
       <div className="relative z-20 flex flex-col w-full h-full items-center">
-        <h1 className="font-eater text-red-800 flex w-full text-4xl mt-18 mb-2 justify-center md:mt-6 mb-4 text-5xl leading-normal">
+        <h1 className="font-eater text-red-800 flex w-full text-4xl mt-18 mb-2 justify-center md:text-5xl md:mt-6 md:mb-4 leading-normal">
           Runtime terror
         </h1>
         {!isPlayingGuest ? (
@@ -209,7 +209,10 @@ export default function HomeClient() {
       <ErrorModal
         message={error?.message ?? "An unknown error occurred."}
         isOpen={modal === "error"}
-        onClose={() => { setError(null); setModal(null); }}
+        onClose={() => {
+          setError(null);
+          setModal(null);
+        }}
       />
     </div>
   );
