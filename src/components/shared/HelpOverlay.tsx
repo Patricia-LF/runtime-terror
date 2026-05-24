@@ -45,7 +45,7 @@ export default function HelpOverlay() {
               <button
                 onClick={() => setIsOpen(false)}
                 aria-label="Close help"
-                className="absolute top-0 right-0 p-4 text-grey text-xl font-fell"
+                className="absolute top-0 right-0 p-4 text-grey text-xl font-fell cursor-pointer"
               >
                 ✕
               </button>

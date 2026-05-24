@@ -24,7 +24,6 @@ import { ErrorModal } from "../ui/ErrorModal";
 export default function HomeClient() {
   const router = useRouter();
   const [devAccessLoading, setDevAccessLoading] = useState(false);
-  const hasHydrated = useGameStore((s) => s.hasHydrated);
 
   const { isFading, setFading } = useFadeStore();
   useEffect(() => {
@@ -51,15 +50,20 @@ export default function HomeClient() {
   const [modal, setModal] = useState<ModalType>(null);
   const [error, setError] = useState<ApiError | null>(null);
 
-
   const { submitTransaction, isLoading } = useTransaction({
     onSuccess: () => {
       setIsPlayingGuest(true);
       setError(null);
       setModal(null);
     },
-    onUnauthorized: () => { setError(null); setModal("unauthorized"); },
-    onError: (err) => { setError(err); setModal("error"); },
+    onUnauthorized: () => {
+      setError(null);
+      setModal("unauthorized");
+    },
+    onError: (err) => {
+      setError(err);
+      setModal("error");
+    },
   });
 
   const handleDevAccess = async () => {
@@ -81,8 +85,6 @@ export default function HomeClient() {
     }
   };
 
-  if (!hasHydrated) return null;
-
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
       <FadeOverlay isActive={isFading} />
@@ -93,13 +95,13 @@ export default function HomeClient() {
       <Fog />
 
       <MuteButton positionClass="right-0" />
-      <div className="absolute w-full flex justify-left m-6">
+      <div className="absolute w-full flex justify-left m-4 md:m-6">
         {TIVOLI_MODE && <BackToTivoliButton />}
       </div>
 
       {/* Content — top layer */}
       <div className="relative z-20 flex flex-col w-full h-full items-center">
-        <h1 className="font-eater text-red-800 flex w-full text-4xl my-18 justify-center md:text-5xl leading-normal">
+        <h1 className="font-eater text-red-800 flex w-full text-4xl mt-18 mb-2 justify-center md:text-5xl md:mt-6 md:mb-4 leading-normal">
           Runtime terror
         </h1>
         {!isPlayingGuest ? (
@@ -204,9 +206,11 @@ export default function HomeClient() {
       <ErrorModal
         message={error?.message ?? "An unknown error occurred."}
         isOpen={modal === "error"}
-        onClose={() => { setError(null); setModal(null); }}
+        onClose={() => {
+          setError(null);
+          setModal(null);
+        }}
       />
     </div>
   );
 }
-

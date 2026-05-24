@@ -1,31 +1,37 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import Fog from "@/components/effects/Fog";
-import Bats from "@/components/effects/Bats";
+import { Bat } from "@/components/effects/Bats";
 import DoorTransition from "@/components/shared/DoorTransition";
 import ZombieHand from "@/components/rooms/room1/ZombieHand";
 import { useEffectSounds } from "@/hooks/useEffectSounds";
 import KeyAppearing from "@/components/shared/KeyAppearing";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
-type GravestoneEffect = "correct" | "bats" | "shake" | "hand" | "sink";
+type GravestoneEffect = "correct" | "bats" | "shake" | "hand" | "thunder";
 
 interface Gravestone {
   id: number;
   src: string;
   alt: string;
   effect: GravestoneEffect;
+  showOnMobile: boolean;
   // Position as percentage — bottom half of screen
   position: {
     bottom: string;
     left?: string;
     right?: string;
   };
-  size: {
-    width: number;
-    height: number;
+  // Separate mobile position
+  mobilePosition?: {
+    // Optional — only needed for stones visible on mobile
+    bottom: string;
+    left?: string;
+    right?: string;
   };
+  size: { width: number; height: number };
 }
 
 const GRAVESTONES: Gravestone[] = [
@@ -33,7 +39,8 @@ const GRAVESTONES: Gravestone[] = [
     id: 1,
     src: "/assets/images/gravestone1.png", // Silhouette — smaller, further away
     alt: "",
-    effect: "hand",
+    effect: "bats",
+    showOnMobile: false,
     position: { bottom: "35%", left: "42%" },
     size: { width: 60, height: 80 },
   },
@@ -42,7 +49,9 @@ const GRAVESTONES: Gravestone[] = [
     src: "/assets/images/gravestone3.png",
     alt: "",
     effect: "shake",
+    showOnMobile: true,
     position: { bottom: "15%", left: "48%" },
+    mobilePosition: { bottom: "15%", right: "10%" },
     size: { width: 100, height: 140 },
   },
   {
@@ -50,14 +59,17 @@ const GRAVESTONES: Gravestone[] = [
     src: "/assets/images/gravestone4.png",
     alt: "",
     effect: "correct",
+    showOnMobile: true,
     position: { bottom: "24%", left: "28%" },
+    mobilePosition: { bottom: "30%", left: "20%" },
     size: { width: 100, height: 120 },
   },
   {
     id: 4,
     src: "/assets/images/gravestone2.png",
     alt: "",
-    effect: "bats",
+    effect: "hand",
+    showOnMobile: false,
     position: { bottom: "28%", right: "25%" },
     size: { width: 90, height: 120 },
   },
@@ -65,8 +77,10 @@ const GRAVESTONES: Gravestone[] = [
     id: 5,
     src: "/assets/images/gravestone1.png", // Reused
     alt: "",
-    effect: "sink",
+    effect: "thunder",
+    showOnMobile: true,
     position: { bottom: "38%", right: "40%" },
+    mobilePosition: { bottom: "35%", right: "28%" },
     size: { width: 60, height: 80 },
   },
 ];
@@ -79,10 +93,10 @@ export default function Graveyard() {
   const [zombieTriggered, setZombieTriggered] = useState(false);
   const [keyVisible, setKeyVisible] = useState(false);
   const [keyCollected, setKeyCollected] = useState(false);
-  const [doorOpen, setDoorOpen] = useState(false);
 
   const handEmeregedSound = useEffectSounds({ effect: "danger" });
   const creakSound = useEffectSounds({ effect: "creaking-gate" });
+  const thunderSound = useEffectSounds({ effect: "thunder" });
 
   const handleGravestoneClick = (stone: Gravestone): void => {
     if (sunkenStones.has(stone.id)) return;
@@ -107,11 +121,13 @@ export default function Graveyard() {
         setHandVisible(true);
         setTimeout(() => setHandVisible(false), 2000);
         break;
-      case "sink":
-        creakSound();
+      case "thunder":
+        thunderSound();
         break;
     }
   };
+
+  const isMobile = useIsMobile();
 
   return (
     <motion.div
@@ -121,21 +137,57 @@ export default function Graveyard() {
     >
       <Fog opacity={0.6} />
 
+      {batsTriggered && (
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <Bat
+            startX="0%"
+            startY="0%"
+            animateX={["-200px", "110vw"]}
+            animateY={["60vh", "10vh"]}
+            duration={3}
+            depth={0.9}
+            flapDelay={0}
+          />
+          <Bat
+            startX="0%"
+            startY="0%"
+            animateX={["-200px", "110vw"]}
+            animateY={["70vh", "5vh"]}
+            duration={2.5}
+            depth={0.7}
+            flapDelay={0.2}
+          />
+          <Bat
+            startX="0%"
+            startY="0%"
+            animateX={["-200px", "110vw"]}
+            animateY={["65vh", "15vh"]}
+            duration={3.5}
+            depth={0.8}
+            flapDelay={0.1}
+          />
+        </div>
+      )}
+
       {/* Static crow images */}
-      <Image
-        src="/assets/images/crow-1.png"
-        alt=""
-        width={40}
-        height={40}
-        className="absolute bottom-[52%] left-[13%]"
-      />
-      <Image
-        src="/assets/images/crow-2.png"
-        alt=""
-        width={50}
-        height={50}
-        className="absolute bottom-[37%] right-[36%]"
-      />
+      {!isMobile && (
+        <Image
+          src="/assets/images/crow-1.png"
+          alt=""
+          width={40}
+          height={40}
+          className="absolute bottom-[52%] left-[13%]"
+        />
+      )}
+      {!isMobile && (
+        <Image
+          src="/assets/images/crow-2.png"
+          alt=""
+          width={50}
+          height={50}
+          className="absolute bottom-[37%] right-[36%]"
+        />
+      )}
 
       {/* Static zombie images */}
       <Image
@@ -145,57 +197,74 @@ export default function Graveyard() {
         height={40}
         className="absolute bottom-[48%] left-[40%]"
       />
-      <Image
-        src="/assets/images/zombie-2.png"
-        alt=""
-        width={140}
-        height={140}
-        className="absolute bottom-[25%] right-[6%]"
-      />
+      {!isMobile && (
+        <Image
+          src="/assets/images/zombie-2.png"
+          alt=""
+          width={140}
+          height={140}
+          className="absolute bottom-[25%] right-[6%]"
+        />
+      )}
 
       {/* Gravestones */}
-      {GRAVESTONES.map((stone) => (
-        <AnimatePresence key={stone.id}>
-          {!sunkenStones.has(stone.id) && (
-            <motion.button
-              style={{
-                position: "absolute",
-                bottom: stone.position.bottom,
-                left: stone.position.left,
-                right: stone.position.right,
-              }}
-              exit={{ y: "100%", opacity: 0 }}
-              transition={{ duration: 0.6, ease: "easeIn" }}
-              onClick={() => handleGravestoneClick(stone)}
-              aria-label="Examine gravestone"
-              className="cursor-pointer"
-            >
-              <Image
-                src={stone.src}
-                alt={stone.alt}
-                width={stone.size.width}
-                height={stone.size.height}
-              />
-            </motion.button>
-          )}
-        </AnimatePresence>
-      ))}
+      {GRAVESTONES.filter((stone) => !isMobile || stone.showOnMobile).map(
+        (stone) => {
+          const pos =
+            isMobile && stone.mobilePosition != null
+              ? stone.mobilePosition
+              : stone.position;
+
+          return (
+            <AnimatePresence key={stone.id}>
+              {!sunkenStones.has(stone.id) && (
+                <motion.button
+                  style={{
+                    position: "absolute",
+                    bottom: pos.bottom,
+                    left: pos.left,
+                    right: pos.right,
+                  }}
+                  exit={{ y: "100%", opacity: 0 }}
+                  transition={{ duration: 0.6, ease: "easeIn" }}
+                  onClick={() => handleGravestoneClick(stone)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      handleGravestoneClick(stone);
+                    }
+                  }}
+                  aria-label={`Examine gravestone ${stone.id}`}
+                  className="cursor-pointer focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4 focus-visible:rounded"
+                >
+                  <Image
+                    src={stone.src}
+                    alt={stone.alt}
+                    width={stone.size.width}
+                    height={stone.size.height}
+                  />
+                </motion.button>
+              )}
+            </AnimatePresence>
+          );
+        },
+      )}
 
       {/* Small hand that peeks up and goes back down */}
       <AnimatePresence>
         {handVisible && (
           <motion.div
-            className="absolute bottom-[35%] left-[42%] z-30"
-            initial={{ y: "100%" }}
+            className="absolute bottom-[32%] right-[27%] z-30"
+            initial={{ y: "40%" }}
             animate={{ y: "0%" }}
-            exit={{ y: "100%" }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            exit={{ y: "50%" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <Image
               src="/assets/images/zombie-hand-small-2.png"
               alt=""
-              width={60}
-              height={80}
+              width={50}
+              height={70}
             />
           </motion.div>
         )}
@@ -209,7 +278,6 @@ export default function Graveyard() {
         isLocked={!keyCollected}
       />
       <ZombieHand
-        /* triggerOnMount={false} */
         triggerAnimation={zombieTriggered}
         onCollect={() => setKeyVisible(true)}
         onEmergeComplete={handEmeregedSound}

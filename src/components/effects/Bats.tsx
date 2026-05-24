@@ -13,7 +13,7 @@ interface BatProps {
   flapDelay: number;
 }
 
-function Bat({
+export function Bat({
   startX,
   startY,
   animateX,
@@ -50,7 +50,7 @@ function Bat({
   );
 }
 
-export default function Bats() {
+export default function Bats(/* { extraSwarm = false }: BatsProps */) {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Starts left of screen, flies across to right */}

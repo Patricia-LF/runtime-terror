@@ -13,10 +13,10 @@ export const ROOM_HELP: Record<RoomId, RoomHelp> = {
     title: "The Graveyard",
     description: "The dead don't always stay buried here.",
     interactions: [
-      "Look for a way through the gate",
+      "Click on the gravestones to find out what hides beneath",
       "Something may be watching from the shadows",
     ],
-    goal: "Find the key to make your way inside.",
+    goal: "Find and click on the key to make your way inside.",
   },
   dolls: {
     title: "The Doll Room",
