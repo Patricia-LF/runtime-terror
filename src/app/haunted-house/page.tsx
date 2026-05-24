@@ -42,7 +42,6 @@ export default function HauntedHousePage() {
     }
   }, [mounted, hasHydrated, isPlayingGuest, isComplete, hasExited, router]);
 
-
   // Reset fade when page is mounted and ready
   useEffect(() => {
     if (mounted) {
@@ -71,9 +70,7 @@ export default function HauntedHousePage() {
   return (
     <>
       <FadeOverlay isActive={isFading} />
-      <div>
-        <CurrentRoom key={currentRoom} />
-      </div>
+      <div className="text-white text-5xl fixed z-[9999]">GRAVEYARD LOADED</div>
     </>
   );
 }
