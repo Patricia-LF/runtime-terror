@@ -10,7 +10,7 @@ import { useEffectSounds } from "@/hooks/useEffectSounds";
 import KeyAppearing from "@/components/shared/KeyAppearing";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
-type GravestoneEffect = "correct" | "bats" | "shake" | "hand" | "thunder";
+type GravestoneEffect = "correct" | "bats" | "shake" | "thunder";
 
 interface Gravestone {
   id: number;
@@ -37,12 +37,12 @@ interface Gravestone {
 const GRAVESTONES: Gravestone[] = [
   {
     id: 1,
-    src: "/assets/images/gravestone1.png", // Silhouette — smaller, further away
+    src: "/assets/images/gravestone2.png",
     alt: "",
     effect: "bats",
     showOnMobile: false,
     position: { bottom: "35%", left: "42%" },
-    size: { width: 60, height: 80 },
+    size: { width: 80, height: 110 },
   },
   {
     id: 2,
@@ -66,16 +66,7 @@ const GRAVESTONES: Gravestone[] = [
   },
   {
     id: 4,
-    src: "/assets/images/gravestone2.png",
-    alt: "",
-    effect: "hand",
-    showOnMobile: false,
-    position: { bottom: "28%", right: "25%" },
-    size: { width: 90, height: 120 },
-  },
-  {
-    id: 5,
-    src: "/assets/images/gravestone1.png", // Reused
+    src: "/assets/images/gravestone1.png", // Silhouette — smaller, further away
     alt: "",
     effect: "thunder",
     showOnMobile: true,
@@ -115,11 +106,6 @@ export default function Graveyard() {
         creakSound();
         setShaking(true);
         setTimeout(() => setShaking(false), 600);
-        break;
-      case "hand":
-        handEmeregedSound();
-        setHandVisible(true);
-        setTimeout(() => setHandVisible(false), 2000);
         break;
       case "thunder":
         thunderSound();
