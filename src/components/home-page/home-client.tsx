@@ -46,7 +46,8 @@ export default function HomeClient() {
 
   const [identityToken, setIdentityToken] = useState<string | null>(null);
 
-  const { identityToken: urlIdentityToken, clearIdentityToken } = useUrlParams();
+  const { identityToken: urlIdentityToken, clearIdentityToken } =
+    useUrlParams();
 
   useEffect(() => {
     if (!urlIdentityToken) return;
@@ -145,9 +146,6 @@ export default function HomeClient() {
               {/* Payment or free entry depending on tivoli mode */}
               {TIVOLI_MODE ? (
                 <div className="flex flex-col gap-4">
-                  {/* <h3 className="text-white text-xl">
-                  Enter the house for {ENTRY_PRICE}€
-                </h3> */}
                   <EnterForm
                     onSubmit={submitTransaction}
                     identityToken={identityToken}
