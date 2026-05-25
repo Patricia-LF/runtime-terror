@@ -5,6 +5,7 @@ import { useState } from "react";
 import SpiderAnimation from "@/components/effects/SpiderAnimation";
 import DoorTransition from "@/components/shared/DoorTransition";
 import SpiderDrop from "@/components/effects/SpiderDrop";
+import GhostLoop from "@/components/effects/GhostLoop";
 
 export default function Spiders() {
   const spiderwebs = [
@@ -33,11 +34,15 @@ export default function Spiders() {
 
   const allWebsRemoved = visibleWebs.length === 0;
 
+  const [hasClickedGhost, setHasClickedGhost] = useState(false);
+
   return (
     <div className="absolute inset-0 bg-[url('/assets/images/eerie-hospital.png')] bg-cover bg-bottom">
-      {allWebsRemoved && (
+      <GhostLoop onGhostClick={() => setHasClickedGhost(true)} />
+
+      {hasClickedGhost && (
         <DoorTransition
-          buttonText="Do you dare?"
+          buttonText="This way"
           doorImage=""
           animated={false}
           positionClass="bottom-1/3 right-15"
