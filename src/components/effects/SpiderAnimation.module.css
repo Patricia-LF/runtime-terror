@@ -38,36 +38,32 @@
 
 @media (min-width: 768px) {
     .spiderWrap {
-        animation: scurry 8s linear infinite;
+        animation: scurry 4s linear infinite;
     }
 }
 
 @media (min-width: 1024px) {
     .spiderWrap {
-        animation: scurry 12s linear infinite;
+        animation: scurry 8s linear infinite;
     }
 }
 
 /* Spider movements across screen */
 @keyframes scurry {
     0% {
-        transform: translateX(110vw) translateY(0px);
+        transform: translateX(0vw) translateY(0px);
     }
 
-    25% {
-        transform: translateX(55vw) translateY(10px);
+    33% {
+        transform: translateX(-25vw) translateY(10px);
     }
 
-    50% {
-        transform: translateX(0vw) translateY(55px);
-    }
-
-    75% {
-        transform: translateX(-55vw) translateY(75px);
+    66% {
+        transform: translateX(-55vw) translateY(55px);
     }
 
     100% {
-        transform: translateX(-110vw) translateY(0px);
+        transform: translateX(-100vw) translateY(0px);
     }
 }
 

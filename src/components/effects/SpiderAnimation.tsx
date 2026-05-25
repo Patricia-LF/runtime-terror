@@ -4,10 +4,9 @@ import styles from "./SpiderAnimation.module.css";
 type SpiderAnimationProps = {
     isActive?: boolean;
     style?: React.CSSProperties;
-    key?: string | number;
 };
 
-export default function SpiderAnimation({ isActive = true, style, key }: SpiderAnimationProps) {
+export default function SpiderAnimation({ isActive = true, style }: SpiderAnimationProps) {
     const [frame, setFrame] = useState(0);
 
     /* 4x4 sprite sheet animation (1024x1024), each frame is 256x256. We cycle through 16 frames and shift background-position to display the correct frame. */
@@ -36,7 +35,7 @@ export default function SpiderAnimation({ isActive = true, style, key }: SpiderA
 
 
     return (
-            <div className={styles.spiderWrap} style={style} key={key}>
+            <div className={styles.spiderWrap} style={style}>
                 <div className={styles.spiderScale}>
                     <div
                         className={styles.spider}
