@@ -12,6 +12,7 @@ interface SpiderDropProps {
 
 export default function SpiderDrop({ allWebsRemoved }: SpiderDropProps) {
   const dropDelay = useMemo(() => Math.random() * 3 + 1, []);
+  const LANDING_TIME = 7 * 0.15;
   const spiderDrop = useEffectSounds({ effect: "spider-drop" });
 
   useEffect(() => {
@@ -19,7 +20,7 @@ export default function SpiderDrop({ allWebsRemoved }: SpiderDropProps) {
     // Wait for dropDelay before playing sound
     const timer = setTimeout(() => {
       spiderDrop();
-    }, dropDelay * 1000);
+    }, (dropDelay + LANDING_TIME) * 1000);
     return () => clearTimeout(timer);
   }, [allWebsRemoved]);
 
@@ -41,14 +42,15 @@ export default function SpiderDrop({ allWebsRemoved }: SpiderDropProps) {
           style={{ transformOrigin: "top center" }}
           initial={{ y: "-1000%", rotate: 0 }}
           animate={{
-            y: ["-1000%", landingY],
+            y: ["-1000%", landingY, landingY, "-1000%"],
             rotate: [0.5, -1.5, 1.5, -1, 1, -0.5, 0.5, 0],
           }}
           transition={{
             y: {
-              duration: 0.4,
-              ease: "easeIn",
+              duration: 7,
+              ease: "easeInOut",
               delay: dropDelay,
+              times: [0, 0.15, 0.7, 1],
             },
             rotate: {
               duration: 12,
