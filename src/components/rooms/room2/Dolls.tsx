@@ -6,7 +6,7 @@ import { useGameStore } from "@/store/useGameStore";
 import KeyAppearing from "@/components/shared/KeyAppearing";
 
 export default function Dolls() {
-  const { play, stop } = useAudioStore();
+  const { play } = useAudioStore();
   const currentRoom = useGameStore((s) => s.currentRoom);
   const [keyVisible, setKeyVisible] = useState(false);
   const [keyCollected, setKeyCollected] = useState(false);

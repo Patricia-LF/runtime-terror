@@ -158,6 +158,7 @@ export default function Graveyard() {
       {/* Static crow images */}
       {!isMobile && (
         <Image
+          draggable="false"
           src="/assets/images/crow-1.png"
           alt=""
           width={40}
@@ -167,6 +168,7 @@ export default function Graveyard() {
       )}
       {!isMobile && (
         <Image
+          draggable="false"
           src="/assets/images/crow-2.png"
           alt=""
           width={50}
@@ -177,6 +179,7 @@ export default function Graveyard() {
 
       {/* Static zombie images */}
       <Image
+        draggable="false"
         src="/assets/images/zombie-1.png"
         alt=""
         width={40}
@@ -185,6 +188,7 @@ export default function Graveyard() {
       />
       {!isMobile && (
         <Image
+          draggable="false"
           src="/assets/images/zombie-2.png"
           alt=""
           width={140}
@@ -224,6 +228,7 @@ export default function Graveyard() {
                   className="cursor-pointer focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4 focus-visible:rounded"
                 >
                   <Image
+                    draggable="false"
                     src={stone.src}
                     alt={stone.alt}
                     width={stone.size.width}
@@ -235,26 +240,6 @@ export default function Graveyard() {
           );
         },
       )}
-
-      {/* Small hand that peeks up and goes back down */}
-      <AnimatePresence>
-        {handVisible && (
-          <motion.div
-            className="absolute bottom-[32%] right-[27%] z-30"
-            initial={{ y: "40%" }}
-            animate={{ y: "0%" }}
-            exit={{ y: "50%" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <Image
-              src="/assets/images/zombie-hand-small-2.png"
-              alt=""
-              width={50}
-              height={70}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       <DoorTransition
         buttonText={keyCollected ? "Enter the house" : "Door is locked"}
