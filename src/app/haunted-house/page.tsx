@@ -27,12 +27,6 @@ export default function HauntedHousePage() {
 
   // Redirect to home if not allowed to play and to end page when game is complete or when exited
   useEffect(() => {
-    // if (!mounted) return;
-
-    // if (!isPlayingGuest && !isComplete && !hasExited) {
-    //   router.push("/");
-    //   return;
-    // }
 
     if (isComplete || hasExited) {
       router.push("/haunted-house/end");

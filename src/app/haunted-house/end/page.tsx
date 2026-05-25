@@ -106,39 +106,39 @@ export default function EndPage() {
               </motion.div>
             ) : (
               <>
-              <motion.div
-                key="stamp"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col items-center gap-4"
-              >
-                <p className="font-fell text-grey text-xl text-center">
-                  {hasExited
-                    ? "Here's your consolation prize:"
-                    : "Here's your well deserved stamp:"}
-                </p>
-                {stamp !== null ? (
-                  <>
-                    <Image
-                      src={stamp.image_url ?? ""}
-                      alt={`${stamp.metal ? `${stamp.metal} ` : ""}${stamp.animal}`}
-                      width={200}
-                      height={200}
-                    />
-                    <p className="font-fell text-grey text-center">
-                      You got a{" "}
-                      {stamp.metal && `${stamp.metal} `}
-                      {stamp.animal}!
-                    </p>
-                  </>
-                ) : (
-                  <p className="font-fell text-grey">No stamp awarded</p>
-                )}
-              </motion.div>
+                <motion.div
+                  key="stamp"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center gap-4"
+                >
+                  <p className="font-fell text-grey text-xl text-center">
+                    {hasExited
+                      ? "Here's your consolation prize:"
+                      : "Here's your well deserved stamp:"}
+                  </p>
+                  {stamp !== null ? (
+                    <>
+                      <Image
+                        src={stamp.image_url ?? ""}
+                        alt={`${stamp.metal ? `${stamp.metal} ` : ""}${stamp.animal}`}
+                        width={200}
+                        height={200}
+                      />
+                      <p className="font-fell text-grey text-center">
+                        You got a{" "}
+                        {stamp.metal && `${stamp.metal} `}
+                        {stamp.animal}!
+                      </p>
+                    </>
+                  ) : (
+                    <p className="font-fell text-grey">No stamp awarded</p>
+                  )}
+                </motion.div>
                 <div className="w-full flex justify-center">
                   <BackToTivoliButton />
                 </div>
-                </>
+              </>
             )}
           </AnimatePresence>
         </div>
