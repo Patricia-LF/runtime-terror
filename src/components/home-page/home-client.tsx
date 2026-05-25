@@ -25,14 +25,17 @@ export default function HomeClient() {
   const router = useRouter();
   const [devAccessLoading, setDevAccessLoading] = useState(false);
 
+  const isPlayingGuest = useGameStore((s) => s.isPlayingGuest);
+  const setIsPlayingGuest = useGameStore((s) => s.setIsPlayingGuest);
+
   const { isFading, setFading } = useFadeStore();
   useEffect(() => {
+    // If user lands back on home page, they no longer have access
+    setIsPlayingGuest(false); // Reset if user lands back on home page
     setFading(false);
   }, []);
 
   /* const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3; */
-  const isPlayingGuest = useGameStore((s) => s.isPlayingGuest);
-  const setIsPlayingGuest = useGameStore((s) => s.setIsPlayingGuest);
 
   const navigateWithFade = (path: string) => {
     setFading(true);
@@ -41,10 +44,17 @@ export default function HomeClient() {
     }, 800);
   };
 
-  const { identityToken } = useUrlParams();
-  if (identityToken) {
-    console.log("Identity Token from URL:", identityToken);
-  }
+  const [identityToken, setIdentityToken] = useState<string | null>(null);
+
+  const { identityToken: urlIdentityToken, clearIdentityToken } = useUrlParams();
+
+  useEffect(() => {
+    if (!urlIdentityToken) return;
+
+    console.log("Identity Token from URL:", urlIdentityToken);
+    setIdentityToken(urlIdentityToken);
+    clearIdentityToken();
+  }, [urlIdentityToken, clearIdentityToken]);
 
   type ModalType = "unauthorized" | "error" | null;
   const [modal, setModal] = useState<ModalType>(null);
@@ -59,10 +69,12 @@ export default function HomeClient() {
     onUnauthorized: () => {
       setError(null);
       setModal("unauthorized");
+      setIdentityToken(null);
     },
     onError: (err) => {
       setError(err);
       setModal("error");
+      setIdentityToken(null);
     },
   });
 

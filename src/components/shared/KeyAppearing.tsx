@@ -58,7 +58,7 @@ export default function KeyAppearing({ isVisible, onDone }: KeyAppearingProps) {
           </motion.div>
 
           <motion.p
-            className="absolute bottom-1/4 font-fell text-yellow-400 text-sm tracking-widest"
+            className="absolute top-1/5 font-fell text-yellow-400 text-sm tracking-widest"
             animate={{ opacity: [0.4, 1, 0.4] }}
             transition={{ duration: 3, repeat: Infinity }}
           >

@@ -10,7 +10,7 @@ import { useEffectSounds } from "@/hooks/useEffectSounds";
 import KeyAppearing from "@/components/shared/KeyAppearing";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
-type GravestoneEffect = "correct" | "bats" | "shake" | "hand" | "thunder";
+type GravestoneEffect = "correct" | "bats" | "shake" | "thunder";
 
 interface Gravestone {
   id: number;
@@ -37,12 +37,12 @@ interface Gravestone {
 const GRAVESTONES: Gravestone[] = [
   {
     id: 1,
-    src: "/assets/images/gravestone1.png", // Silhouette — smaller, further away
+    src: "/assets/images/gravestone2.png",
     alt: "",
     effect: "bats",
     showOnMobile: false,
     position: { bottom: "35%", left: "42%" },
-    size: { width: 60, height: 80 },
+    size: { width: 80, height: 110 },
   },
   {
     id: 2,
@@ -66,16 +66,7 @@ const GRAVESTONES: Gravestone[] = [
   },
   {
     id: 4,
-    src: "/assets/images/gravestone2.png",
-    alt: "",
-    effect: "hand",
-    showOnMobile: false,
-    position: { bottom: "28%", right: "25%" },
-    size: { width: 90, height: 120 },
-  },
-  {
-    id: 5,
-    src: "/assets/images/gravestone1.png", // Reused
+    src: "/assets/images/gravestone1.png", // Silhouette — smaller, further away
     alt: "",
     effect: "thunder",
     showOnMobile: true,
@@ -115,11 +106,6 @@ export default function Graveyard() {
         creakSound();
         setShaking(true);
         setTimeout(() => setShaking(false), 600);
-        break;
-      case "hand":
-        handEmeregedSound();
-        setHandVisible(true);
-        setTimeout(() => setHandVisible(false), 2000);
         break;
       case "thunder":
         thunderSound();
@@ -172,6 +158,7 @@ export default function Graveyard() {
       {/* Static crow images */}
       {!isMobile && (
         <Image
+          draggable="false"
           src="/assets/images/crow-1.png"
           alt=""
           width={40}
@@ -181,6 +168,7 @@ export default function Graveyard() {
       )}
       {!isMobile && (
         <Image
+          draggable="false"
           src="/assets/images/crow-2.png"
           alt=""
           width={50}
@@ -191,6 +179,7 @@ export default function Graveyard() {
 
       {/* Static zombie images */}
       <Image
+        draggable="false"
         src="/assets/images/zombie-1.png"
         alt=""
         width={40}
@@ -199,11 +188,12 @@ export default function Graveyard() {
       />
       {!isMobile && (
         <Image
+          draggable="false"
           src="/assets/images/zombie-2.png"
           alt=""
-          width={140}
-          height={140}
-          className="absolute bottom-[25%] right-[6%]"
+          width={100}
+          height={100}
+          className="absolute bottom-[27%] right-[10%]"
         />
       )}
 
@@ -238,6 +228,7 @@ export default function Graveyard() {
                   className="cursor-pointer focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4 focus-visible:rounded"
                 >
                   <Image
+                    draggable="false"
                     src={stone.src}
                     alt={stone.alt}
                     width={stone.size.width}
@@ -250,31 +241,11 @@ export default function Graveyard() {
         },
       )}
 
-      {/* Small hand that peeks up and goes back down */}
-      <AnimatePresence>
-        {handVisible && (
-          <motion.div
-            className="absolute bottom-[32%] right-[27%] z-30"
-            initial={{ y: "40%" }}
-            animate={{ y: "0%" }}
-            exit={{ y: "50%" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <Image
-              src="/assets/images/zombie-hand-small-2.png"
-              alt=""
-              width={50}
-              height={70}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <DoorTransition
         buttonText={keyCollected ? "Enter the house" : "Door is locked"}
         doorImage="/assets/images/wooden-door.png"
-        positionClass="bottom-90 right-[15%] md:bottom-75 md:right-[20%]"
-        sizeClass="h-40 w-24 md:h-56 md:w-30"
+        positionClass="bottom-80 left-[80%] md:bottom-65 md:right-[20%]"
+        sizeClass="h-20 w-8 md:h-30 md:w-15"
         isLocked={!keyCollected}
       />
       <ZombieHand
