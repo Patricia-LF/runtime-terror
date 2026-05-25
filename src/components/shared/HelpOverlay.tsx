@@ -60,7 +60,11 @@ export default function HelpOverlay() {
                 {isTivoliMode ? (
                   <div className="flex flex-col gap-3">
                     <p className="font-fell text-grey">
-                      Click on the Pay Entry Fee button to use your token and
+                      If you don't want to enter the house, click on the Back to
+                      tivoli button up to the left.
+                    </p>
+                    <p className="font-fell text-grey">
+                      Click on the Pay Entry Fee button to use your token to
                       enter the haunted house.
                     </p>
                     <p className="font-fell text-grey">
@@ -78,11 +82,11 @@ export default function HelpOverlay() {
                 <div className="flex flex-col gap-3">
                   <p className="font-fell text-grey">
                     Make your way through each room by following the
-                    instructions, and see how scared you really are.
+                    instructions.
                   </p>
 
                   <p className="font-fell text-grey">
-                    Click on objects to interact with them.
+                    Click on objects to interact with them to unlock the doors.
                   </p>
 
                   <p className="font-fell text-grey">
