@@ -191,9 +191,9 @@ export default function Graveyard() {
           draggable="false"
           src="/assets/images/zombie-2.png"
           alt=""
-          width={140}
-          height={140}
-          className="absolute bottom-[25%] right-[6%]"
+          width={100}
+          height={100}
+          className="absolute bottom-[27%] right-[10%]"
         />
       )}
 
@@ -244,8 +244,8 @@ export default function Graveyard() {
       <DoorTransition
         buttonText={keyCollected ? "Enter the house" : "Door is locked"}
         doorImage="/assets/images/wooden-door.png"
-        positionClass="bottom-90 right-[15%] md:bottom-75 md:right-[20%]"
-        sizeClass="h-40 w-24 md:h-56 md:w-30"
+        positionClass="bottom-80 left-[80%] md:bottom-65 md:right-[20%]"
+        sizeClass="h-20 w-8 md:h-30 md:w-15"
         isLocked={!keyCollected}
       />
       <ZombieHand
