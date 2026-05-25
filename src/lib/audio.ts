@@ -22,6 +22,8 @@ export type SoundId =
   | "start-screen-ambience"
   | "end-screen-ambience"
   | "spider-drop"
+  | "ghost-sound"
+  | "ghost-voice"
   | "thunder";
 
 export type SoundKind = "ambient" | "effect";
@@ -190,6 +192,20 @@ export const SOUND_MAP = {
     volume: 0.1,
     autoplay: false,
   },
+  "ghost-sound": {
+    kind: "effect",
+    src: ["/assets/audio/effect/ghost-sound.mp3"],
+    loop: false,
+    volume: 0.5,
+    autoplay: false,
+  },
+  "ghost-voice": {
+    kind: "effect",
+    src: ["/assets/audio/effect/ghost-voice.mp3"],
+    loop: false,
+    volume: 0.5,
+    autoplay: false,
+  },
   thunder: {
     kind: "effect",
     src: ["/assets/audio/effect/thunder.m4a"],
@@ -201,6 +217,6 @@ export const SOUND_MAP = {
 
 export type EffectSoundId = {
   [K in keyof typeof SOUND_MAP]: (typeof SOUND_MAP)[K]["kind"] extends "effect"
-    ? K
-    : never;
+  ? K
+  : never;
 }[keyof typeof SOUND_MAP];
