@@ -50,7 +50,7 @@ export const SOUND_MAP = {
     volume: 0.5,
     autoplay: true,
   },
-  "creaks": {
+  creaks: {
     kind: "ambient",
     src: ["/assets/audio/ambient/creaks.mp3"],
     loop: true,
@@ -78,7 +78,7 @@ export const SOUND_MAP = {
     volume: 0.5,
     autoplay: false,
   },
-  "danger": {
+  danger: {
     kind: "effect",
     src: ["/assets/audio/effect/dangerEffect.mp3"],
     loop: false,
@@ -99,7 +99,7 @@ export const SOUND_MAP = {
     volume: 0.5,
     autoplay: false,
   },
-  "jumpscare": {
+  jumpscare: {
     kind: "effect",
     src: ["/assets/audio/effect/jumpscare.mp3"],
     loop: false,
@@ -138,28 +138,28 @@ export const SOUND_MAP = {
     kind: "effect",
     src: ["/assets/audio/effect/dolltalk-play.mp3"],
     loop: false,
-    volume: 0.5,
+    volume: 0.7,
     autoplay: false,
   },
   "dolltalk-waiting": {
     kind: "effect",
     src: ["/assets/audio/effect/dolltalk-waiting.mp3"],
     loop: false,
-    volume: 0.5,
+    volume: 0.7,
     autoplay: false,
   },
   "dolltalk-alone": {
     kind: "effect",
     src: ["/assets/audio/effect/dolltalk-alone.mp3"],
     loop: false,
-    volume: 0.5,
+    volume: 0.7,
     autoplay: false,
   },
   "key-appearing": {
     kind: "effect",
     src: ["/assets/audio/effect/key-glitter.flac"],
     loop: false,
-    volume: 0.1,
+    volume: 0.4,
     autoplay: false,
   },
   "clown-laugh": {
@@ -187,14 +187,14 @@ export const SOUND_MAP = {
     kind: "effect",
     src: ["/assets/audio/effect/spider-drop.ogg"],
     loop: false,
-    volume: 0.3,
+    volume: 0.1,
     autoplay: false,
   },
-  "thunder": {
+  thunder: {
     kind: "effect",
     src: ["/assets/audio/effect/thunder.m4a"],
     loop: false,
-    volume: 0.5,
+    volume: 0.4,
     autoplay: false,
   },
 } as const satisfies Record<SoundId, SoundConfig>;
