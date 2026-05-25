@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useAudioStore } from "@/store/useAudioStore";
-import { useGameStore } from "@/store/useGameStore";
 import type { SoundId } from "@/lib/audio";
 
 const phrases: { text: string; audio: SoundId }[] = [
@@ -158,7 +157,7 @@ export default function RockingChair({
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="absolute -top-16 left-1/2 -translate-x-1/2 bg-white text-black text-sm px-4 py-2 min-h-11 min-w-11 rounded-lg whitespace-nowrap font-fell"
+              className="absolute -top-16 left-1/2 -translate-x-1/2 bg-white text-black text-sm px-4 py-2 min-h-11 min-w-11 rounded-lg whitespace-nowrap font-fell flex items-center"
             >
               {currentPhrase}
             </motion.div>
@@ -166,6 +165,7 @@ export default function RockingChair({
         </AnimatePresence>
 
         <Image
+          draggable="false"
           className="items-center"
           src="/assets/images/rocking-doll.png"
           alt=""

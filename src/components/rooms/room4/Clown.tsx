@@ -154,6 +154,7 @@ export default function Clown() {
       {phase !== "intro" && (
         <>
           <motion.img
+            draggable="false"
             src="/assets/images/clown1.png"
             alt=""
             className="absolute bottom-50 left-1/2 max-w-full max-h-full object-contain md:bottom-0 z-10"
@@ -196,6 +197,7 @@ export default function Clown() {
                   aria-label="Pop balloon"
                 >
                   <img
+                    draggable="false"
                     src="/assets/images/balloon3.png"
                     alt=""
                     width={80}
