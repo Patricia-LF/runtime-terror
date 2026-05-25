@@ -8,13 +8,6 @@ interface DescriptionButtonProps {
   currentRoom: RoomId;
 }
 
-const ROOM_TITLES: Record<RoomId, string> = {
-  graveyard: "The Graveyard",
-  dolls: "The Doll Room",
-  spiders: "The Spider Room",
-  clown: "The Clown Room",
-};
-
 export default function DescriptionButton({
   currentRoom,
 }: DescriptionButtonProps) {
