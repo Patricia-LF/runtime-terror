@@ -20,16 +20,6 @@ export default function EndPage() {
   const stamp = useGameStore((s) => s.stamp);
   const hasExited = useGameStore((s) => s.hasExited);
 
-  useEffect(() => {
-    setIsHydrated(useGameStore.persist.hasHydrated());
-
-    const unsubscribe = useGameStore.persist.onFinishHydration(() => {
-      setIsHydrated(true);
-    });
-
-    return unsubscribe;
-  }, []);
-
   // Show stamp automatically after 4 seconds
   useEffect(() => {
     if (!TIVOLI_MODE) return;
