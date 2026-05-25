@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { useEffectSounds } from "@/hooks/useEffectSounds";
 
@@ -11,25 +11,44 @@ interface GhostLoopProps {
 export default function GhostLoop({
     onGhostClick,
 }: GhostLoopProps) {
+    const spawnTimeout = useRef<NodeJS.Timeout | null>(null);
+    const hideTimeout = useRef<NodeJS.Timeout | null>(null);
+    const [ghostFound, setGhostFound] = useState(false);
     const [show, setShow] = useState(false);
     const ghostSound = useEffectSounds({ effect: "ghost-sound" });
     const ghostVoice = useEffectSounds({ effect: "ghost-voice" });
-    const [position, setPosition] = useState({ bottom: "20%", right: "15%" });
+    const [position, setPosition] = useState({
+        bottom: 100,
+        right: 100,
+    });
 
     const randomPosition = () => {
-        const bottom = 10 + Math.random() * 60; //
-        const right = 5 + Math.random() * 60;
+        const ghostWidth = window.innerWidth < 768 ? 190 : 290;
+        const ghostHeight = window.innerWidth < 768 ? 190 : 290;
+
+        const padding = 40;
+
+        const maxRight =
+            window.innerWidth - ghostWidth - padding;
+
+        const maxBottom =
+            window.innerHeight - ghostHeight - padding;
+
+        const right =
+            padding + Math.random() * maxRight;
+
+        const bottom =
+            padding + Math.random() * maxBottom;
 
         setPosition({
-            bottom: `${bottom}%`,
-            right: `${right}%`,
+            bottom,
+            right,
         });
     };
 
     useEffect(() => {
-        let timeout: NodeJS.Timeout;
-
         const loop = () => {
+            if (ghostFound) return;
 
             const MIN_COOLDOWN = 3000;
 
@@ -37,12 +56,12 @@ export default function GhostLoop({
                 ? Math.random() * 4000
                 : 4000 + Math.random() * 6000);
 
-            timeout = setTimeout(() => {
+            spawnTimeout.current = setTimeout(() => {
                 randomPosition();
                 setShow(true);
                 ghostSound();
 
-                setTimeout(() => {
+                hideTimeout.current = setTimeout(() => {
                     setShow(false);
                     loop();
                 }, 4000 + Math.random() * 1000);
@@ -51,14 +70,25 @@ export default function GhostLoop({
 
         loop();
 
-        return () => clearTimeout(timeout);
-    }, []);
+        return () => {
+            if (spawnTimeout.current) {
+                clearTimeout(spawnTimeout.current);
+            }
+
+            if (hideTimeout.current) {
+                clearTimeout(hideTimeout.current);
+            }
+        };
+    }, [ghostFound]);
+
+    if (ghostFound) return null;
 
     return (
         <AnimatePresence>
             {show && (
                 <motion.button
                     onClick={() => {
+                        setGhostFound(true);
                         onGhostClick();
                         setShow(false);
                         ghostVoice();
