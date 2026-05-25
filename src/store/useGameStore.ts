@@ -9,6 +9,14 @@ export type RoomId = "graveyard" | "dolls" | "spiders" | "clown";
 
 export const ROOMS: RoomId[] = ["graveyard", "dolls", "spiders", "clown"];
 
+const initialGameState = {
+  currentRoom: "graveyard" as RoomId,
+  isComplete: false,
+  stamp: null,
+  hasExited: false,
+  isPlayingGuest: false,
+};
+
 
 interface GameStore {
   //state
@@ -32,14 +40,10 @@ export const useGameStore = create<GameStore>()(
   persist(
     (set, get) => ({
       // Start values
-      currentRoom: "graveyard",
-      isComplete: false,
-      stamp: null,
+      ...initialGameState,
       setStamp: (stamp) => set({ stamp }),
 
       // Functions that uppdates state
-      hasExited: false,
-      isPlayingGuest: false,
       setIsPlayingGuest: (value: boolean) => {
         set({ isPlayingGuest: value });
       },
@@ -77,13 +81,13 @@ export const useGameStore = create<GameStore>()(
           // ignore
         }
 
-        set({
-          currentRoom: "graveyard",
-          isComplete: false,
-          hasExited: false,
-          stamp: null,
-          isPlayingGuest: false,
-        });
+        try {
+          void useGameStore.persist.clearStorage();
+        } catch (err) {
+          // ignore
+        }
+
+        set(initialGameState);
       },
     }),
     {

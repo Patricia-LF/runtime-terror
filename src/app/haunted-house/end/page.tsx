@@ -15,15 +15,16 @@ export default function EndPage() {
   const [isRevoking, setIsRevoking] = useState(false);
   const [revokeError, setRevokeError] = useState<string | null>(null);
   const [showStamp, setShowStamp] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(() => useGameStore.persist.hasHydrated());
 
   const stamp = useGameStore((s) => s.stamp);
   const hasExited = useGameStore((s) => s.hasExited);
 
-  // Show stamp automatically after 6 seconds
+  // Show stamp automatically after 4 seconds
   useEffect(() => {
     if (!TIVOLI_MODE) return;
 
-    const timer = setTimeout(() => setShowStamp(true), 6000);
+    const timer = setTimeout(() => setShowStamp(true), 4000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -91,7 +92,20 @@ export default function EndPage() {
                   </>
                 )}
               </motion.div>
+            ) : !isHydrated ? (
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex flex-col gap-4"
+              >
+                <p className="font-fell text-grey text-xl text-center">
+                  Loading your stamp...
+                </p>
+              </motion.div>
             ) : (
+              <>
               <motion.div
                 key="stamp"
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -118,9 +132,13 @@ export default function EndPage() {
                     </p>
                   </>
                 ) : (
-                  <p className="font-fell text-grey">No stamp found</p>
+                  <p className="font-fell text-grey">No stamp awarded</p>
                 )}
               </motion.div>
+                <div className="w-full flex justify-center">
+                  <BackToTivoliButton />
+                </div>
+                </>
             )}
           </AnimatePresence>
         </div>
@@ -128,12 +146,18 @@ export default function EndPage() {
         {/* Return to Tivoli / Play again */}
         {TIVOLI_MODE ? (
           <div className="w-full flex justify-center">
-            <BackToTivoliButton />
+            {/* <BackToTivoliButton /> */}
           </div>
         ) : (
-          <LinkButton href="/" linkText="Play again" onClick={() => {
-    useGameStore.getState().resetGame();
-  }} />
+          <LinkButton
+            href="/"
+            linkText="Play again"
+            onClick={(event) => {
+              event.preventDefault();
+              useGameStore.getState().resetGame();
+              router.push("/");
+            }}
+          />
         )}
 
         {/* Dev only */}
@@ -142,7 +166,11 @@ export default function EndPage() {
           <>
             <button
               className="text-sm text-grey mt-2"
-              onClick={revokeDevAccess}
+              onClick={(event) => {
+                event.preventDefault();
+                useGameStore.getState().resetGame();
+                revokeDevAccess();
+              }}
               disabled={isRevoking}
             >
               {isRevoking

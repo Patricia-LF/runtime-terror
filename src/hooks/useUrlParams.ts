@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 
 type UrlParams = {
   identityToken: string | null
+  clearIdentityToken: () => void;
 };
 
 export function useUrlParams(): UrlParams {
@@ -17,8 +18,6 @@ export function useUrlParams(): UrlParams {
       // Save to localStorage for persistence
       localStorage.setItem("identityToken", urlToken);
       setIdentityToken(urlToken);
-      // Clean up URL
-      window.history.replaceState(null, '', window.location.pathname);
     } else {
       // Check localStorage for saved token
       const savedToken = localStorage.getItem("identityToken");
@@ -26,7 +25,17 @@ export function useUrlParams(): UrlParams {
     }
   }, [urlToken]);
 
+  const clearIdentityToken = () => {
+    localStorage.removeItem("identityToken");
+    setIdentityToken(null);
+
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.delete("identity_token");
+    window.history.replaceState(null, "", nextUrl.pathname + nextUrl.search);
+  };
+
   return {
     identityToken,
+    clearIdentityToken,
   };
 }
