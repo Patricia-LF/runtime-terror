@@ -25,14 +25,17 @@ export default function HomeClient() {
   const router = useRouter();
   const [devAccessLoading, setDevAccessLoading] = useState(false);
 
+  const isPlayingGuest = useGameStore((s) => s.isPlayingGuest);
+  const setIsPlayingGuest = useGameStore((s) => s.setIsPlayingGuest);
+
   const { isFading, setFading } = useFadeStore();
   useEffect(() => {
+    // If user lands back on home page, they no longer have access
+    setIsPlayingGuest(false); // Reset if user lands back on home page
     setFading(false);
   }, []);
 
   /* const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3; */
-  const isPlayingGuest = useGameStore((s) => s.isPlayingGuest);
-  const setIsPlayingGuest = useGameStore((s) => s.setIsPlayingGuest);
 
   const navigateWithFade = (path: string) => {
     setFading(true);
