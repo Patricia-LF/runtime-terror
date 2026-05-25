@@ -11,8 +11,8 @@ export type Animal = "lion" | "dolphin" | "toucan" | "beetlebug" | "snake";
 export type Metal = "silver" | "gold" | "platinum" | null;
 
 export type Stamp = {
-  image_url: string;
   animal: Animal;
+  image_url: string;
   metal: Metal;
 } | null;
 

@@ -15,9 +15,20 @@ export default function EndPage() {
   const [isRevoking, setIsRevoking] = useState(false);
   const [revokeError, setRevokeError] = useState<string | null>(null);
   const [showStamp, setShowStamp] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(() => useGameStore.persist.hasHydrated());
 
   const stamp = useGameStore((s) => s.stamp);
   const hasExited = useGameStore((s) => s.hasExited);
+
+  useEffect(() => {
+    setIsHydrated(useGameStore.persist.hasHydrated());
+
+    const unsubscribe = useGameStore.persist.onFinishHydration(() => {
+      setIsHydrated(true);
+    });
+
+    return unsubscribe;
+  }, []);
 
   // Show stamp automatically after 4 seconds
   useEffect(() => {
@@ -90,6 +101,18 @@ export default function EndPage() {
                     </p>
                   </>
                 )}
+              </motion.div>
+            ) : !isHydrated ? (
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex flex-col gap-4"
+              >
+                <p className="font-fell text-grey text-xl text-center">
+                  Loading your stamp...
+                </p>
               </motion.div>
             ) : (
               <>
