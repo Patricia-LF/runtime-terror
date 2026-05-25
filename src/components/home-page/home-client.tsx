@@ -44,10 +44,17 @@ export default function HomeClient() {
     }, 800);
   };
 
-  const { identityToken } = useUrlParams();
-  if (identityToken) {
-    console.log("Identity Token from URL:", identityToken);
-  }
+  const [identityToken, setIdentityToken] = useState<string | null>(null);
+
+  const { identityToken: urlIdentityToken, clearIdentityToken } = useUrlParams();
+
+  useEffect(() => {
+    if (!urlIdentityToken) return;
+
+    console.log("Identity Token from URL:", urlIdentityToken);
+    setIdentityToken(urlIdentityToken);
+    clearIdentityToken();
+  }, [urlIdentityToken, clearIdentityToken]);
 
   type ModalType = "unauthorized" | "error" | null;
   const [modal, setModal] = useState<ModalType>(null);
@@ -62,10 +69,12 @@ export default function HomeClient() {
     onUnauthorized: () => {
       setError(null);
       setModal("unauthorized");
+      setIdentityToken(null);
     },
     onError: (err) => {
       setError(err);
       setModal("error");
+      setIdentityToken(null);
     },
   });
 

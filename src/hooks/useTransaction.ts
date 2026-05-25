@@ -68,6 +68,11 @@ export function useTransaction({
 
       const payload = (await res.json()) as TransactionResponse | { message?: string };
 
+      console.log("Transaction response:", {
+        status: res.status,
+        payload,
+      });
+
       if (!res.ok) {
         const fallbackMessage =
           payload && typeof payload === "object" && "message" in payload
