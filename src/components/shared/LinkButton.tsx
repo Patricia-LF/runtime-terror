@@ -1,9 +1,10 @@
+import type { MouseEvent } from "react";
 import Link from "next/link";
 
 type LinkButtonProps = {
     href: string;
     linkText: string;
-    onClick?: () => void;
+    onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 
     ariaLabel?: string;
     ariaDescribedBy?: string;
