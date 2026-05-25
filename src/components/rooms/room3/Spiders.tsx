@@ -26,6 +26,12 @@ export default function Spiders() {
     },
   ];
 
+      const spiders = [
+        { id: 1, style: { top: "10%", left: "30%" } },
+        { id: 2, style: { top: "20%", left: "60%" } },
+        { id: 3, style: { top: "50%", left: "40%" } },
+    ];
+
   const [visibleWebs, setVisibleWebs] = useState<number[]>([1, 2, 3]);
 
   const removeWeb = (id: number) => {
@@ -34,7 +40,9 @@ export default function Spiders() {
 
   const allWebsRemoved = visibleWebs.length === 0;
 
-  const [hasClickedGhost, setHasClickedGhost] = useState(false);
+  const [hasClickedWeb, setHasClickedWeb] = useState<boolean>(false);
+
+  const [hasClickedGhost, setHasClickedGhost] = useState<boolean>(false);
 
   return (
     <div className="absolute inset-0 bg-[url('/assets/images/eerie-hospital.png')] bg-cover bg-bottom">
@@ -68,13 +76,22 @@ export default function Spiders() {
 
             <button
               aria-label="Remove spider web"
-              onClick={() => removeWeb(web.id)}
+              onClick={() => {
+                setHasClickedWeb(true);
+                removeWeb(web.id);
+              }}
               className="absolute top-[20%] left-[20%] h-120 w-120 cursor-pointer"
             />
           </div>
         ) : null,
       )}
-      <SpiderAnimation />
+      {spiders.map((spider) => (
+          <SpiderAnimation
+          key={spider.id}
+          style={{ top: spider.style.top, left: spider.style.left }}
+          isActive={hasClickedWeb}
+          />
+      ))}
       <SpiderDrop allWebsRemoved={allWebsRemoved} />
     </div>
   );

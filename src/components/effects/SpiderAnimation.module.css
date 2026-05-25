@@ -24,13 +24,11 @@
 
 .spiderWrap {
     position: fixed;
-    bottom: 45px;
-    left: 0;
     width: 256px;
     height: 256px;
-    z-index: 30;
+    z-index: 40;
     overflow: hidden;
-    animation: scurry 4s linear infinite;
+    animation: scurry 4s linear step-start;
 }
 
 .spiderScale {
