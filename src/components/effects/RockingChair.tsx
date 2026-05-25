@@ -48,7 +48,6 @@ export default function RockingChair({
     };
   }, []);
 
-
   const handleClick = (): void => {
     if (isTalking || isJumpscare) return;
 
@@ -65,7 +64,8 @@ export default function RockingChair({
             ? 0.25
             : 0.1;
 
-    const willJumpscare = forceJumpscare || Math.random() < jumpscareChance;
+    const willJumpscare =
+      totalTalks > 0 && (forceJumpscare || Math.random() < jumpscareChance);
 
     if (willJumpscare) {
       play("loud-jumpscare");
