@@ -84,6 +84,7 @@ export function useTransaction({
       // Success: payload is the TransactionResponse
       setStamp((payload as TransactionResponse).stamp);
       onSuccess?.();
+      console.log("Transaction successful:", payload);
       return payload as TransactionResponse;
     } catch (error) {
       onError?.({
