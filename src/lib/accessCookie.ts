@@ -7,6 +7,6 @@ const isProduction: boolean = process.env.NODE_ENV === "production";
 
 export const ACCESS_COOKIE_OPTIONS = {
   httpOnly: true,
-  sameSite: isProduction ? "none" : "lax" as const,
+  sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
   secure: isProduction,
 };
