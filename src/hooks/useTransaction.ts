@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import { ApiError } from "@/types/errors";
-import { TransactionResponse, Transaction } from "@/types";
+import { TransactionResponse, ClientTransaction } from "@/types";
 import { useGameStore } from "@/store/useGameStore";
-
-const ENTRY_PRICE = Number(process.env.ENTRY_PRICE);
 
 type UseTransactionOptions = {
   onSuccess?: () => void;
@@ -47,10 +45,8 @@ export function useTransaction({
     setIsLoading(true);
 
     try {
-      const transaction: Transaction = {
+      const transaction: ClientTransaction = {
         identity_token: identityToken,
-        amount: ENTRY_PRICE,
-        api_key: "runtime-terror", // Placeholder, will be set by server
       };
 
       const res = await fetch("/api/transaction", {
