@@ -28,42 +28,52 @@
     height: 256px;
     z-index: 40;
     overflow: hidden;
-    animation: scurry 4s linear step-start;
+    /* default: no movement (idle). When `.moving` is added the animation runs once */
+}
+
+.idle {
+    /* use the inline `top`/`left` from the parent `spiderStyle` for idle positioning */
+    animation: none !important;
+}
+
+.moving {
+    animation-name: scurry;
+    animation-duration: var(--spider-duration, 4s);
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-delay: var(--spider-delay, 0s);
 }
 
 .spiderScale {
-    transform: scale(0.6);
+    transform: scale(var(--spider-scale-x, 0.6), var(--spider-scale, 0.6));
     transform-origin: left bottom;
 }
 
 @media (min-width: 768px) {
-    .spiderWrap {
-        animation: scurry 4s linear infinite;
+    .moving {
+        animation-duration: var(--spider-duration-medium, 5s);
     }
 }
 
 @media (min-width: 1024px) {
-    .spiderWrap {
-        animation: scurry 8s linear infinite;
+    .moving {
+        animation-duration: var(--spider-duration-large, 7s);
     }
 }
 
 /* Spider movements across screen */
 @keyframes scurry {
     0% {
-        transform: translateX(0vw) translateY(0px);
+        transform: translateX(0) translateY(0px);
     }
 
-    33% {
-        transform: translateX(-25vw) translateY(10px);
-    }
-
-    66% {
-        transform: translateX(-55vw) translateY(55px);
+    50% {
+        transform: translateX(calc(var(--spider-end-x, -100vw) / 2)) translateY(var(--spider-translate-y-mid, 30px));
     }
 
     100% {
-        transform: translateX(-100vw) translateY(0px);
+        transform: translateX(var(--spider-end-x, -100vw)) translateY(var(--spider-translate-y-end, 0px));
     }
 }
 

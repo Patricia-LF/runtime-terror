@@ -2,10 +2,21 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import SpiderAnimation from "@/components/effects/SpiderAnimation";
 import DoorTransition from "@/components/shared/DoorTransition";
 import SpiderDrop from "@/components/effects/SpiderDrop";
 import GhostLoop from "@/components/effects/GhostLoop";
+
+type SpiderStyle = CSSProperties & {
+  "--spider-duration": string;
+  "--spider-duration-medium": string;
+  "--spider-duration-large": string;
+  "--spider-delay": string;
+  "--spider-start-x"?: string;
+  "--spider-end-x"?: string;
+  "--spider-scale"?: string;
+};
 
 export default function Spiders() {
   const spiderwebs = [
@@ -26,11 +37,12 @@ export default function Spiders() {
     },
   ];
 
-      const spiders = [
-        { id: 1, style: { top: "10%", left: "30%" } },
-        { id: 2, style: { top: "20%", left: "60%" } },
-        { id: 3, style: { top: "50%", left: "40%" } },
-    ];
+  const spiders = [
+    // Each spider can control start position (top/left), movement start offset (enter-from side), speed and visual scale
+    { id: 1, style: { top: "20%", left: "30%", duration: "2s", durationMedium: "3s", durationLarge: "5s", delay: "0s",  startX: "0vw", endX: "-120vw", scale: "0.6" } },
+    { id: 2, style: { top: "50%", left: "20%", duration: "3s", durationMedium: "5s", durationLarge: "7s", delay: "1s", startX: "-15vw", endX: "120vw", scale: "0.6" } },
+    { id: 3, style: { top: "35%", left: "60%", duration: "4s", durationMedium: "5s", durationLarge: "10s", delay: "0.5s", startX: "20vw", endX: "-120vw", scale: "0.8" } },
+  ];
 
   const [visibleWebs, setVisibleWebs] = useState<number[]>([1, 2, 3]);
 
@@ -85,13 +97,26 @@ export default function Spiders() {
           </div>
         ) : null,
       )}
-      {spiders.map((spider) => (
+        {spiders.map((spider) => {
+          const spiderStyle: SpiderStyle = {
+            top: spider.style.top,
+            left: spider.style.left,
+            "--spider-duration": spider.style.duration,
+            "--spider-duration-medium": spider.style.durationMedium,
+            "--spider-duration-large": spider.style.durationLarge,
+            "--spider-delay": spider.style.delay,
+            "--spider-start-x": spider.style.startX,
+            "--spider-end-x": spider.style.endX,
+            "--spider-scale": spider.style.scale,
+          };
+
+          return (
           <SpiderAnimation
-          key={spider.id}
-          style={{ top: spider.style.top, left: spider.style.left }}
-          isActive={hasClickedWeb}
+            key={spider.id}
+            isActive={hasClickedWeb}
+            style={spiderStyle}
           />
-      ))}
+        );})}
       <SpiderDrop allWebsRemoved={allWebsRemoved} />
     </div>
   );
