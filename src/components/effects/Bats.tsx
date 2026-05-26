@@ -50,12 +50,11 @@ export function Bat({
   );
 }
 
-export default function Bats(/* { extraSwarm = false }: BatsProps */) {
+export default function Bats() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Starts left of screen, flies across to right */}
       <Bat
-        /* src="/assets/images/bat-in-medium-size-variant-silhouette-svgrepo-com.svg" */
         startX="0%"
         startY="0%"
         animateX={["-200px", "110vw"]}
@@ -66,7 +65,6 @@ export default function Bats(/* { extraSwarm = false }: BatsProps */) {
       />
 
       <Bat
-        /*  src="/assets/images/bat-in-medium-size-variant-silhouette-svgrepo-com.svg" */
         startX="0%"
         startY="0%"
         animateX={["-200px", "110vw"]}
@@ -77,7 +75,6 @@ export default function Bats(/* { extraSwarm = false }: BatsProps */) {
       />
 
       <Bat
-        /* src="/assets/images/bat-in-medium-size-variant-silhouette-svgrepo-com.svg" */
         startX="0%"
         startY="0%"
         animateX={["-200px", "110vw"]}

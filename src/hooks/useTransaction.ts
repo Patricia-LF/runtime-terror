@@ -68,11 +68,6 @@ export function useTransaction({
 
       const payload = (await res.json()) as TransactionResponse | { message?: string };
 
-      console.log("Transaction response:", {
-        status: res.status,
-        payload,
-      });
-
       if (!res.ok) {
         const fallbackMessage =
           payload && typeof payload === "object" && "message" in payload
@@ -89,7 +84,6 @@ export function useTransaction({
       // Success: payload is the TransactionResponse
       setStamp((payload as TransactionResponse).stamp);
       onSuccess?.();
-      console.log("Transaction successful:", payload);
       return payload as TransactionResponse;
     } catch (error) {
       onError?.({
