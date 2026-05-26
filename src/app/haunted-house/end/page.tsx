@@ -27,6 +27,19 @@ export default function EndPage() {
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    if (useGameStore.persist.hasHydrated()) {
+      setIsHydrated(true);
+      return;
+    }
+
+    const unsubscribe = useGameStore.persist.onFinishHydration(() => {
+      setIsHydrated(true);
+    });
+
+    return unsubscribe;
+  }, []);
+
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
@@ -111,6 +124,7 @@ export default function EndPage() {
                 )}
               </motion.div>
                 <div className="w-full flex justify-center">
+                  {/* Revoke access and return to Tivoli if in Tivoli mode, otherwise show play again button */}
                   <BackToTivoliButton revokeAccess />
                 </div>
                 </>
