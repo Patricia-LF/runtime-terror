@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import DoorTransition from "@/components/shared/DoorTransition";
 import { useEffectSounds } from "@/hooks/useEffectSounds";
-import { useGameStore } from "@/store/useGameStore";
 
 type Balloon = {
   id: string;
