@@ -1,22 +1,58 @@
 import { NextRequest, NextResponse } from "next/server";
 import { processPayment } from "@/lib/payment";
 import { setAccessCookie } from "@/lib/cookie";
+import { Transaction } from "@/types";
+
+const ENTRY_PRICE = Number(process.env.ENTRY_PRICE ?? 3);
+
+type TransactionRequestBody = Pick<Transaction, "identity_token">;
+
+function isTransactionRequestBody(value: unknown): value is TransactionRequestBody {
+    return (
+        typeof value === "object" &&
+        value !== null &&
+        "identity_token" in value &&
+        typeof (value as { identity_token?: unknown }).identity_token === "string" &&
+        (value as { identity_token: string }).identity_token.trim().length > 0
+    );
+}
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
     try {
-        const transaction = await req.json();
-        // Set the API key from server environment
-        transaction.api_key = process.env.API_KEY || "missing-api-key";
-        console.log('[API] Transaction received:', {
-          identity_token: transaction.identity_token ? transaction.identity_token.substring(0, 8) + '...' : 'MISSING',
-          amount: transaction.amount,
-          api_key: transaction.api_key,
+        const body: unknown = await req.json();
+
+        if (!isTransactionRequestBody(body)) {
+            return NextResponse.json(
+                { message: "Invalid transaction request" },
+                { status: 400 },
+            );
+        }
+
+        const apiKey = process.env.API_KEY;
+
+        if (!apiKey) {
+            return NextResponse.json(
+                { message: "Payment API is not configured" },
+                { status: 500 },
+            );
+        }
+
+        if (!Number.isFinite(ENTRY_PRICE) || ENTRY_PRICE <= 0) {
+            return NextResponse.json(
+                { message: "Invalid entry price configuration" },
+                { status: 500 },
+            );
+        }
+
+        const result = await processPayment({
+            identity_token: body.identity_token,
+            amount: ENTRY_PRICE,
+            api_key: apiKey,
         });
-        const result = await processPayment(transaction);
 
         // Handle successful payment: unwrap and return the transaction payload
         if (result.success) {
-            await setAccessCookie();
+            await setAccessCookie(); // Set access cookie on successful payment
             return NextResponse.json(result.data, { status: 200 });
         }
 

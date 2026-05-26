@@ -30,10 +30,9 @@ export async function checkAccessCookie() {
 
 export async function clearAccessCookie() {
     const cookieStore = await cookies();
-    cookieStore.set({
+
+    cookieStore.delete({
         name: ACCESS_COOKIE_NAME,
-        value: "",
-        ...ACCESS_COOKIE_SCOPED_OPTIONS,
-        maxAge: 0,
+        path: ACCESS_COOKIE_PATH,
     });
 }

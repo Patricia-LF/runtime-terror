@@ -50,10 +50,6 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
     set((state) => ({
       instances: { ...state.instances, [soundId]: { howl } },
     }));
-    if (process.env.NODE_ENV === "development") {
-      const count = Object.keys(get().instances).length;
-      console.debug(`[audio] load ${soundId} -> instances=${count}`);
-    }
   },
 
   play: (soundId) => {
@@ -117,11 +113,6 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
           delete copy[soundId];
           return { instances: copy };
         });
-
-        if (process.env.NODE_ENV === "development") {
-          const count = Object.keys(get().instances).length;
-          console.debug(`[audio] fadeOut ${soundId} -> instances=${count}`);
-        }
       });
     } catch (err) {
       // Fallback: if once/fade isn't available, schedule cleanup.
@@ -137,11 +128,6 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
           delete copy[soundId];
           return { instances: copy };
         });
-
-        if (process.env.NODE_ENV === "development") {
-          const count = Object.keys(get().instances).length;
-          console.debug(`[audio] fadeOut(fallback) ${soundId} -> instances=${count}`);
-        }
       }, duration);
     }
   },
@@ -161,10 +147,6 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
       delete copy[soundId];
       return { instances: copy };
     });
-    if (process.env.NODE_ENV === "development") {
-      const count = Object.keys(get().instances).length;
-      console.debug(`[audio] unload ${soundId} -> instances=${count}`);
-    }
   },
 
   unloadAll: () => {
@@ -181,9 +163,6 @@ export const useAudioStore = create<AudioStore>((set, get) => ({
       }
     });
     set({ instances: {}, currentAmbient: null });
-    if (process.env.NODE_ENV === "development") {
-      console.debug(`[audio] unloadAll -> instances=0`);
-    }
   },
 
   fadeOutAllEffects: (duration = 1000) => {

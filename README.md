@@ -44,7 +44,6 @@ src/
 │   │   ├── Bats.tsx
 │   │   ├── BatSprite.module.css
 │   │   ├── BatSprite.tsx
-│   │   ├── Filmgrain.tsx
 │   │   ├── Fog.tsx
 │   │   ├── RockingChair.tsx
 │   │   ├── SpiderAnimation.module.css

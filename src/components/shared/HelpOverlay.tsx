@@ -86,7 +86,8 @@ export default function HelpOverlay() {
                   </p>
 
                   <p className="font-fell text-grey">
-                    Click on objects to interact with them to unlock the doors.
+                    Click on objects to interact with them and to unlock the
+                    doors.
                   </p>
 
                   <p className="font-fell text-grey">

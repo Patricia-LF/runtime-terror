@@ -12,10 +12,10 @@ import { BackToTivoliButton } from "@/components/shared/BackToTivoliButton";
 
 export default function EndPage() {
   const router = useRouter();
-  const [isRevoking, setIsRevoking] = useState(false);
-  const [revokeError, setRevokeError] = useState<string | null>(null);
   const [showStamp, setShowStamp] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(() => useGameStore.persist.hasHydrated());
+  const [isHydrated, setIsHydrated] = useState(() =>
+    useGameStore.persist.hasHydrated(),
+  );
 
   const stamp = useGameStore((s) => s.stamp);
   const hasExited = useGameStore((s) => s.hasExited);
@@ -29,29 +29,19 @@ export default function EndPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  const revokeDevAccess = async () => {
-    setIsRevoking(true);
-    setRevokeError(null);
-
-    try {
-      const res = await fetch("/api/access", {
-        method: "DELETE",
-        cache: "no-store",
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to revoke access cookie");
-      }
-
-      router.replace("/");
-      router.refresh();
-    } catch (error) {
-      setRevokeError("Failed to revoke dev access. Please try again.");
-      console.error("Failed to revoke dev access:", error);
-    } finally {
-      setIsRevoking(false);
+  useEffect(() => {
+    if (useGameStore.persist.hasHydrated()) {
+      setIsHydrated(true);
+      return;
     }
-  };
+
+    const unsubscribe = useGameStore.persist.onFinishHydration(() => {
+      setIsHydrated(true);
+    });
+
+    return unsubscribe;
+  }, []);
+
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
@@ -63,7 +53,7 @@ export default function EndPage() {
       <div className="relative z-20 flex flex-col h-full w-full justify-center items-center">
         <div className="bg-black/40 p-4 m-8 mx-4 rounded flex flex-col gap-6 md:w-120">
           <AnimatePresence mode="wait">
-            {!showStamp ? (
+            {!TIVOLI_MODE || !showStamp ? (
               <motion.div
                 key="text"
                 initial={{ opacity: 0 }}
@@ -106,39 +96,39 @@ export default function EndPage() {
               </motion.div>
             ) : (
               <>
-              <motion.div
-                key="stamp"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col items-center gap-4"
-              >
-                <p className="font-fell text-grey text-xl text-center">
-                  {hasExited
-                    ? "Here's your consolation prize:"
-                    : "Here's your well deserved stamp:"}
-                </p>
-                {stamp !== null ? (
-                  <>
-                    <Image
-                      src={stamp.image_url ?? ""}
-                      alt={`${stamp.metal ? `${stamp.metal} ` : ""}${stamp.animal}`}
-                      width={200}
-                      height={200}
-                    />
-                    <p className="font-fell text-grey text-center">
-                      You got a{" "}
-                      {stamp.metal && `${stamp.metal} `}
-                      {stamp.animal}!
-                    </p>
-                  </>
-                ) : (
-                  <p className="font-fell text-grey">No stamp awarded</p>
-                )}
-              </motion.div>
+                <motion.div
+                  key="stamp"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex flex-col items-center gap-4"
+                >
+                  <p className="font-fell text-grey text-xl text-center">
+                    {hasExited
+                      ? "Here's your consolation prize:"
+                      : "Here's your well deserved stamp:"}
+                  </p>
+                  {stamp !== null ? (
+                    <>
+                      <Image
+                        src={stamp.image_url ?? ""}
+                        alt={`${stamp.metal ? `${stamp.metal} ` : ""}${stamp.animal}`}
+                        width={200}
+                        height={200}
+                      />
+                      <p className="font-fell text-grey text-center">
+                        You got a {stamp.metal && `${stamp.metal} `}
+                        {stamp.animal}!
+                      </p>
+                    </>
+                  ) : (
+                    <p className="font-fell text-grey">No stamp awarded</p>
+                  )}
+                </motion.div>
                 <div className="w-full flex justify-center">
-                  <BackToTivoliButton />
+                  {/* Revoke access and return to Tivoli if in Tivoli mode, otherwise show play again button */}
+                  <BackToTivoliButton revokeAccess />
                 </div>
-                </>
+              </>
             )}
           </AnimatePresence>
         </div>
@@ -160,28 +150,6 @@ export default function EndPage() {
           />
         )}
 
-        {/* Dev only */}
-        {/* Testing button to revoke dev access cookie, combine the real functionality into the TIVOLI_MODE button */}
-        {process.env.NODE_ENV !== "production" && (
-          <>
-            <button
-              className="text-sm text-grey mt-2"
-              onClick={(event) => {
-                event.preventDefault();
-                useGameStore.getState().resetGame();
-                revokeDevAccess();
-              }}
-              disabled={isRevoking}
-            >
-              {isRevoking
-                ? "Revoking access..."
-                : "Revoke dev access (for testing)"}
-            </button>
-            {revokeError && (
-              <p className="text-red-500 mt-2 text-sm">{revokeError}</p>
-            )}
-          </>
-        )}
       </div>
     </div>
   );

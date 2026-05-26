@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function LoadingScreen() {
   return (
-    <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-[9999] gap-8">
+    <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-9999 gap-8">
       {/* Title */}
       <h1 className="font-eater text-red-800 text-4xl md:text-6xl">
         Runtime Terror
