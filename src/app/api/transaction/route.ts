@@ -52,7 +52,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
         // Handle successful payment: unwrap and return the transaction payload
         if (result.success) {
-            await setAccessCookie();
+            await setAccessCookie(); // Set access cookie on successful payment
             return NextResponse.json(result.data, { status: 200 });
         }
 
