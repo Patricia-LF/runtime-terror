@@ -32,6 +32,7 @@ src/
 │   ├── haunted-house/
 │   │   ├── end/
 │   │   │   └── page.tsx          # End screen
+|   |   |   └── loading.tsx        # Loading screen 
 │   │   ├── layout.tsx            # Haunted house layout
 │   │   └── page.tsx              # Main game — handles room state
 │   ├── favicon.ico
@@ -45,41 +46,54 @@ src/
 │   │   ├── BatSprite.module.css
 │   │   ├── BatSprite.tsx
 │   │   ├── Fog.tsx
+│   │   ├── GhostLoop.tsx
 │   │   ├── RockingChair.tsx
 │   │   ├── SpiderAnimation.module.css
-│   │   └── SpiderAnimation.tsx
+│   │   ├── SpiderAnimation.tsx
+│   │   └── SpiderDrop.tsx
 │   ├── home-page/                # Home page components
 │   │   ├── enter-form.tsx        # Entry form with payment
 │   │   └── home-client.tsx       # Home page logic and layout
 │   ├── rooms/                    # One component per room
-│   │   ├── room1/Graveyard.tsx
+│   │   ├── room1/Graveyard.tsx, ZombieHand.tsx
 │   │   ├── room2/Dolls.tsx
 │   │   ├── room3/Spiders.tsx
 │   │   ├── room4/Clown.tsx
-│   │   ├── HauntedHouseShell.tsx # Shared room shell and layout
-│   │   └── RoomWrapper.tsx       # Wraps each room with shared logic
+│   │   └── HauntedHouseShell.tsx # Shared room shell and layout      
 │   ├── shared/                   # Shared components
+│   │   ├── BackToTicoliButton.tsx # Closes iframe
+│   │   ├── DescriptionButton.tsx # Opens room descriptions
 │   │   ├── DoorTransition.tsx    # Animated door between rooms
+│   │   ├── FadeOverlay.tsx
 │   │   ├── HelpOverlay.tsx       # Global help overlay
-│   │   └── UnauthorizedModal.tsx # Modal for 401 errors
+│   │   ├── KeyAppearing.tsx
+│   │   ├── LinkButton.tsx
+│   │   ├── ModalBase.tsx
+│   │   └── RouteAmbiantPlayer.tsx # 
 │   └── ui/                       # Generic UI components
-│       └── CustomCursor.tsx
+│   │   ├── ErrorModal.tsx
+│   │   ├── ExitModal.tsx
+│   │   ├── LoadingScreen.tsx
+│   │   ├── MuteButton.tsx
+│   │   └── UnauthorizedModal.tsx # Modal for 401 errors
 ├── hooks/                        # Custom React hooks
-│   ├── useAmbientSound.ts        # Handles ambient sound per room
+│   ├── useAmbientController.ts
+│   ├── useAudioUnlock.ts        # 
 │   ├── useEffectSounds.ts        # Handles effect sounds
+│   ├── useIsMobile.ts
 │   ├── useTransaction.ts         # Handles payment flow
 │   └── useUrlParams.ts           # Reads identity token from URL
 ├── lib/                          # Utility functions and configuration
 │   ├── accessCookie.ts           # Dev access cookie logic
 │   ├── audio.ts                  # Sound map and audio configuration
 │   ├── cookie.ts                 # Cookie utilities
-│   ├── fetcher.ts                # Fetch wrapper
 │   ├── gameConfig.ts             # Game configuration
 │   ├── parseError.ts             # Error parsing utilities
 │   ├── payment.ts                # Payment logic
 │   └── rooms.ts                  # Room configuration
 ├── store/
 │   ├── useAudioStore.ts          # Audio state management
+│   ├── useFadeStore.ts
 │   └── useGameStore.ts           # Room progression and game state
 └── types/
     ├── errors.ts                 # Error types
