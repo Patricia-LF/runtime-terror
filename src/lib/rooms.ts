@@ -33,7 +33,7 @@ export const ROOM_HELP: Record<RoomId, RoomHelp> = {
     interactions: [
       "Click on the spider webs to remove them. But beware — you are not alone...",
     ],
-    goal: "Clear all the webs, click on a ghost and unlock the door.",
+    goal: "Clear the webs and catch the ghost to reveal the path.",
   },
   clown: {
     title: "The Clown Room",

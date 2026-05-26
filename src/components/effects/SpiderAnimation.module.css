@@ -5,7 +5,8 @@
     background-image: url("/assets/spider/runBody.png");
     background-repeat: no-repeat;
 
-    animation: jitter 0.4s infinite steps(2)
+    animation: jitter 0.4s infinite steps(2);
+    animation-delay: var(--spider-jitter-delay, 0s);
 }
 
 .spiderShadow {
