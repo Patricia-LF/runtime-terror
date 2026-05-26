@@ -37,7 +37,7 @@ src/
 │   │   ├── access/
 │   │   │   └── route.ts          # Dev access cookie endpoint
 │   │   ├── config/               
-│   │   │   └── route.ts          # entry price?
+│   │   │   └── route.ts          # Read entry price from server
 │   │   └── transaction/
 │   │       └── route.ts          # Transaction API route — handles payment server-side
 │   ├── haunted-house/
@@ -134,7 +134,6 @@ Create a `.env` file based on `.env.example`:
  
 ```
 NEXT_PUBLIC_TIVOLI_MODE=false       # Set to true when connected to Loopland
-NEXT_PUBLIC_ENTRY_PRICE=3           # Entry fee shown to user (euros)
 ENTRY_PRICE=3                       # Entry fee used server-side for transaction
 API_KEY=                            # Attraction API key from the centralbank
 API_URL=https://api.loopland.se     # Centralbank API base URL
