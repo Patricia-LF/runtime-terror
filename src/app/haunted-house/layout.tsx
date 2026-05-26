@@ -1,8 +1,8 @@
 import HauntedHouseShell from "@/components/rooms/HauntedHouseShell";
+import AccessGate from "../../components/shared/AccessGate";
 import { ACCESS_COOKIE_NAME, ACCESS_COOKIE_VALUE } from "@/lib/accessCookie";
 import { TIVOLI_MODE } from "@/lib/gameConfig";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 type HauntedHouseLayoutProps = {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ export default async function HauntedHouseLayout({ children }: HauntedHouseLayou
     cookieStore.get(ACCESS_COOKIE_NAME)?.value === ACCESS_COOKIE_VALUE;
 
   if (!accessGranted && TIVOLI_MODE) {
-    redirect("/");
+    return <AccessGate>{children}</AccessGate>;
   }
   return (
     <HauntedHouseShell>

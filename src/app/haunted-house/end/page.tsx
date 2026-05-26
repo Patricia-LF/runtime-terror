@@ -13,9 +13,7 @@ import { BackToTivoliButton } from "@/components/shared/BackToTivoliButton";
 export default function EndPage() {
   const router = useRouter();
   const [showStamp, setShowStamp] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(() =>
-    useGameStore.persist.hasHydrated(),
-  );
+  const [isHydrated, setIsHydrated] = useState(false);
 
   const stamp = useGameStore((s) => s.stamp);
   const hasExited = useGameStore((s) => s.hasExited);
@@ -30,12 +28,19 @@ export default function EndPage() {
   }, []);
 
   useEffect(() => {
-    if (useGameStore.persist.hasHydrated()) {
+    const persist = useGameStore.persist;
+
+    if (!persist) {
       setIsHydrated(true);
       return;
     }
 
-    const unsubscribe = useGameStore.persist.onFinishHydration(() => {
+    if (persist.hasHydrated()) {
+      setIsHydrated(true);
+      return;
+    }
+
+    const unsubscribe = persist.onFinishHydration(() => {
       setIsHydrated(true);
     });
 

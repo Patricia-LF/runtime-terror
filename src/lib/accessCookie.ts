@@ -9,4 +9,5 @@ export const ACCESS_COOKIE_OPTIONS = {
   httpOnly: true,
   sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
   secure: isProduction,
+  partitioned: isProduction, // Browser support for partitioned cookies is currently limited, but we enable it in production to enhance security where supported.
 };
