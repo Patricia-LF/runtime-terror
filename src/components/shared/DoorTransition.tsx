@@ -35,7 +35,7 @@ export default function DoorTransition({
   // Start door animation, then trigger fade-out and room transition
   const handleClick = (): void => {
     if (isLocked) return;
-    triggerDoorSound(); // Play sound when door opens
+    triggerDoorSound();
     setIsOpen(true);
     setTimeout(() => {
       setFading(true);
@@ -90,7 +90,7 @@ export default function DoorTransition({
             </div>
           </>
         ) : (
-          /* Arrow mode - static display */
+          /* Arrow mode */
           <button
             onClick={handleClick}
             aria-label="Go to next room"
@@ -115,11 +115,10 @@ export default function DoorTransition({
         )}
 
         <p
-          className={`font-fell text-grey text-sm tracking-widest animate-pulse transition-opacity ${
-            !animated || !isOpen
+          className={`font-fell text-grey text-sm tracking-widest animate-pulse transition-opacity ${!animated || !isOpen
               ? "opacity-100"
               : "opacity-0 pointer-events-none"
-          }`}
+            }`}
         >
           {buttonText}
           {isLocked && (

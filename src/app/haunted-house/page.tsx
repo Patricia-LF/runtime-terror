@@ -46,8 +46,6 @@ export default function HauntedHousePage() {
   if (!hasMounted) return null;
 
   const CurrentRoom = ROOMS[currentRoom];
-  console.log("CurrentRoom:", CurrentRoom);
-
   // key={currentRoom} forces React to unmount and remount on room change
   return (
     <>

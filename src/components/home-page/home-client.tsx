@@ -34,8 +34,6 @@ export default function HomeClient() {
     setFading(false);
   }, []);
 
-  /* const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3; */
-
   const navigateWithFade = (path: string) => {
     setFading(true);
     setTimeout(() => {
