@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ModalBase } from "../shared/ModalBase";
 import { LinkButton } from "../shared/LinkButton";
 import { useGameStore } from "@/store/useGameStore";

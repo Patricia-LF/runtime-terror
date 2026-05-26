@@ -18,9 +18,12 @@ export default function SpiderDrop({ allWebsRemoved }: SpiderDropProps) {
   useEffect(() => {
     if (!allWebsRemoved) return;
     // Wait for dropDelay before playing sound
-    const timer = setTimeout(() => {
-      spiderDrop();
-    }, (dropDelay + LANDING_TIME) * 1000);
+    const timer = setTimeout(
+      () => {
+        spiderDrop();
+      },
+      (dropDelay + LANDING_TIME) * 1000,
+    );
     return () => clearTimeout(timer);
   }, [allWebsRemoved]);
 
@@ -61,6 +64,7 @@ export default function SpiderDrop({ allWebsRemoved }: SpiderDropProps) {
           }}
         >
           <Image
+            draggable="false"
             src="/assets/images/spider2.png"
             alt=""
             width={300}

@@ -8,7 +8,6 @@ import EnterForm from "@/components/home-page/enter-form";
 import Fog from "@/components/effects/Fog";
 import Bats from "@/components/effects/Bats";
 import HelpOverlay from "@/components/shared/HelpOverlay";
-import MuteButton from "../ui/MuteButton";
 import { FadeOverlay } from "@/components/shared/FadeOverlay";
 
 import { ApiError } from "@/types/errors";
@@ -34,8 +33,6 @@ export default function HomeClient() {
     setFading(false);
   }, []);
 
-  /* const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3; */
-
   const navigateWithFade = (path: string) => {
     setFading(true);
     setTimeout(() => {
@@ -45,7 +42,8 @@ export default function HomeClient() {
 
   const [identityToken, setIdentityToken] = useState<string | null>(null);
 
-  const { identityToken: urlIdentityToken, clearIdentityToken } = useUrlParams();
+  const { identityToken: urlIdentityToken, clearIdentityToken } =
+    useUrlParams();
 
   useEffect(() => {
     if (!urlIdentityToken) return;
@@ -87,7 +85,6 @@ export default function HomeClient() {
       <Bats />
       <Fog />
 
-      <MuteButton positionClass="right-0" />
       <div className="absolute w-full flex justify-left m-4 md:m-6">
         {TIVOLI_MODE && <BackToTivoliButton />}
       </div>
@@ -126,9 +123,6 @@ export default function HomeClient() {
               {/* Payment or free entry depending on tivoli mode */}
               {TIVOLI_MODE ? (
                 <div className="flex flex-col gap-4">
-                  {/* <h3 className="text-white text-xl">
-                  Enter the house for {ENTRY_PRICE}€
-                </h3> */}
                   <EnterForm
                     onSubmit={submitTransaction}
                     identityToken={identityToken}
@@ -142,7 +136,7 @@ export default function HomeClient() {
                 <button
                   type="button"
                   onClick={() => setIsPlayingGuest(true)}
-                  className="border text-white bg-red-dark rounded px-4 py-2 min-h-11 min-w-11 cursor-pointer md:bg-transparent border-white hover:bg-red-dark hover:text-white transition font-fell tracking-widest"
+                  className="border text-white bg-red-dark rounded px-4 py-2 min-h-11 min-w-11 cursor-pointer border-white hover:opacity-80 transition font-fell tracking-widest"
                 >
                   Enter if you dare
                 </button>

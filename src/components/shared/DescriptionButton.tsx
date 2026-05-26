@@ -8,13 +8,6 @@ interface DescriptionButtonProps {
   currentRoom: RoomId;
 }
 
-const ROOM_TITLES: Record<RoomId, string> = {
-  graveyard: "The Graveyard",
-  dolls: "The Doll Room",
-  spiders: "The Spider Room",
-  clown: "The Clown Room",
-};
-
 export default function DescriptionButton({
   currentRoom,
 }: DescriptionButtonProps) {
@@ -46,7 +39,7 @@ export default function DescriptionButton({
   if (!help) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-50">
+    <div className="fixed top-4 right-18 z-50">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label={isOpen ? "Close help" : "Room help"}
@@ -63,7 +56,7 @@ export default function DescriptionButton({
           onClose={() => setIsOpen(false)}
           className="p-0 m-0 bg-transparent border-none w-0 h-0 overflow-visible backdrop:bg-transparent"
         >
-          <div className="absolute top-2 right-2 w-60 bg-red-dark/80 border border-white text-white font-fell text-sm p-4 rounded flex flex-col gap-3">
+          <div className="absolute top-2 right-[-40] w-60 bg-red-dark/80 border border-white text-white font-fell text-sm p-4 rounded flex flex-col gap-3">
             <h2 id="dialog-title" className="font-glitch text-lg">
               {help.title}
             </h2>

@@ -21,6 +21,7 @@ export default function EnterForm({
   };
 
   const isDisabled = isLoading || !identityToken;
+  const entryPrice = process.env.NEXT_PUBLIC_ENTRY_PRICE;
 
   return (
     <form
@@ -30,9 +31,9 @@ export default function EnterForm({
       <button
         type="submit"
         disabled={isDisabled}
-        className="border border-white rounded px-4 py-2 min-h-11 min-w-11 w-full text-white cursor-pointer bg-red-dark transition focus:ring-2 focus:ring-red-dark focus:outline-none md:bg-transparent hover:bg-red-dark"
+        className="border border-white rounded px-4 py-2 min-h-11 min-w-11 w-full text-white cursor-pointer bg-red-dark hover:opacity-80 transition focus:ring-2 focus:ring-red-dark focus:outline-none"
       >
-        {isLoading ? "Processing..." : "Pay Entry Fee"}
+        {isLoading ? "Processing..." : `Pay Entry Fee (${entryPrice}€)`}
       </button>
       {isDisabled && !identityToken && (
         <p className="text-red-400 text-sm mt-2">

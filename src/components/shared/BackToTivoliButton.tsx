@@ -55,7 +55,7 @@ export function BackToTivoliButton({ revokeAccess = false }: BackToTivoliButtonP
         height={80}
         className="w-11 h-11 md:w-20 md:h-20 hover:scale-105 transition"
       />
-      Back to Tivoli
+      Back to Loopland
     </button>
   );
 }
