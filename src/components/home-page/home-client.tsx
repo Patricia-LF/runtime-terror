@@ -75,7 +75,6 @@ export default function HomeClient() {
     },
   });
 
-
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
       <FadeOverlay isActive={isFading} />
@@ -91,7 +90,7 @@ export default function HomeClient() {
 
       {/* Content — top layer */}
       <div className="relative z-20 flex flex-col w-full h-full items-center">
-        <h1 className="font-eater text-red-800 flex w-full text-4xl mt-18 mb-2 justify-center md:text-5xl md:mt-6 md:mb-4 leading-normal">
+        <h1 className="font-eater text-red-800 flex w-full text-4xl mt-18 mb-2 justify-center md:text-5xl md:mt-6 md:mb-4 leading-normal max-[365px]:text-base">
           Runtime terror
         </h1>
         {!isPlayingGuest ? (
@@ -101,18 +100,18 @@ export default function HomeClient() {
             <div className="bg-black/40 p-4 mx-10 rounded flex flex-col gap-6 md:w-100">
               <div className="relative flex items-start gap-2">
                 <div className="flex flex-col gap-4">
-                  <h2 className="font-glitch text-3xl my-1 flex justify-center text-grey">
+                  <h2 className="font-glitch text-3xl my-1 flex justify-center text-grey max-[365px]:text-base">
                     Welcome!
                   </h2>
-                  <h3 className="font-fell text-grey text-xl">
+                  <h3 className="font-fell text-grey text-xl max-[365px]:text-base">
                     Are you a scaredy cat — or do you laugh in the face of
                     horror?
                   </h3>
-                  <h3 className="font-fell text-grey text-xl">
+                  <h3 className="font-fell text-grey text-xl max-[365px]:text-base">
                     Enter Runtime Terror and find out if you can handle what's
                     inside.
                   </h3>
-                  <h3 className="font-fell text-grey text-xl">
+                  <h3 className="font-fell text-grey text-xl max-[365px]:text-base">
                     Don't forget to turn on the sound 🔊🎧 to get the full
                     experience.
                   </h3>
@@ -129,19 +128,20 @@ export default function HomeClient() {
                     isLoading={isLoading}
                   />
                   {error && modal !== "error" && (
-                    <p className="text-red-400 mt-2">Error: {error.message}</p>
+                    <p className="text-red-400 mt-2 max-[365px]:text-base">
+                      Error: {error.message}
+                    </p>
                   )}
                 </div>
               ) : (
                 <button
                   type="button"
                   onClick={() => setIsPlayingGuest(true)}
-                  className="border text-white bg-red-dark rounded px-4 py-2 min-h-11 min-w-11 cursor-pointer border-white hover:opacity-80 transition font-fell tracking-widest"
+                  className="border text-white bg-red-dark rounded px-4 py-2 min-h-11 min-w-11 cursor-pointer border-white hover:opacity-80 transition font-fell tracking-widest max-[365px]:text-base"
                 >
                   Enter if you dare
                 </button>
               )}
-
             </div>
           </div>
         ) : (

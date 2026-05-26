@@ -44,7 +44,7 @@ export default function DescriptionButton({
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label={isOpen ? "Close help" : "Room help"}
         aria-expanded={isOpen}
-        className="w-11 h-11 mx-2 rounded-full border border-white text-white text-2xl align-bottom font-fell flex items-center justify-center bg-red-dark/60 hover:opacity-70 cursor-pointer"
+        className="w-11 h-11 mx-2 rounded-full border border-white text-white text-2xl align-bottom font-fell flex items-center justify-center bg-red-dark/60 hover:opacity-70 cursor-pointer max-[365px]:text-base"
       >
         {isOpen ? "x" : "?"}
       </button>
@@ -57,7 +57,10 @@ export default function DescriptionButton({
           className="p-0 m-0 bg-transparent border-none w-0 h-0 overflow-visible backdrop:bg-transparent"
         >
           <div className="absolute top-2 right-[-40] w-60 bg-red-dark/80 border border-white text-white font-fell text-sm p-4 rounded flex flex-col gap-3">
-            <h2 id="dialog-title" className="font-glitch text-lg">
+            <h2
+              id="dialog-title"
+              className="font-glitch text-lg max-[365px]:text-sm"
+            >
               {help.title}
             </h2>
             <p id="dialog-description" className="font-fell text-base">
