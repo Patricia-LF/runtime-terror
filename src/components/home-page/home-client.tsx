@@ -120,7 +120,7 @@ export default function HomeClient() {
 
               {/* Payment or free entry depending on tivoli mode */}
               {TIVOLI_MODE ? (
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 z-50">
                   <EnterForm
                     onSubmit={submitTransaction}
                     identityToken={identityToken}
@@ -136,7 +136,7 @@ export default function HomeClient() {
                 <button
                   type="button"
                   onClick={() => setIsPlayingGuest(true)}
-                  className="border text-white bg-red-dark rounded px-4 py-2 min-h-11 min-w-11 cursor-pointer border-white hover:opacity-80 transition font-fell tracking-widest max-[365px]:text-base"
+                  className="border text-white bg-red-dark rounded px-4 py-2 min-h-11 min-w-11 cursor-pointer z-50 border-white hover:opacity-80 transition font-fell tracking-widest max-[365px]:text-base"
                 >
                   Enter if you dare
                 </button>
@@ -158,10 +158,11 @@ export default function HomeClient() {
               justify-center
               gap-4
               cursor-pointer group
+              z-50
             "
           >
             <div
-              className="text-6xl text-gray-300"
+              className="text-6xl text-gray-300 z-50"
               style={{
                 animation: "arrow-bounce 1s infinite",
               }}

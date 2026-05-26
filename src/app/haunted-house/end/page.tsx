@@ -55,7 +55,7 @@ export default function EndPage() {
       <Fog opacity={0.6} />
 
       <div className="relative z-20 flex flex-col h-full w-full justify-center items-center">
-        <div className="bg-black/50 p-4 m-8 mx-4 rounded flex flex-col gap-6 w-11/12 md:w-120">
+        <div className="bg-black/50 p-4 m-8 mx-4 rounded flex flex-col gap-6 w-11/12 z-50 md:w-120">
           <AnimatePresence mode="wait">
             {!TIVOLI_MODE || !showStamp ? (
               <motion.div
