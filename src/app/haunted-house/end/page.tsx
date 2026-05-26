@@ -12,8 +12,6 @@ import { BackToTivoliButton } from "@/components/shared/BackToTivoliButton";
 
 export default function EndPage() {
   const router = useRouter();
-  const [isRevoking, setIsRevoking] = useState(false);
-  const [revokeError, setRevokeError] = useState<string | null>(null);
   const [showStamp, setShowStamp] = useState(false);
   const [isHydrated, setIsHydrated] = useState(() =>
     useGameStore.persist.hasHydrated(),
@@ -31,29 +29,19 @@ export default function EndPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  const revokeDevAccess = async () => {
-    setIsRevoking(true);
-    setRevokeError(null);
-
-    try {
-      const res = await fetch("/api/access", {
-        method: "DELETE",
-        cache: "no-store",
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to revoke access cookie");
-      }
-
-      router.replace("/");
-      router.refresh();
-    } catch (error) {
-      setRevokeError("Failed to revoke dev access. Please try again.");
-      console.error("Failed to revoke dev access:", error);
-    } finally {
-      setIsRevoking(false);
+  useEffect(() => {
+    if (useGameStore.persist.hasHydrated()) {
+      setIsHydrated(true);
+      return;
     }
-  };
+
+    const unsubscribe = useGameStore.persist.onFinishHydration(() => {
+      setIsHydrated(true);
+    });
+
+    return unsubscribe;
+  }, []);
+
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
@@ -137,7 +125,8 @@ export default function EndPage() {
                   )}
                 </motion.div>
                 <div className="w-full flex justify-center">
-                  <BackToTivoliButton />
+                  {/* Revoke access and return to Tivoli if in Tivoli mode, otherwise show play again button */}
+                  <BackToTivoliButton revokeAccess />
                 </div>
               </>
             )}
@@ -161,28 +150,6 @@ export default function EndPage() {
           />
         )}
 
-        {/* Dev only */}
-        {/* Testing button to revoke dev access cookie, combine the real functionality into the TIVOLI_MODE button */}
-        {process.env.NODE_ENV !== "production" && (
-          <>
-            <button
-              className="text-sm text-grey mt-2"
-              onClick={(event) => {
-                event.preventDefault();
-                useGameStore.getState().resetGame();
-                revokeDevAccess();
-              }}
-              disabled={isRevoking}
-            >
-              {isRevoking
-                ? "Revoking access..."
-                : "Revoke dev access (for testing)"}
-            </button>
-            {revokeError && (
-              <p className="text-red-500 mt-2 text-sm">{revokeError}</p>
-            )}
-          </>
-        )}
       </div>
     </div>
   );

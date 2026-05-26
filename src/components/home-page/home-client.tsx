@@ -22,7 +22,6 @@ import { ErrorModal } from "../ui/ErrorModal";
 
 export default function HomeClient() {
   const router = useRouter();
-  const [devAccessLoading, setDevAccessLoading] = useState(false);
 
   const isPlayingGuest = useGameStore((s) => s.isPlayingGuest);
   const setIsPlayingGuest = useGameStore((s) => s.setIsPlayingGuest);
@@ -30,7 +29,7 @@ export default function HomeClient() {
   const { isFading, setFading } = useFadeStore();
   useEffect(() => {
     // If user lands back on home page, they no longer have access
-    setIsPlayingGuest(false); // Reset if user lands back on home page
+    //setIsPlayingGuest(false); // Reset if user lands back on home page
     setFading(false);
   }, []);
 
@@ -76,24 +75,6 @@ export default function HomeClient() {
     },
   });
 
-  const handleDevAccess = async () => {
-    setDevAccessLoading(true);
-    setError(null);
-
-    try {
-      const res = await fetch("/api/access", { method: "POST" });
-
-      if (!res.ok) {
-        throw new Error("Could not create access cookie");
-      }
-
-      navigateWithFade("/haunted-house");
-    } catch {
-      setError({ message: "Dev access failed. Could not set cookie." });
-    } finally {
-      setDevAccessLoading(false);
-    }
-  };
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
@@ -161,19 +142,6 @@ export default function HomeClient() {
                 </button>
               )}
 
-              {/* Dev access button — only in development */}
-              {process.env.NODE_ENV !== "production" && (
-                <button
-                  type="button"
-                  onClick={handleDevAccess}
-                  disabled={devAccessLoading}
-                  className="text-white underline disabled:opacity-50 text-sm"
-                >
-                  {devAccessLoading
-                    ? "Setting dev access..."
-                    : "Enter house (dev cookie test)"}
-                </button>
-              )}
             </div>
           </div>
         ) : (
