@@ -47,7 +47,7 @@
 
 .spiderScale {
     transform: scale(var(--spider-scale-x, 0.6), var(--spider-scale, 0.6));
-    transform-origin: left bottom;
+    transform-origin: center bottom;
 }
 
 @media (min-width: 768px) {

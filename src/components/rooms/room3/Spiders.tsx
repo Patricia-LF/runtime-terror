@@ -16,6 +16,9 @@ type SpiderStyle = CSSProperties & {
   "--spider-start-x"?: string;
   "--spider-end-x"?: string;
   "--spider-scale"?: string;
+  "--spider-scale-x"?: string;
+  "--spider-translate-y-mid"?: string;
+  "--spider-translate-y-end"?: string;
 };
 
 export default function Spiders() {
@@ -39,9 +42,10 @@ export default function Spiders() {
 
   const spiders = [
     // Each spider can control start position (top/left), movement start offset (enter-from side), speed and visual scale
-    { id: 1, style: { top: "20%", left: "30%", duration: "2s", durationMedium: "3s", durationLarge: "5s", delay: "0s",  startX: "0vw", endX: "-120vw", scale: "0.6" } },
-    { id: 2, style: { top: "50%", left: "20%", duration: "3s", durationMedium: "5s", durationLarge: "7s", delay: "0.6s", startX: "-15vw", endX: "-120vw", scale: "0.6" } },
-    { id: 3, style: { top: "35%", left: "60%", duration: "4s", durationMedium: "5s", durationLarge: "10s", delay: "0.2s", startX: "20vw", endX: "120vw", scale: "0.8" } },
+    { id: 1, style: { top: "20%", left: "25%", duration: "1.5s", durationMedium: "3s", durationLarge: "4.5s", delay: "0s",  startX: "0vw", endX: "-120vw", scale: "0.6", midY: "-40vh", endY: "-100vh" } },
+    { id: 2, style: { top: "50%", left: "15%", duration: "2s", durationMedium: "3.5s", durationLarge: "6s", delay: "0.6s", startX: "-15vw", endX: "-120vw", scale: "0.6", midY: "20vh", endY: "60vh" } },
+    // flip sprite horizontally for id 3 so it visually faces its movement
+    { id: 3, style: { top: "35%", left: "40%", duration: "2.5s", durationMedium: "3.5s", durationLarge: "6.5s", delay: "0.2s", startX: "20vw", endX: "120vw", scale: "0.8", scaleX: "-0.8", midY: "50vh", endY: "40vh" } },
   ];
 
   const [visibleWebs, setVisibleWebs] = useState<number[]>([1, 2, 3]);
@@ -108,6 +112,9 @@ export default function Spiders() {
             "--spider-start-x": spider.style.startX,
             "--spider-end-x": spider.style.endX,
             "--spider-scale": spider.style.scale,
+            "--spider-scale-x": (spider.style as any).scaleX ?? spider.style.scale,
+            "--spider-translate-y-mid": spider.style.midY,
+            "--spider-translate-y-end": spider.style.endY,
           };
 
           return (
