@@ -3,7 +3,7 @@ import { processPayment } from "@/lib/payment";
 import { setAccessCookie } from "@/lib/cookie";
 import { Transaction } from "@/types";
 
-const ENTRY_PRICE = Number(process.env.ENTRY_PRICE ?? process.env.NEXT_PUBLIC_ENTRY_PRICE ?? 3);
+const ENTRY_PRICE = Number(process.env.ENTRY_PRICE ?? 3);
 
 type TransactionRequestBody = Pick<Transaction, "identity_token">;
 
