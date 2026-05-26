@@ -17,8 +17,6 @@ export function BackToTivoliButton({ revokeAccess = false }: BackToTivoliButtonP
 
     try {
       if (revokeAccess) {
-        useGameStore.getState().setIsPlayingGuest(false);
-
         const response = await fetch("/api/access", {
           method: "DELETE",
           cache: "no-store",
@@ -27,16 +25,19 @@ export function BackToTivoliButton({ revokeAccess = false }: BackToTivoliButtonP
         if (!response.ok) {
           throw new Error("Failed to revoke access cookie");
         }
+
+        useGameStore.getState().setIsPlayingGuest(false);
       }
-    } catch (error) {
-      console.error("BackToTivoliButton failed to revoke access cookie:", error);
-    } finally {
+
       useGameStore.getState().resetGame();
       window.parent.postMessage(
         { type: "AMUSEMENT_CLOSE" },
         "https://loopland.se",
       );
-      //window.location.href = process.env.NEXT_PUBLIC_TIVOLI_URL!;
+    } catch (error) {
+      console.error("BackToTivoliButton failed to revoke access cookie:", error);
+      return;
+    } finally {
       setIsSubmitting(false);
     }
   };
