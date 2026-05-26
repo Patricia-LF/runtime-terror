@@ -3,7 +3,6 @@
 import { useGameStore } from "@/store/useGameStore";
 import DescriptionButton from "@/components/shared/DescriptionButton";
 import Image from "next/image";
-import MuteButton from "../ui/MuteButton";
 import { useFadeStore } from "@/store/useFadeStore";
 import { useEffect, useState } from "react";
 import { ExitModal } from "../ui/ExitModal";
@@ -18,7 +17,7 @@ export default function HauntedHouseShell({
 }: HauntedHouseShellProps) {
   const pathname = usePathname();
   const isEndPage = pathname === "/haunted-house/end";
-  
+
   const currentRoom = useGameStore((s) => s.currentRoom);
   const [showExitModal, setShowExitModal] = useState(false);
 
@@ -41,8 +40,6 @@ export default function HauntedHouseShell({
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden position-relative">
       {children}
-
-      <MuteButton positionClass="right-14" />
 
       {!isEndPage && (
         <>
