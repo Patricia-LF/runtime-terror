@@ -2,20 +2,49 @@
 
 import { useGameStore } from "@/store/useGameStore";
 import Image from "next/image";
+import { useState } from "react";
 
-export function BackToTivoliButton() {
-  const handleTivoliReturn = () => {
-    useGameStore.getState().resetGame();
-    window.parent.postMessage(
-      { type: "AMUSEMENT_CLOSE" },
-      "https://loopland.se",
-    );
-    //window.location.href = process.env.NEXT_PUBLIC_TIVOLI_URL!;
+type BackToTivoliButtonProps = {
+  revokeAccess?: boolean;
+};
+
+export function BackToTivoliButton({ revokeAccess = false }: BackToTivoliButtonProps) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleTivoliReturn = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
+    try {
+      if (revokeAccess) {
+        useGameStore.getState().setIsPlayingGuest(false);
+
+        const response = await fetch("/api/access", {
+          method: "DELETE",
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to revoke access cookie");
+        }
+      }
+    } catch (error) {
+      console.error("BackToTivoliButton failed to revoke access cookie:", error);
+    } finally {
+      useGameStore.getState().resetGame();
+      window.parent.postMessage(
+        { type: "AMUSEMENT_CLOSE" },
+        "https://loopland.se",
+      );
+      //window.location.href = process.env.NEXT_PUBLIC_TIVOLI_URL!;
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <button
       onClick={handleTivoliReturn}
+      disabled={isSubmitting}
       className="z-50 text-sm text-white font-fell flex flex-col items-center justify-start cursor-pointer hover:opacity-80"
     >
       <Image

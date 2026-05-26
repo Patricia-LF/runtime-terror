@@ -136,7 +136,7 @@ export default function EndPage() {
                 )}
               </motion.div>
                 <div className="w-full flex justify-center">
-                  <BackToTivoliButton />
+                  <BackToTivoliButton revokeAccess />
                 </div>
                 </>
             )}
@@ -160,28 +160,6 @@ export default function EndPage() {
           />
         )}
 
-        {/* Dev only */}
-        {/* Testing button to revoke dev access cookie, combine the real functionality into the TIVOLI_MODE button */}
-        {process.env.NODE_ENV !== "production" && (
-          <>
-            <button
-              className="text-sm text-grey mt-2"
-              onClick={(event) => {
-                event.preventDefault();
-                useGameStore.getState().resetGame();
-                revokeDevAccess();
-              }}
-              disabled={isRevoking}
-            >
-              {isRevoking
-                ? "Revoking access..."
-                : "Revoke dev access (for testing)"}
-            </button>
-            {revokeError && (
-              <p className="text-red-500 mt-2 text-sm">{revokeError}</p>
-            )}
-          </>
-        )}
       </div>
     </div>
   );
