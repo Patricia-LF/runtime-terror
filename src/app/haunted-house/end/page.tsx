@@ -42,16 +42,15 @@ export default function EndPage() {
     return unsubscribe;
   }, []);
 
-
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden">
       {/* Background — lowest layer */}
       <div className="absolute inset-0 bg-linear-to-b from-[#323138] to-[#121218] bg-left" />
 
-      <Fog />
+      <Fog opacity={0.6} />
 
       <div className="relative z-20 flex flex-col h-full w-full justify-center items-center">
-        <div className="bg-black/40 p-4 m-8 mx-4 rounded flex flex-col gap-6 md:w-120">
+        <div className="bg-black/50 p-4 m-8 mx-4 rounded flex flex-col gap-6 w-11/12 md:w-120">
           <AnimatePresence mode="wait">
             {!TIVOLI_MODE || !showStamp ? (
               <motion.div
@@ -63,20 +62,20 @@ export default function EndPage() {
               >
                 {hasExited ? (
                   <>
-                    <h1 className="text-4xl font-glitch text-grey text-center">
+                    <h1 className="text-4xl font-glitch text-grey text-center max-[365px]:text-base">
                       Oh look, a scaredy cat!
                     </h1>
-                    <p className="text-xl font-fell text-grey text-center">
+                    <p className="text-xl font-fell text-grey text-center max-[365px]:text-base">
                       You didn't make it through the house. Better luck next
                       time...
                     </p>
                   </>
                 ) : (
                   <>
-                    <h1 className="text-4xl font-glitch text-grey text-center">
+                    <h1 className="text-4xl font-glitch text-grey text-center max-[365px]:text-base">
                       Congratulations!
                     </h1>
-                    <p className="text-xl font-fell text-grey text-center">
+                    <p className="text-xl font-fell text-grey text-center max-[365px]:text-base">
                       You've escaped the Haunted House!
                     </p>
                   </>
@@ -90,7 +89,7 @@ export default function EndPage() {
                 exit={{ opacity: 0 }}
                 className="flex flex-col gap-4"
               >
-                <p className="font-fell text-grey text-xl text-center">
+                <p className="font-fell text-grey text-xl text-center max-[365px]:text-base">
                   Loading your stamp...
                 </p>
               </motion.div>
@@ -102,7 +101,7 @@ export default function EndPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="flex flex-col items-center gap-4"
                 >
-                  <p className="font-fell text-grey text-xl text-center">
+                  <p className="font-fell text-grey text-xl text-center max-[365px]:text-base">
                     {hasExited
                       ? "Here's your consolation prize:"
                       : "Here's your well deserved stamp:"}
@@ -115,13 +114,15 @@ export default function EndPage() {
                         width={200}
                         height={200}
                       />
-                      <p className="font-fell text-grey text-center">
+                      <p className="font-fell text-grey text-center max-[365px]:text-sm">
                         You got a {stamp.metal && `${stamp.metal} `}
                         {stamp.animal}!
                       </p>
                     </>
                   ) : (
-                    <p className="font-fell text-grey">No stamp awarded</p>
+                    <p className="font-fell text-grey max-[365px]:text-sm">
+                      No stamp awarded
+                    </p>
                   )}
                 </motion.div>
                 <div className="w-full flex justify-center">
@@ -149,7 +150,6 @@ export default function EndPage() {
             }}
           />
         )}
-
       </div>
     </div>
   );
