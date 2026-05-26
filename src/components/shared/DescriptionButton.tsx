@@ -56,7 +56,7 @@ export default function DescriptionButton({
           onClose={() => setIsOpen(false)}
           className="p-0 m-0 bg-transparent border-none w-0 h-0 overflow-visible backdrop:bg-transparent"
         >
-          <div className="absolute top-2 right-[-40] w-60 bg-red-dark/80 border border-white text-white font-fell text-sm p-4 rounded flex flex-col gap-3">
+          <div className="absolute top-2 right-[-80] w-60 bg-red-dark/80 border border-white text-white font-fell text-sm p-4 rounded flex flex-col gap-3">
             <h2
               id="dialog-title"
               className="font-glitch text-lg max-[365px]:text-sm"
