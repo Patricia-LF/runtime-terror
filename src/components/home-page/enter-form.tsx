@@ -21,8 +21,16 @@ export default function EnterForm({
     await onSubmit(identityToken);
   };
 
-  const isDisabled = isLoading || !identityToken;
-  const { price: entryPrice } = useEntryPrice();
+  const { price: entryPrice, loading: entryPriceLoading, error: entryPriceError } = useEntryPrice();
+  const isDisabled = isLoading || entryPriceLoading || !identityToken;
+
+  const buttonLabel = isLoading
+    ? "Processing..."
+    : entryPriceLoading
+    ? "Loading price..."
+    : entryPrice !== null
+    ? `Pay Entry Fee ${entryPrice}€`
+    : "Pay Entry Fee";
 
   return (
     <form
@@ -34,8 +42,11 @@ export default function EnterForm({
         disabled={isDisabled}
         className="border border-white rounded px-4 py-2 min-h-11 min-w-11 w-full text-white cursor-pointer bg-red-dark hover:opacity-80 transition focus:ring-2 focus:ring-red-dark focus:outline-none"
       >
-        {isLoading ? "Processing..." : `Pay Entry Fee ${entryPrice}€`}
+        {buttonLabel}
       </button>
+      {entryPriceError && (
+        <p className="text-yellow-300 text-sm mt-2">Error loading price: {entryPriceError}</p>
+      )}
       {isDisabled && !identityToken && (
         <p className="text-red-400 text-sm mt-2">
           Unable to start payment: Identity token is missing. Return to the main
