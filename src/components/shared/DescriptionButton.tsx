@@ -39,7 +39,7 @@ export default function DescriptionButton({
   if (!help) return null;
 
   return (
-    <div className="fixed top-4 right-4 z-50">
+    <div className="fixed top-4 right-18 z-50">
       <button
         onClick={() => setIsOpen((prev) => !prev)}
         aria-label={isOpen ? "Close help" : "Room help"}

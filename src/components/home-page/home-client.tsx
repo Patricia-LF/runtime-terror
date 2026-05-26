@@ -8,7 +8,6 @@ import EnterForm from "@/components/home-page/enter-form";
 import Fog from "@/components/effects/Fog";
 import Bats from "@/components/effects/Bats";
 import HelpOverlay from "@/components/shared/HelpOverlay";
-import MuteButton from "../ui/MuteButton";
 import { FadeOverlay } from "@/components/shared/FadeOverlay";
 
 import { ApiError } from "@/types/errors";
@@ -107,7 +106,6 @@ export default function HomeClient() {
       <Bats />
       <Fog />
 
-      <MuteButton positionClass="right-0" />
       <div className="absolute w-full flex justify-left m-4 md:m-6">
         {TIVOLI_MODE && <BackToTivoliButton />}
       </div>
