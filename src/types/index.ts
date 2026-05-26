@@ -6,6 +6,8 @@ export type Transaction = {
   api_key: string;
 };
 
+export type ClientTransaction = Pick<Transaction, "identity_token">;
+
 export type Animal = "lion" | "dolphin" | "toucan" | "beetlebug" | "snake";
 
 export type Metal = "silver" | "gold" | "platinum" | null;
