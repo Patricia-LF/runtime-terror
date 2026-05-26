@@ -61,7 +61,7 @@ export default function HelpOverlay() {
                   <div className="flex flex-col gap-3">
                     <p className="font-fell text-grey">
                       If you don't want to enter the house, click on the Back to
-                      tivoli button up to the left.
+                      Loopland button up to the left.
                     </p>
                     <p className="font-fell text-grey">
                       Click on the Pay Entry Fee button to use your token to
