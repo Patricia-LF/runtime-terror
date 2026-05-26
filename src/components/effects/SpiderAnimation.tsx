@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { CSSProperties } from "react";
 import styles from "./SpiderAnimation.module.css";
 
@@ -16,18 +16,55 @@ export default function SpiderAnimation({ isActive = true, style }: SpiderAnimat
     const frameSize = 256;
     const cols = 4;
 
+    // Start sprite-frame animation only after the CSS delay so the spider stays idle
+    // until the movement animation begins.
+    const animTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    const parseTimeToMs = (val?: string) => {
+        if (!val) return 0;
+        if (val.endsWith("ms")) return Number(val.replace("ms", ""));
+        if (val.endsWith("s")) return Number(val.replace("s", "")) * 1000;
+        const n = Number(val);
+        return Number.isNaN(n) ? 0 : n;
+    };
+
     useEffect(() => {
+        // clear previous timers
+        if (animTimeoutRef.current) {
+            clearTimeout(animTimeoutRef.current as any);
+            animTimeoutRef.current = null;
+        }
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current as any);
+            intervalRef.current = null;
+        }
+
         if (!isActive) {
             setFrame(0);
             return;
         }
 
-        const interval = setInterval(() => {
-            setFrame((prev) => (prev + 1) % 16);
-        }, 20);
+        const delayVal = (style && (style as any)["--spider-delay"]) as string | undefined;
+        const delayMs = parseTimeToMs(delayVal || "0s");
 
-        return () => clearInterval(interval);
-    }, [isActive]);
+        animTimeoutRef.current = setTimeout(() => {
+            intervalRef.current = setInterval(() => {
+                setFrame((prev) => (prev + 1) % 16);
+            }, 20);
+        }, delayMs);
+
+        return () => {
+            if (animTimeoutRef.current) {
+                clearTimeout(animTimeoutRef.current as any);
+                animTimeoutRef.current = null;
+            }
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current as any);
+                intervalRef.current = null;
+            }
+        };
+    }, [isActive, style]);
 
     if (finished) return null;
 

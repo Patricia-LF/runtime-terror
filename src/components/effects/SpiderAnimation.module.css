@@ -26,7 +26,7 @@
     position: fixed;
     width: 256px;
     height: 256px;
-    z-index: 40;
+    z-index: 35;
     overflow: hidden;
     /* default: no movement (idle). When `.moving` is added the animation runs once */
 }
