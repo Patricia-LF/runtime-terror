@@ -21,7 +21,7 @@ export default function EnterForm({
   };
 
   const isDisabled = isLoading || !identityToken;
-  const entryPrice = process.env.NEXT_PUBLIC_ENTRY_PRICE;
+  const entryPrice = process.env.ENTRY_PRICE;
 
   return (
     <form

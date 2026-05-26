@@ -5,7 +5,7 @@ import { ApiError } from "@/types/errors";
 import { TransactionResponse, Transaction } from "@/types";
 import { useGameStore } from "@/store/useGameStore";
 
-const ENTRY_PRICE = Number(process.env.NEXT_PUBLIC_ENTRY_PRICE) || 3;
+const ENTRY_PRICE = Number(process.env.ENTRY_PRICE);
 
 type UseTransactionOptions = {
   onSuccess?: () => void;
