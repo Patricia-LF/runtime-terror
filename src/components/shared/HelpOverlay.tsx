@@ -47,7 +47,7 @@ export default function HelpOverlay() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/80 flex items-start md:items-center justify-center p-8 pt-18 md:pt-8"
+            className="fixed inset-0 z-100 bg-black/80 flex items-start md:items-center justify-center p-8 pt-22 md:pt-8"
             role="dialog"
             aria-modal="true"
             aria-labelledby="help-title"
