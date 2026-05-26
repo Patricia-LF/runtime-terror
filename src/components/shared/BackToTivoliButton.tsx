@@ -10,7 +10,6 @@ export function BackToTivoliButton() {
       { type: "AMUSEMENT_CLOSE" },
       "https://loopland.se",
     );
-    //window.location.href = process.env.NEXT_PUBLIC_TIVOLI_URL!;
   };
 
   return (
@@ -25,7 +24,7 @@ export function BackToTivoliButton() {
         height={80}
         className="w-11 h-11 md:w-20 md:h-20 hover:scale-105 transition"
       />
-      Back to Tivoli
+      Back to Loopland
     </button>
   );
 }

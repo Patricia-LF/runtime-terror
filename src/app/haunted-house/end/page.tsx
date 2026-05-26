@@ -15,7 +15,9 @@ export default function EndPage() {
   const [isRevoking, setIsRevoking] = useState(false);
   const [revokeError, setRevokeError] = useState<string | null>(null);
   const [showStamp, setShowStamp] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(() => useGameStore.persist.hasHydrated());
+  const [isHydrated, setIsHydrated] = useState(() =>
+    useGameStore.persist.hasHydrated(),
+  );
 
   const stamp = useGameStore((s) => s.stamp);
   const hasExited = useGameStore((s) => s.hasExited);
@@ -63,7 +65,7 @@ export default function EndPage() {
       <div className="relative z-20 flex flex-col h-full w-full justify-center items-center">
         <div className="bg-black/40 p-4 m-8 mx-4 rounded flex flex-col gap-6 md:w-120">
           <AnimatePresence mode="wait">
-            {!showStamp ? (
+            {!TIVOLI_MODE || !showStamp ? (
               <motion.div
                 key="text"
                 initial={{ opacity: 0 }}
@@ -126,8 +128,7 @@ export default function EndPage() {
                         height={200}
                       />
                       <p className="font-fell text-grey text-center">
-                        You got a{" "}
-                        {stamp.metal && `${stamp.metal} `}
+                        You got a {stamp.metal && `${stamp.metal} `}
                         {stamp.animal}!
                       </p>
                     </>

@@ -157,7 +157,7 @@ export default function HomeClient() {
                 <button
                   type="button"
                   onClick={() => setIsPlayingGuest(true)}
-                  className="border text-white bg-red-dark rounded px-4 py-2 min-h-11 min-w-11 cursor-pointer md:bg-transparent border-white hover:bg-red-dark hover:text-white transition font-fell tracking-widest"
+                  className="border text-white bg-red-dark rounded px-4 py-2 min-h-11 min-w-11 cursor-pointer border-white hover:opacity-80 transition font-fell tracking-widest"
                 >
                   Enter if you dare
                 </button>
