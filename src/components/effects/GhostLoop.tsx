@@ -95,7 +95,7 @@ export default function GhostLoop({
                     }}
                     initial={{ opacity: 0 }}
                     animate={{
-                        opacity: [0, 0.18, 0.12, 0.22, 0],
+                        opacity: [0, 0.25, 0.2, 0.30, 0],
                         scale: [1.02, 1, 1.01, 1],
                     }}
                     transition={{ duration: 3, ease: "easeInOut" }}
@@ -104,6 +104,7 @@ export default function GhostLoop({
                         bottom: position.bottom,
                         right: position.right,
                     }}
+                    aria-label="Catch the ghost"
                 >
                     <img
                         src="/assets/images/ghost.png"

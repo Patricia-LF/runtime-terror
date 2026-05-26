@@ -48,7 +48,6 @@ export default function HomeClient() {
   useEffect(() => {
     if (!urlIdentityToken) return;
 
-    console.log("Identity Token from URL:", urlIdentityToken);
     setIdentityToken(urlIdentityToken);
     clearIdentityToken();
   }, [urlIdentityToken, clearIdentityToken]);
