@@ -155,6 +155,9 @@ export default function EndPage() {
             }}
           />
         )}
+        <p className="font-fell text-grey/50 text-xs tracking-widest text-center mt-8">
+          Built by Patricia, Marie & Malin · Yrgo WU25 · 2026
+        </p>
       </div>
     </div>
   );
