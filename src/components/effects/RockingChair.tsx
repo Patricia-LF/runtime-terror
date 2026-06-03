@@ -91,8 +91,8 @@ export default function RockingChair({
       availableIndexes.length > 0
         ? availableIndexes
         : phrases
-            .map((_, index) => index)
-            .filter((index) => phraseCounts[index] < 2);
+          .map((_, index) => index)
+          .filter((index) => phraseCounts[index] < 2);
 
     if (validIndexes.length === 0) {
       return;
@@ -176,13 +176,14 @@ export default function RockingChair({
         />
 
         {/* Click prompt */}
-        <motion.p
-          animate={{ opacity: [0.4, 1, 0.4] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="text-center text-grey text-xs font-fell tracking-widest mt-2"
-        >
-          Click me...
-        </motion.p>
+        {!jumpscareTriggeredRef.current && (
+          <motion.p
+            animate={{ opacity: [0.4, 1, 0.4] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="text-center text-grey text-xs font-fell tracking-widest mt-2"
+          >
+            Click me...
+          </motion.p>)}
       </motion.button>
     </>
   );
