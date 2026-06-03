@@ -41,7 +41,12 @@ export default function Dolls() {
     >
       <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
-      <RockingChair onJumpscareComplete={() => setKeyVisible(true)} />
+      <RockingChair
+        onJumpscareComplete={() => {
+          // Wait 2 seconds after jumpscare before showing key
+          setTimeout(() => setKeyVisible(true), 2000);
+        }}
+      />
 
       <KeyAppearing
         isVisible={keyVisible}

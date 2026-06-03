@@ -30,6 +30,7 @@ export default function RockingChair({
 }: RockingChairProps) {
   const [isTalking, setIsTalking] = useState(false);
   const [isJumpscare, setIsJumpscare] = useState(false);
+  const jumpscareTriggeredRef = useRef(false);
   const [currentPhrase, setCurrentPhrase] = useState("");
   const { play } = useAudioStore();
   const pendingTimeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
@@ -48,7 +49,7 @@ export default function RockingChair({
   }, []);
 
   const handleClick = (): void => {
-    if (isTalking || isJumpscare) return;
+    if (isTalking || isJumpscare || jumpscareTriggeredRef.current) return; // Block clicks after jumpscare
 
     // Force jumpscare after 6 phrases
     const forceJumpscare = totalTalks >= 6;
@@ -67,6 +68,7 @@ export default function RockingChair({
       totalTalks > 0 && (forceJumpscare || Math.random() < jumpscareChance);
 
     if (willJumpscare) {
+      jumpscareTriggeredRef.current = true; // Mark as triggered
       play("loud-jumpscare");
       setIsJumpscare(true);
 
